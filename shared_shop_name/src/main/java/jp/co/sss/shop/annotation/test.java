@@ -1,5 +1,5 @@
 package jp.co.sss.shop.annotation;
 
 public class test {
-int a=21;
+int a=2221;
 }
