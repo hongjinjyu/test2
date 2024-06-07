@@ -66,6 +66,8 @@ public class OrderReferenceController {
 			//合計金額のセット
 			orderBean.setTotal(total);
 
+//			削除しろ
+			int a = 0;
 			orderBeanList.add(orderBean);
 		}
 
