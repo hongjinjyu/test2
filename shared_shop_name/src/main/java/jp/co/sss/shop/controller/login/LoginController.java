@@ -1,20 +1,17 @@
 package jp.co.sss.shop.controller.login;
 
-import java.awt.Image;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.form.LoginForm;
-import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.UserRepository;
 import jp.co.sss.shop.util.Constant;
 
@@ -38,10 +35,6 @@ public class LoginController {
 	@Autowired
 	HttpSession session;
 
-	
-	@Autowired
-	ItemRepository itemRepository;
-	
 	/**
 	 * ログイン処理
 	 *
@@ -53,12 +46,6 @@ public class LoginController {
 
 		// セッション情報を無効にする
 		session.invalidate();
-
-//		delete
-		Model model = null;
-		Image item = null;
-		item = itemRepository.findImageById(1);
-		model.addAttribute("image",item);
 
 		return "login";
 	}
