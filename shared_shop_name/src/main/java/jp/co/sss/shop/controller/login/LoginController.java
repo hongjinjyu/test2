@@ -74,7 +74,7 @@ public class LoginController {
 			if (authority.intValue() == Constant.AUTH_CLIENT) {
 				// 一般会員ログインした場合、トップ画面表示処理にリダイレクト
 				// TIPS 仕様に合せて修正必要
-				returnStr= ":/";
+				returnStr= "" ;
 			}else {
 		
 				// 運用管理者、もしくはシステム管理者としてログインした場合、管理者用メニュー画面表示処理にリダイレクト
