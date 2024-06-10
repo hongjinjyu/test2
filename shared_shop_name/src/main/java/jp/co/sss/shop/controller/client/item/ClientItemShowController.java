@@ -65,13 +65,13 @@ public class ClientItemShowController {
 	 * @return
 	 */
 	//@RequestMapping(path = "/client/item/list/{sortType}?categoryId={id}", method = RequestMethod.GET)
-	@RequestMapping(path = "/client/item/list/2", method = RequestMethod.GET)
-	public  String showId(Integer categoryId, Model model) {
-	    Category categories = new Category();
-	    categories.setId(categoryId);
-	    model.addAttribute("categories", itemRepository.findByCategory(categories));
-	    return "/";
-	}
+	//@RequestMapping(path = "/client/item/list/2", method = RequestMethod.GET)
+	//public  String showId(Integer categoryId, Model model) {
+	  //  Category categories = new Category();
+	    //categories.setId(categoryId);
+	    //model.addAttribute("categories", itemRepository.findByCategory(categories));
+	    //return "/";
+	//}
 
 	/**
 	 * Entity、Form、Bean間のデータコピーサービス
