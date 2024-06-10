@@ -9,7 +9,8 @@
 
 <body class="user shopping_basket">
 	<h2 th:class="title" th:text="#{basket}"></h2>
-
+	
+	<!--在庫が不足しているとき、または在庫がない場合の画面表示-->
 	<th:block th:if="${itemNameListLessThan != null || itemNameListZero != null}">
 		<br />
 				<!--/* 在庫不足商品 */-->
@@ -23,23 +24,32 @@
 		</ul>
 		<br />
 	</th:block>
-
+	
+	
+	<!--買い物かごが空の時の画面表示-->
 	<div th:if="${session.basketBeans == null}">
 		<!--/* 買い物かごが空のとき */-->
 		<p th:text="#{msg.basket.list.none}"></p>
 	</div>
-
+	
+	
+	<!--買い物かごに商品が存在するときの画面表示-->
 	<th:block th:if="${session.basketBeans != null}">
+		
 		<table class="list_table basket">
 			<tr>
-				<th>[[#{data.basket.item.name}]]</th>
-				<th>[[#{data.basket.count}]]</th>
-				<th>[[#{data.basket.operate}]]</th>
-				<th>[[#{data.basket.stock.status}]]</th>
+				<td th:text="#{data.basket.item.name}"></td>
+				<td th:text="#{data.basket.count}"></td>
+				<td th:text="#{data.basket.operate}"></td>
+				<td th:text="#{data.basket.stock.status}"></td>
 			</tr>
+			
 			<tr th:each="item, status: ${session.basketBeans}">
+				<!--商品名(商品詳細画面へのリンク付)-->
 				<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+				<!--買い物かごに入った商品の個数-->
 				<td th:text="${item.orderNum}"></td>
+				<!--削除ボタン-->
 				<td>
 					<form th:action="@{/client/basket/delete}" method="post">
 						<input type="hidden" name="id" th:value="${item.id}" /> <input type="submit" value="削除"
@@ -51,6 +61,8 @@
 				<td th:if="${item.stock >= 1 and 5 >= item.stock }" th:text="${item.stock}"></td>
 			</tr>
 		</table>
+		
+		
 		<div class="user_info_form_area shopping_button">
 			<!--/* 注文手続きフォーム */-->
 			<form th:action="@{/client/order/address/input}" method="post">
@@ -61,6 +73,7 @@
 				<input type="submit" value="買い物かごを空にする" class="delete" />
 			</form>
 		</div>
+		
 	</th:block>
 </body>
 
