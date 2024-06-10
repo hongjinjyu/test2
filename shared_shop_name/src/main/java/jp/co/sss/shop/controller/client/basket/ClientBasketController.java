@@ -72,7 +72,6 @@ public class ClientBasketController {
 						
 					}
 					
-					
 					//basketに追加したい商品が存在しない場合
 					if (!existItemInBasket) {
 						basketAddList = new BasketBean(item.getId(), item.getName(), item.getStock(), 1);
@@ -95,15 +94,14 @@ public class ClientBasketController {
 		return "/client/basket/list";
 	}
 	
-//
-//	
-//	/**
-//	 * 削除ボタン 押下
-//	 * @param model
-//	 * @param id
-//	 * @return 該当商品削除後の買い物かご一覧表示
-//	 */
-//	
+	
+	/**
+	 * 削除ボタン 押下
+	 * @param model
+	 * @param id
+	 * @return 該当商品削除後の買い物かご一覧表示
+	 */
+	
 //	@RequestMapping(path = " /client/basket/delete/{id}", method=RequestMethod.POST)
 //	public String basketDelete(Model model, Integer id) {
 //		
@@ -123,7 +121,7 @@ public class ClientBasketController {
 //			}
 //		return "/client/basket/list";
 //	}
-//	
+	
 
 	/**
 	 * 買い物かごを空にするボタン 押下
