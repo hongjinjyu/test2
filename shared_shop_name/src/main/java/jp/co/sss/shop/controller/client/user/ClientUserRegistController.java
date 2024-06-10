@@ -1,4 +1,4 @@
-package jp.co.sss.shop.controller.admin.user;
+package jp.co.sss.shop.controller.client.user;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,54 +11,37 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.UserForm;
 import jp.co.sss.shop.repository.UserRepository;
 
-/**
- * 会員管理 登録機能(運用管理者、システム管理者)のコントローラクラス
- *
- * @author SystemShared
- * 
- * TIPS: 一般会員向けの会員登録機能に類似した処理です。
- * 
- */
 @Controller
-public class AdminUserRegistController {
-
-	/**
-	 * 会員情報　リポジトリ
-	 */
-	@Autowired
-	UserRepository userRepository;
-
+public class ClientUserRegistController {
 	/**
 	 * セッション
 	 */
 	@Autowired
 	HttpSession session;
-
+	
+	@Autowired
+	UserRepository userRepository;
 	/**
-	 * 入力画面　表示処理(POST) 一覧画面での新規ボタン押下後の処理
+	 * 会員管理　登録機能(運用管理者、システム管理者)のコントローラクラス
 	 * 
-	 * @return "redirect:/admin/user/regist/input" 入力画面　表示処理
+	 * @author ジ・ジョンヒョン
+	 * 
+	 * 
 	 */
-	@RequestMapping(path = "/admin/user/regist/input", method = RequestMethod.POST)
+	@RequestMapping(path = "/client/user/regist/input/init", method = RequestMethod.GET)
 	public String registInput() {
 
 		//セッションスコープより入力情報を取り出す
-		UserForm userForm = (UserForm) session.getAttribute("userForm");
-		if (userForm == null) {
-			userForm = new UserForm();
-			userForm.setAuthority(((UserBean) session.getAttribute("user")).getAuthority());
-
-			//空の入力フォーム情報をセッションに保持 登録ボタンからの遷移
-			session.setAttribute("userForm", userForm);
-		}
+		UserForm userForm = new UserForm();
+//		userForm.setAuthority(2);
+		session.setAttribute("userForm", userForm);
 
 		//登録入力画面　表示処理
-		return "redirect:/admin/user/regist/input";
+		return "redirect:/client/user/regist/input";
 
 	}
 
@@ -68,7 +51,7 @@ public class AdminUserRegistController {
 	 * @param model Viewとの値受渡し
 	 * @return "admin/user/regist_input" 入力画面　表示
 	 */
-	@RequestMapping(path = "/admin/user/regist/input", method = RequestMethod.GET)
+	@RequestMapping(path = "/client/user/regist/input", method = RequestMethod.GET)
 	public String registInput(Model model) {
 
 		UserForm userForm = (UserForm) session.getAttribute("userForm");
@@ -89,10 +72,10 @@ public class AdminUserRegistController {
 		model.addAttribute("userForm", userForm);
 
 		// 入力画面　表示
-		return "admin/user/regist_input";
+		return "client/user/regist_input";
 
 	}
-
+	
 	/**
 	 * 登録入力確認　処理
 	 *
@@ -102,7 +85,7 @@ public class AdminUserRegistController {
 	 * 	入力値エラーあり："redirect:/admin/user/regist/input" 入力録画面　表示処理
 	 * 	入力値エラーなし："redirect:/admin/user/regist/check" 登録確認画面　表示処理
 	 */
-	@RequestMapping(path = "/admin/user/regist/check", method = RequestMethod.POST)
+	@RequestMapping(path = "/client/user/regist/check", method = RequestMethod.POST)
 	public String registInputCheck(@Valid @ModelAttribute UserForm form, BindingResult result) {
 
 		//直前のセッション情報を取得
@@ -123,11 +106,11 @@ public class AdminUserRegistController {
 			// 入力値にエラーがあった場合、エラー情報をセッションに保持
 			session.setAttribute("result", result);
 			// 登録入力画面　表示処理
-			return "redirect:/admin/user/regist/input";
+			return "redirect:/client/user/regist/input";
 		}
 
 		// 登録確認画面　表示処理 
-		return "redirect:/admin/user/regist/check";
+		return "redirect:/client/user/regist/check";
 	}
 
 	/**
@@ -136,7 +119,7 @@ public class AdminUserRegistController {
 	 * @param model Viewとの値受渡し
 	 * @return "admin/user/regist_check" 確認画面　表示
 	 */
-	@RequestMapping(path = "/admin/user/regist/check", method = RequestMethod.GET)
+	@RequestMapping(path = "/client/user/regist/check", method = RequestMethod.GET)
 	public String registCheck(Model model) {
 		//セッションから入力フォーム情報取得
 		UserForm userForm = (UserForm) session.getAttribute("userForm");
@@ -148,16 +131,17 @@ public class AdminUserRegistController {
 		model.addAttribute("userForm", userForm);
 
 		//登録確認画面　表示処理
-		return "admin/user/regist_check";
+		return "client/user/regist_check";
 
 	}
+	
 
 	/**
 	 * 情報登録処理
 	 *
 	 * @return "redirect:/admin/user/regist/complete" 登録完了画面　表示処理
 	 */
-	@RequestMapping(path = "/admin/user/regist/complete", method = RequestMethod.POST)
+	@RequestMapping(path = "/client/user/regist/complete", method = RequestMethod.POST)
 	public String registComplete() {
 
 		//セッション保持情報から入力値再取得
@@ -181,7 +165,7 @@ public class AdminUserRegistController {
 
 		//登録完了画面　表示処理
 		//二重送信防止のためリダイレクトを行う
-		return "redirect:/admin/user/regist/complete";
+		return "redirect:/client/user/regist/complete";
 	}
 
 	/**
@@ -189,10 +173,12 @@ public class AdminUserRegistController {
 	 *
 	 * @return "admin/user/regist_complete" 登録完了画面　表示
 	 */
-	@RequestMapping(path = "/admin/user/regist/complete", method = RequestMethod.GET)
+	@RequestMapping(path = "/client/user/regist/complete", method = RequestMethod.GET)
 	public String registCompleteFinish() {
 
-		return "admin/user/regist_complete";
+		return "client/user/regist_complete";
 	}
 
+	
+	
 }

@@ -15,7 +15,7 @@
 
 	<!--/* 追加登録不可メッセージ */-->
 	<ul class="error_message" th:unless="${registrable}">
-	<br/>
+		<br />
 		<li class="error_msg">
 			<span th:text="#{msg.cannot.regist(#{user})}"></span>
 		</li>
@@ -46,15 +46,15 @@
 	</table>
 	<!--/* ページリンク */-->
 	<ul class="paging" th:if="!${#lists.isEmpty(users)}">
-		<!-- 先頭のページリンク表示処理 --> 
-		<!--1ページ目の場合はクラスの名前をdisabledに設定--> 
+		<!-- 先頭のページリンク表示処理 -->
+		<!--1ページ目の場合はクラスの名前をdisabledに設定-->
 		<li th:class="${pages.first} ? 'disabled':''">
 			<!--1ページ目の場合は<<を表示-->
 			<span th:if="${pages.first}">&lt;&lt;</span>
 			<!-- 1ページ目ではない場合、１ページ目のリンクを表示-->
 			<a th:if="${not pages.first}" th:href="@{${url}(page=0)}">&lt;&lt;</a>
 		</li>
-		<!--ページ番号指定のリンク表示処理--> 
+		<!--ページ番号指定のリンク表示処理-->
 		<!-- #numbersのsequence()メソッドを使用して配列を作成し、被繰り返し変数として利用 -->
 		<li th:each='i : ${#numbers.sequence(0, pages.totalPages-1)}' th:class="(${i}==${pages.number})? 'active' : ''">
 			<span th:if='${i}==${pages.number}' th:text='${i+1}'>1</span>
@@ -62,8 +62,8 @@
 				<span th:text='${i+1}'>1</span>
 			</a>
 		</li>
-		<!-- 末尾ページのリンク --> 
-		<!--1ページ目の場合はクラスの名前をdisabledに設定--> 
+		<!-- 末尾ページのリンク -->
+		<!--1ページ目の場合はクラスの名前をdisabledに設定-->
 		<li th:class="${pages.last} ? 'disabled':''">
 			<!--末尾のページの場合は>>を表示-->
 			<span th:if="${pages.last}">&gt;&gt;</span>
