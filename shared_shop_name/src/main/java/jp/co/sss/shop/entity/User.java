@@ -26,7 +26,6 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_users_gen")
 	@SequenceGenerator(name = "seq_users_gen", sequenceName = "seq_users", allocationSize = 1)
 	private Integer id;
-
 	/**
 	 * 会員メールアドレス
 	 */
