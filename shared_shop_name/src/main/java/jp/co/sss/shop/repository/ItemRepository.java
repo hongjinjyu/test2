@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import jp.co.sss.shop.entity.Item;
+import jp.co.sss.shop.entity.Category;
+import java.util.List;
 
 /**
  * itemsテーブル用リポジトリ
@@ -16,6 +18,7 @@ import jp.co.sss.shop.entity.Item;
  */
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
+	List<Item> findAllByOrderById();
 
 	/**
 	 * 商品情報を登録日付順に取得 管理者機能で利用
@@ -42,4 +45,12 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	 * @return 商品エンティティ
 	 */
 	public Item findByNameAndDeleteFlag(String name, int notDeleted);
+	
+	/**
+	 * カテゴリー検索
+	 * @param category
+	 * @return
+	 */
+	//List<Category> findByCategory(Category category);
+
 }
