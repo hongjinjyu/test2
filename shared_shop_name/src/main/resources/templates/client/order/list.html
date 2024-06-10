@@ -1,3 +1,4 @@
+//一般会員（注文履歴）
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
@@ -9,13 +10,18 @@
 
 <body class="user order_list">
 	<h2 th:class="title" th:text="#{order}+#{title.list}"></h2>
+	//履歴が空の場合
 	<div th:if="${#lists.isEmpty(orders)}">
 		<p th:text="#{msg.client.order.list.none}"></p>
 	</div>
+	//履歴が空じゃない場合
 	<table class="list_table order" th:if="!${#lists.isEmpty(orders)}">
 		<tr>
-			<th>[[#{data.client.order.date}]]</th>
+		<!--注文日-->
+			<th>[[#{data.client.order.date}]]</th> 
+		<!--支払い方法-->
 			<th>[[#{paymethod.str}]]</th>
+		<!--合計金額-->
 			<th>[[#{data.total.price}]]</th>
 		</tr>
 		<tr th:each="order: ${orders}">
