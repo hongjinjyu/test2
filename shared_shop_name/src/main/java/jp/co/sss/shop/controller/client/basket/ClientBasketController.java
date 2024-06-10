@@ -62,12 +62,12 @@ public class ClientBasketController {
 							basketAddList = basketAdd;
 							int newOrderNum=basketAddList.getOrderNum()+1;
 							basketAddList.setOrderNum(newOrderNum);
+							
+							//追加したい商品の個数より在庫が少ない場合
+							if(basketAddList.getOrderNum() > item.getStock()) {
+								model.addAttribute("itemNameListLessThan", item.getName());
+							}
 							existItemInBasket=true;
-						} 
-
-						//追加したい商品の個数より在庫が少ない場合
-						if(basketAddList.getOrderNum() > item.getStock()) {
-							model.addAttribute("itemNameListLessThan", item.getName());
 						}
 						
 					}
@@ -75,12 +75,7 @@ public class ClientBasketController {
 					
 					//basketに追加したい商品が存在しない場合
 					if (!existItemInBasket) {
-						basketAddList=new BasketBean();
-						basketAddList.setId(item.getId());
-						basketAddList.setName(item.getName());
-						basketAddList.setStock(item.getStock());
-						int orderNum = 1;
-						basketAddList.setOrderNum(orderNum);
+						basketAddList = new BasketBean(item.getId(), item.getName(), item.getStock(), 1);
 						//買い物かごリストに追加
 						basketList.add(basketAddList);
 					} 
