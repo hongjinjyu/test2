@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import jakarta.servlet.http.HttpSession;
-import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.form.UserForm;
 
 @Controller
@@ -25,22 +24,19 @@ public class ClientUserRegistController {
 	 * 
 	 * 
 	 */
-	@RequestMapping(path = "/client/user/regist/input",method = RequestMethod.POST)
+	@RequestMapping(path = "/client/user/regist/input/init", method = RequestMethod.GET)
 	public String registInput() {
-		//セッションスコープより入力情報を取り出す。
-		UserForm userForm = (UserForm) session.getAttribute("userForm");
-		if (userForm == null) {
-			userForm = new UserForm();
-			userForm.setAuthority(((UserBean) session.getAttribute("user")).getAuthority());
 
-			//空の入力フォーム情報をセッションに保持 登録ボタンからの遷移
-			session.setAttribute("userForm", userForm);
-		}
+		//セッションスコープより入力情報を取り出す
+		UserForm userForm = new UserForm();
+		userForm.setAuthority(2);
+		session.setAttribute("userForm", userForm);
 
 		//登録入力画面　表示処理
-
 		return "redirect:/client/user/regist/input";
+
 	}
+
 	/**
 	 * 入力画面　表示処理(GET)
 	 * 
@@ -69,6 +65,7 @@ public class ClientUserRegistController {
 
 		// 入力画面　表示
 		return "client/user/regist_input";
+
 	}
 	
 	

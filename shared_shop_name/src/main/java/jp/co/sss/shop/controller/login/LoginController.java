@@ -43,6 +43,8 @@ public class LoginController {
 	@RequestMapping(path = "/login", method = RequestMethod.GET)
 	public String login(@ModelAttribute LoginForm form) {
 
+
+
 		// セッション情報を無効にする
 		session.invalidate();
 
