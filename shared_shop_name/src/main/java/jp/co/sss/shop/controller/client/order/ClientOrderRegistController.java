@@ -115,6 +115,7 @@ public class ClientOrderRegistController {
 	@RequestMapping(path = "/client/order/check", method = RequestMethod.GET)
 	public String ordercheck() {
 		//セッションスコープから注文情報を取得
+
 		
 		return null;
 	}
