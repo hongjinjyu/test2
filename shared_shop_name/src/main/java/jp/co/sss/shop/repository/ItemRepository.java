@@ -1,5 +1,7 @@
 package jp.co.sss.shop.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +18,7 @@ import jp.co.sss.shop.entity.Item;
  */
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
+	List<Item> findAllByOrderById();
 
 	/**
 	 * 商品情報を登録日付順に取得 管理者機能で利用
@@ -42,4 +45,13 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	 * @return 商品エンティティ
 	 */
 	public Item findByNameAndDeleteFlag(String name, int notDeleted);
+	
+	Integer findStockById(Integer id);
+	/**
+	 * カテゴリー検索
+	 * @param category
+	 * @return
+	 */
+	//List<Category> findByCategory(Category category);
+
 }

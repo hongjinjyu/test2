@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import jp.co.sss.shop.entity.Order;
@@ -22,7 +23,14 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 	 * @param pageable ページング情報
 	 * @return 注文エンティティのページオブジェクト
 	 */
-	@Query("SELECT o FROM Order o ORDER BY o.insertDate DESC,o.id DESC")
+	@Query("SELECT o FROM  Order o ORDER BY o.insertDate DESC,o.id DESC")
 	Page<Order> findAllOrderByInsertdateDescIdDesc(Pageable pageable);
 
+	/**
+	 * 注文日付降順で注文情報すべてを検索(顧客機能で利用)
+	 * @param pageable ページング情報
+	 * @return 注文エンティティのページオブジェクト
+	 */
+	@Query("SELECT o FROM Order o WHERE o.user.id = :id ORDER BY o.insertDate DESC")
+	Page<Order> findAllOrderByInsertdateDesc(@Param("id")Integer id,Pageable pageable);
 }
