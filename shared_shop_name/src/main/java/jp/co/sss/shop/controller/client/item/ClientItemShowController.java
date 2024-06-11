@@ -93,13 +93,13 @@ public class ClientItemShowController {
 	 * @return
 	 */
 
-//	@RequestMapping(path = "/client/item/list/{sortType}?categoryId={id}", method = { RequestMethod.GET, RequestMethod.POST })
-//	public  String showId(Integer categoryId, Model model) {
-//		Category categories = new Category();
-//	    categories.setId(categoryId);
-//	    model.addAttribute("categories", categoryRepository.findByCategory(categories));
-//	    return "/client/item/list";
-//	}
+	@RequestMapping(path = "/client/item/list/{sortType}?categoryId={id}", method = { RequestMethod.GET, RequestMethod.POST })
+	public  String showId(Integer categoryId, Model model) {
+		Category categories = new Category();
+	    categories.setId(categoryId);
+	    model.addAttribute("categories", itemRepository.findByCategory(categories));
+	    return "client/item/list/{sortType}?categoryId={id}";
+	}
 	
 	/**
 	 * 商品情報詳細表示処理
