@@ -29,6 +29,15 @@ public class ClientBasketController {
 	@Autowired
 	ItemRepository itemRepository;
 	
+	/**
+	 * 買い物かごメニュー 押下
+	 * @return 買い物かご一覧表示
+	 */
+	
+	@RequestMapping(path = "/client/basket/list", method=RequestMethod.GET)
+	public String basketList() {
+		return "/client/basket/list";
+	}
 	
 	/**
 	 * 買い物かごへ追加ボタン 押下
@@ -44,20 +53,23 @@ public class ClientBasketController {
 		
 		//basketがセッションにない場合、basketList生成
 				@SuppressWarnings("unchecked")
-				List<BasketBean> basketList = (List<BasketBean>) session.getAttribute("basketBean");
+				List<BasketBean> basketList = (List<BasketBean>) session.getAttribute("basketBeans");
 				if (basketList == null) {
 					basketList = new ArrayList<>();
 				}
 				
 				boolean existItemInBasket=false;
 				BasketBean basketAddList = null;
+				//買い物かごに追加された商品の情報を取得
 				Item item = itemRepository.getReferenceById(id);
+				//商品の在庫状況を取得
 				Integer stock = item.getStock();
 				
-				
+				//在庫が存在する場合
 				if(stock > 0) {
-					//basketに追加したい商品が存在する場合、注文数を増やす
+					
 					for (BasketBean basketAdd : basketList) {
+						//basketに追加したい商品が存在する場合、注文数を増やす
 						if (basketAdd.getId() == id) {
 							basketAddList = basketAdd;
 							int newOrderNum=basketAddList.getOrderNum()+1;
@@ -87,7 +99,7 @@ public class ClientBasketController {
 					}
 				
 				//セッションに買い物かごを追加
-				session.setAttribute("basketBean", basketList);
+				session.setAttribute("basketBeans", basketList);
 				//ビューに買い物かごへ追加した商品名を登録
 				model.addAttribute("cartItemName",basketAddList.getName());
 			
@@ -102,25 +114,45 @@ public class ClientBasketController {
 	 * @return 該当商品削除後の買い物かご一覧表示
 	 */
 	
-//	@RequestMapping(path = " /client/basket/delete/{id}", method=RequestMethod.POST)
-//	public String basketDelete(Model model, Integer id) {
-//		
-//		BasketBean basketDelete = (BasketBean) session.getAttribute("basketBean");
-//		int orderNum = basketDelete.getOrderNum();
-//		
-//		//該当商品の注文数が1の時
-//		if(orderNum == 1) {
-//			String deleteId = id.toString();
-//			session.removeAttribute(deleteId);
-//		
-//		}else
-//			//該当商品の注文数が2以上の場合
-//			if(orderNum >= 2) {
-//				
-//				basketAddList.setOrderNum(newOrderNum);
-//			}
-//		return "/client/basket/list";
-//	}
+	@RequestMapping(path = "/client/basket/delete", method=RequestMethod.POST)
+	public String basketDelete(Integer id) {
+		
+		@SuppressWarnings("unchecked")
+		List<BasketBean> basketList = (List<BasketBean>) session.getAttribute("basketBeans");
+		
+		BasketBean basketDelete = null;
+		int i = 0;
+		
+		for (BasketBean list : basketList) {
+			
+			//該当商品の注文数が2以上の時
+			if (list.getId() == id) {
+				basketDelete =  list;
+				int newOrderNum = basketDelete.getOrderNum()-1;
+				basketDelete.setOrderNum(newOrderNum);
+				
+				//該当商品の注文数が1の時
+				if(list.getOrderNum() == 0) {
+					basketList.remove(i);
+					break;
+				}
+			}
+			
+			i = i +1;
+		}
+		
+		boolean check = basketList.isEmpty();
+		
+		if(check == true) {
+			session.removeAttribute("basketBeans");
+		
+		}else {
+			
+			session.setAttribute("basketBeans", basketList);
+		}
+			
+		return "/client/basket/list";
+	}
 	
 
 	/**
@@ -129,29 +161,11 @@ public class ClientBasketController {
 	 * @return 空になった買い物かごの表示
 	 */
 	
-	@RequestMapping(path = "/basket/deleteAll", method=RequestMethod.POST)
+	@RequestMapping(path = "/client/basket/allDelete", method=RequestMethod.POST)
 	public String basketDeleteAll(Model model) {
-		session.removeAttribute("basketBean");
+		session.removeAttribute("basketBeans");
 		return "/client/basket/list";
 	}
 	
-	
-	/**
-	 * 買い物かごメニュー 押下
-	 * @return 買い物かご一覧表示
-	 */
-	
-	@RequestMapping(path = "/client/basket/list", method=RequestMethod.GET)
-	public String basketList() {
-		
-		@SuppressWarnings("unchecked")
-		List<BasketBean> basketList = (List<BasketBean>) session.getAttribute("basketBean");
-		if (basketList == null) {
-			basketList = new ArrayList<>();
-			session.setAttribute("basketBean", basketList);
-		}
-		
-		return "/client/basket/list";
-	}
 
 }
