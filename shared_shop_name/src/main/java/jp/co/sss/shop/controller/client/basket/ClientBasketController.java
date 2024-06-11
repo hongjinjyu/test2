@@ -1,6 +1,7 @@
 package jp.co.sss.shop.controller.client.basket;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,11 +60,15 @@ public class ClientBasketController {
 				}
 				
 				boolean existItemInBasket=false;
+				//BasketBean型の空のリストを生成
 				BasketBean basketAddList = null;
 				//買い物かごに追加された商品の情報を取得
 				Item item = itemRepository.getReferenceById(id);
 				//商品の在庫状況を取得
 				Integer stock = item.getStock();
+				
+				//リストに入った順番に並べ替え
+				Collections.reverse(basketList);
 				
 				//在庫が存在する場合
 				if(stock > 0) {
@@ -98,6 +103,9 @@ public class ClientBasketController {
 						model.addAttribute("itemNameListZero", item.getName());
 					}
 				
+				//リストに入った順番に並べ替え
+				Collections.reverse(basketList);
+				
 				//セッションに買い物かごを追加
 				session.setAttribute("basketBeans", basketList);
 				//ビューに買い物かごへ追加した商品名を登録
@@ -109,30 +117,35 @@ public class ClientBasketController {
 	
 	/**
 	 * 削除ボタン 押下
+	 * @param <T>
 	 * @param model
 	 * @param id
 	 * @return 該当商品削除後の買い物かご一覧表示
 	 */
 	
 	@RequestMapping(path = "/client/basket/delete", method=RequestMethod.POST)
-	public String basketDelete(Integer id) {
+	public <T> String basketDelete(Integer id) {
 		
 		@SuppressWarnings("unchecked")
 		List<BasketBean> basketList = (List<BasketBean>) session.getAttribute("basketBeans");
 		
 		BasketBean basketDelete = null;
 		int i = 0;
+		//リストに入った順番に並べ替え
+		Collections.reverse(basketList);
 		
 		for (BasketBean list : basketList) {
 			
 			//該当商品の注文数が2以上の時
 			if (list.getId() == id) {
 				basketDelete =  list;
+				//該当商品の注文数を1つ減らす
 				int newOrderNum = basketDelete.getOrderNum()-1;
 				basketDelete.setOrderNum(newOrderNum);
 				
 				//該当商品の注文数が1の時
 				if(list.getOrderNum() == 0) {
+					//該当商品を削除
 					basketList.remove(i);
 					break;
 				}
@@ -141,16 +154,20 @@ public class ClientBasketController {
 			i = i +1;
 		}
 		
+		//basketListがnullか否か調べる
 		boolean check = basketList.isEmpty();
 		
+		//nullの場合、買い物かご情報を全て削除
 		if(check == true) {
 			session.removeAttribute("basketBeans");
 		
+		//null出ない場合、削除後の買い物かご情報をセッションに保存
 		}else {
-			
+			//リストに入った順番に並べ替え
+			Collections.reverse(basketList);
 			session.setAttribute("basketBeans", basketList);
 		}
-			
+		
 		return "/client/basket/list";
 	}
 	
@@ -163,6 +180,7 @@ public class ClientBasketController {
 	
 	@RequestMapping(path = "/client/basket/allDelete", method=RequestMethod.POST)
 	public String basketDeleteAll(Model model) {
+		//セッションスコープから買い物かご情報をすべて削除
 		session.removeAttribute("basketBeans");
 		return "/client/basket/list";
 	}
