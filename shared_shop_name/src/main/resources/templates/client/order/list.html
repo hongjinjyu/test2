@@ -10,11 +10,9 @@
 
 <body class="user order_list">
 	<h2 th:class="title" th:text="#{order}+#{title.list}"></h2>
-	//履歴が空の場合
 	<div th:if="${#lists.isEmpty(orders)}">
 		<p th:text="#{msg.client.order.list.none}"></p>
 	</div>
-	//履歴が空じゃない場合
 	<table class="list_table order" th:if="!${#lists.isEmpty(orders)}">
 		<tr>
 		<!--注文日-->

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import jp.co.sss.shop.entity.Category;
 import jp.co.sss.shop.entity.Item;
 
 /**
@@ -53,5 +54,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	 * @return
 	 */
 	//List<Category> findByCategory(Category category);
+
+	Object findByCategory(Category categories);
 
 }
