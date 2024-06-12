@@ -1,4 +1,4 @@
-//一般会員（注文履歴）
+<!--一般会員（注文詳細）-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
@@ -10,18 +10,16 @@
 
 <body class="user order_list">
 	<h2 th:class="title" th:text="#{order}+#{title.list}"></h2>
-	//履歴が空の場合
 	<div th:if="${#lists.isEmpty(orders)}">
 		<p th:text="#{msg.client.order.list.none}"></p>
 	</div>
-	//履歴が空じゃない場合
 	<table class="list_table order" th:if="!${#lists.isEmpty(orders)}">
 		<tr>
-		<!--注文日-->
-			<th>[[#{data.client.order.date}]]</th> 
-		<!--支払い方法-->
+<!--			注文日時-->
+<!--			支払い方法-->
+<!--			合計金額-->
+			<th>[[#{data.client.order.date}]]</th>
 			<th>[[#{paymethod.str}]]</th>
-		<!--合計金額-->
 			<th>[[#{data.total.price}]]</th>
 		</tr>
 		<tr th:each="order: ${orders}">
@@ -36,6 +34,34 @@
 			<td th:text="${order.total}" class="text"></td>
 		</tr>
 	</table>
+			<!--/* ページリンク */-->
+		<ul class="paging" th:if="!${#lists.isEmpty(orders)}">
+			<!-- 先頭のページリンク表示処理 --> 
+			<!--1ページ目の場合はクラスの名前をdisabledに設定--> 
+			<li th:class="${pages.first} ? 'disabled':''">
+				<!--1ページ目の場合は<<を表示-->
+				<span th:if="${pages.first}">&lt;&lt;</span>
+				<!-- 1ページ目ではない場合、１ページ目のリンクを表示-->
+				<a th:if="${not pages.first}" th:href="@{${url}(page=0)}">&lt;&lt;</a>
+			</li>
+			<!--ページ番号指定のリンク表示処理--> 
+			<!-- #numbersのsequence()メソッドを使用して配列を作成し、被繰り返し変数として利用 -->
+			<li th:each='i : ${#numbers.sequence(0, pages.totalPages-1)}'
+				th:class="(${i}==${pages.number})? 'active' : ''">
+				<span th:if='${i}==${pages.number}' th:text='${i+1}'>1</span>
+				<a th:if='${i}!=${pages.number}' th:href="@{${url}(page=${i})}">
+					<span th:text='${i+1}'>1</span>
+				</a>
+			</li>
+			<!-- 末尾ページのリンク --> 
+			<!--1ページ目の場合はクラスの名前をdisabledに設定--> 
+			<li th:class="${pages.last} ? 'disabled':''">
+				<!--末尾のページの場合は>>を表示-->
+				<span th:if="${pages.last}">&gt;&gt;</span>
+				<!-- 末尾ページではない場合、末尾ページへのリンクを表示-->
+				<a th:if="${not pages.last}" th:href="@{${url}(page=(${pages.totalPages}-1))}">&gt;&gt;</a>
+			</li>
+		</ul>
 </body>
 
 </html>

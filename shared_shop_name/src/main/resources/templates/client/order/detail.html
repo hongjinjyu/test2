@@ -1,4 +1,4 @@
-//一般会員（注文詳細）
+<!--一般会員（注文詳細）-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
 	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
@@ -66,6 +66,7 @@
 		<form th:action="@{/client/order/list}" method="post" class="detail_button_area">
 			<input type="submit" value="戻る" class="back_button" />
 		</form>
+		
 	</div>
 </body>
 
