@@ -60,7 +60,7 @@ public class ClientUserShowController {
 		// 会員情報をViewに渡す
 		model.addAttribute("userBean", userBean);
 
-		//会員登録・変更・削除用のセッションスコープを初期化
+//		//会員登録・変更・削除用のセッションスコープを初期化
 		session.removeAttribute("userForm");
 
 		// 詳細画面　表示
