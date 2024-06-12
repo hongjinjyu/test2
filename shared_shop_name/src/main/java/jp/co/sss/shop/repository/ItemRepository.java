@@ -28,8 +28,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	 * @return 商品エンティティのページオブジェクト
 	 */
 	@Query("SELECT i FROM Item i INNER JOIN i.category c WHERE i.deleteFlag =:deleteFlag ORDER BY i.insertDate DESC,i.id DESC")
-	Page<Item> findByDeleteFlagOrderByInsertDateDescPage(
-	        @Param(value = "deleteFlag") int deleteFlag, Pageable pageable);
+	Page<Item> findByDeleteFlagOrderByInsertDateDescPage(@Param(value = "deleteFlag") int deleteFlag, Pageable pageable);
 
 	/**
 	 * 商品IDと削除フラグを条件に検索（管理者機能で利用）
@@ -48,13 +47,23 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	public Item findByNameAndDeleteFlag(String name, int notDeleted);
 	
 	Integer findStockById(Integer id);
+	
 	/**
-	 * カテゴリー検索
-	 * @param category
-	 * @return
+	 * 商品全件表示(人気商品順)
 	 */
-	//List<Category> findByCategory(Category category);
-
-	Object findByCategory(Category categories);
+	@Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o. item.id=i.id GROUP BY i ORDER BY COUNT(i) DESC,i.id ASC")
+	public List<Item> findAllByQuery();
+	
+	List<Item> findAllByOrderByInsertDateDesc();
+	Page<Item> findAllByOrderByInsertDateDesc(Pageable pageable);
+	
+	/**
+	 * 商品全件表示(人気商品順)かつカテゴリで絞り込み
+	 */
+	@Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o.item.id=i.id WHERE i.category.id=:categoryId GROUP BY i ORDER BY COUNT(i) DESC, i.id ASC")
+	public List<Item> findCategoryByQuery(@Param("categoryId")Integer categoryId);
+	
+	//新着順かつカテゴリで絞り込み
+	List<Item> findByCategoryOrderByInsertDateDesc(Category category);
 
 }
