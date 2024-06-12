@@ -40,7 +40,7 @@
 			<tr>
 				<td th:text="#{data.basket.item.name}"></td>
 				<td th:text="#{data.basket.count}"></td>
-				<td th:text="#{data.basket.operate}"></td>
+				<td></td>
 				<td th:text="#{data.basket.stock.status}"></td>
 			</tr>
 			
@@ -48,7 +48,17 @@
 				<!--商品名(商品詳細画面へのリンク付)-->
 				<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
 				<!--買い物かごに入った商品の個数-->
-				<td th:text="${item.orderNum}"></td>
+				<td>
+					<form th:action="@{/client/basket/add}" method="post">
+						<input type="hidden" name="id" th:value="${item.id}" /> 
+						<input type="submit"  th:value="＋" /></form>
+					<form th:text="${item.orderNum}"></form>
+					<form th:action="@{/client/basket/delete}" method="post">
+						<input type="hidden" name="id" th:value="${item.id}" /> 
+						<input type="submit" value="－" /></form>
+					</form>
+					
+					</td>
 				<!--削除ボタン-->
 				<td>
 					<form th:action="@{/client/basket/delete}" method="post">

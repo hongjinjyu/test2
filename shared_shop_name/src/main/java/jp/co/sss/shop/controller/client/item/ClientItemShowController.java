@@ -2,8 +2,6 @@ package jp.co.sss.shop.controller.client.item;
 
 import java.util.List;
 
-import jakarta.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpSession;
 import jp.co.sss.shop.bean.ItemBean;
 import jp.co.sss.shop.entity.Category;
 import jp.co.sss.shop.entity.Item;
@@ -56,8 +55,8 @@ public class ClientItemShowController {
 	 * @return "index" トップ画面
 	 */
 	@RequestMapping(path = "/" , method = { RequestMethod.GET, RequestMethod.POST })
-	public String index(Model model) {
-		model.addAttribute("items", itemRepository.findAllByQuery());
+	public String index(Model model, Pageable pageable) {
+		model.addAttribute("items", itemRepository.findAllByQuery(pageable));
 	
 		return "index";
 	}
@@ -72,31 +71,37 @@ public class ClientItemShowController {
 
 	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showItemList(@PathVariable Integer sortType, @RequestParam(name="categoryId", defaultValue="0",required = false) Integer categoryId,Model model, Pageable pageable) {
-		//表示画面でページングが必要なため、ページ情報付きの検索を行う
-		//Page<Item> itemsPage = itemRepository.findByDeleteFlagOrderByInsertDateDescPage(Constant.NOT_DELETED, pageable);
-		Page<Item> itemsPage = itemRepository.findAllByOrderByInsertDateDesc(pageable);
-		
-		//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
-		List<Item> itemList = itemsPage.getContent();
-		
-		//商品情報をViewへ渡す
-		model.addAttribute("pages", itemsPage);
-		model.addAttribute("items", itemList);
 		
 		Category category = new Category();
 		category.setId(categoryId);
 		if(sortType == 1) { //新着順
 			if(categoryId == 0) {
-				model.addAttribute("items", itemRepository.findAllByOrderByInsertDateDesc());
+				Page<Item> itemsNewPage = itemRepository.findAllByOrderByInsertDateDesc(pageable);
+				List<Item> itemNewList = itemsNewPage.getContent();
+				model.addAttribute("pages", itemsNewPage);
+				model.addAttribute("items", itemNewList);
 		    } else {
-			    model.addAttribute("items", itemRepository.findByCategoryOrderByInsertDateDesc(category));
+		    	Page<Item> itemsCategoryPage = itemRepository.findByCategoryOrderByInsertDateDesc(category, pageable);
+				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
+				List<Item> itemCategoryList =itemsCategoryPage.getContent();
+				model.addAttribute("pages", itemsCategoryPage);
+				model.addAttribute("items", itemCategoryList);
 		    }
 		
 		} else { //売れ筋順
 			if(categoryId == 0) {
-				model.addAttribute("items",itemRepository.findAllByQuery());
+				Page<Item> favoriteItemsPage = itemRepository.findAllByQuery(pageable);
+				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
+				List<Item> favoriteItemList = favoriteItemsPage.getContent();
+				model.addAttribute("pages", favoriteItemsPage);
+				model.addAttribute("items",  favoriteItemList);
+				
 			} else {
-				model.addAttribute("items", itemRepository.findCategoryByQuery(categoryId));
+				Page<Item> favoriteItemsCategoryPage = itemRepository.findCategoryByQuery(categoryId,pageable);
+				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
+				List<Item> favoriteitemCategoryList = favoriteItemsCategoryPage.getContent();
+				model.addAttribute("pages", favoriteItemsCategoryPage);
+				model.addAttribute("items",favoriteitemCategoryList);
 			}
 		}
 		return "client/item/list";
@@ -108,7 +113,7 @@ public class ClientItemShowController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(path = "/client/item/detail/{id}", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(path = "/client/item/detail/{id}", method = RequestMethod.GET)
 	public String showItem(@PathVariable int id, Model model) {
 		model.addAttribute("items", itemRepository.getReferenceById(id));
 		// 対象の商品情報を取得

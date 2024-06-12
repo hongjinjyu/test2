@@ -59,6 +59,7 @@ public class ClientBasketController {
 					basketList = new ArrayList<>();
 				}
 				
+				//買い物かごに商品が存在するか判定する
 				boolean existItemInBasket=false;
 				//BasketBean型の空のリストを生成
 				BasketBean basketAddList = null;
@@ -115,16 +116,16 @@ public class ClientBasketController {
 	}
 	
 	
+	
 	/**
 	 * 削除ボタン 押下
-	 * @param <T>
 	 * @param model
 	 * @param id
 	 * @return 該当商品削除後の買い物かご一覧表示
 	 */
 	
 	@RequestMapping(path = "/client/basket/delete", method=RequestMethod.POST)
-	public <T> String basketDelete(Integer id) {
+	public String basketDelete(Integer id) {
 		
 		@SuppressWarnings("unchecked")
 		List<BasketBean> basketList = (List<BasketBean>) session.getAttribute("basketBeans");
