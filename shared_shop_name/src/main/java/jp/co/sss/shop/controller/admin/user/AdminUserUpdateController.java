@@ -2,9 +2,6 @@ package jp.co.sss.shop.controller.admin.user;
 
 import java.sql.Date;
 
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.form.UserForm;
@@ -62,7 +61,7 @@ public class AdminUserUpdateController {
 
 			if (user == null) {
 				// 対象が無い場合、エラー
-				return "redirect:/syserror" ;
+				return "redirect:/syserror";
 			}
 
 			// 初期表示用フォーム情報の生成
@@ -128,11 +127,11 @@ public class AdminUserUpdateController {
 			// セッション情報が無い場合、エラー
 			return "redirect:/syserror";
 		}
-		if(form.getAuthority()==null) {
+		if (form.getAuthority() == null) {
 			//権限情報がない場合、セッション情報から値をセット
 			form.setAuthority(lastUserForm.getAuthority());
 		}
-		
+
 		// 入力フォーム情報をセッションに保持
 		session.setAttribute("userForm", form);
 
@@ -172,7 +171,6 @@ public class AdminUserUpdateController {
 
 	}
 
-
 	/**
 	 * 変更登録、完了画面表示処理
 	 *
@@ -192,7 +190,7 @@ public class AdminUserUpdateController {
 		User user = userRepository.findByIdAndDeleteFlag(userForm.getId(), Constant.NOT_DELETED);
 		if (user == null) {
 			// 対象が無い場合、エラー
-			return "redirect:/syserror" ;
+			return "redirect:/syserror";
 		}
 
 		Integer deleteFlag = user.getDeleteFlag();
@@ -209,12 +207,12 @@ public class AdminUserUpdateController {
 		userRepository.save(user);
 
 		// ログインユーザ情報変更の場合、セッション保存ユーザ情報を更新
-		UserBean loginUser = (UserBean)session.getAttribute("user") ; 
+		UserBean loginUser = (UserBean) session.getAttribute("user");
 		if (loginUser.getId() == userForm.getId()) {
-			loginUser.setName(userForm.getName()) ;
+			loginUser.setName(userForm.getName());
 		}
-		session.setAttribute("user", loginUser) ;
-		
+		session.setAttribute("user", loginUser);
+
 		//セッション情報の削除
 		session.removeAttribute("userForm");
 
@@ -230,7 +228,7 @@ public class AdminUserUpdateController {
 	 */
 	@RequestMapping(path = "/admin/user/update/complete", method = RequestMethod.GET)
 	public String updateCompleteFinish() {
-		
+
 		return "admin/user/update_complete";
 	}
 
