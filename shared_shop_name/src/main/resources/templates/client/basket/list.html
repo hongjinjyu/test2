@@ -40,8 +40,8 @@
 			<tr>
 				<td th:text="#{data.basket.item.name}"></td>
 				<td th:text="#{data.basket.count}"></td>
-				<td></td>
 				<td th:text="#{data.basket.stock.status}"></td>
+				<td></td>
 			</tr>
 			
 			<tr th:each="item, status: ${session.basketBeans}">
@@ -56,19 +56,19 @@
 					<form th:action="@{/client/basket/delete}" method="post">
 						<input type="hidden" name="id" th:value="${item.id}" /> 
 						<input type="submit" value="－" /></form>
-					</form>
-					
-					</td>
+					</form>	
+				</td>
+				<!--商品の在庫状況-->
+				<td th:if="${item.stock == 0}" th:text="#{data.out.of.stock}"></td>
+				<td th:if="${item.stock > 5}" th:text="#{data.in.stock}"></td>
+				<td th:if="${item.stock >= 1 and 5 >= item.stock }" th:text="${item.stock}"></td>
 				<!--削除ボタン-->
 				<td>
-					<form th:action="@{/client/basket/delete}" method="post">
+					<form th:action="@{/client/basket/deleteItem}" method="post">
 						<input type="hidden" name="id" th:value="${item.id}" /> <input type="submit" value="削除"
 							class="delete" />
 					</form>
 				</td>
-				<td th:if="${item.stock == 0}" th:text="#{data.out.of.stock}"></td>
-				<td th:if="${item.stock > 5}" th:text="#{data.in.stock}"></td>
-				<td th:if="${item.stock >= 1 and 5 >= item.stock }" th:text="${item.stock}"></td>
 			</tr>
 		</table>
 		
