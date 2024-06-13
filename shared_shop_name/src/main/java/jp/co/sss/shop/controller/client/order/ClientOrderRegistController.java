@@ -303,7 +303,7 @@ public class ClientOrderRegistController {
 		}
 		//セッションスコープの注文入力フォーム情報と買い物かご情報を削除
 		session.removeAttribute("orderForm");
-		session.removeAttribute("basketBean");
+		session.removeAttribute("basketBeans");
 		//注文完了画面表示処理にリダイレクト
 		return "redirect:/client/order/complete";
 	}
