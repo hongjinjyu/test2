@@ -2,6 +2,7 @@ package jp.co.sss.shop.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import jp.co.sss.shop.bean.OrderItemBean;
 import jp.co.sss.shop.entity.OrderItem;
 
 /**
@@ -10,4 +11,7 @@ import jp.co.sss.shop.entity.OrderItem;
  * @author System Shared
  */
 public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
+
+	void save(OrderItemBean orderitemBean);
+
 }
