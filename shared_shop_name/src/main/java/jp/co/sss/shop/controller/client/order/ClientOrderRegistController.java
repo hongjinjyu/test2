@@ -44,7 +44,7 @@ public class ClientOrderRegistController {
 	ItemRepository itemRepository;
 
 	@Autowired
-	OrderItemRepository OrderItemRepository;
+	OrderItemRepository orderItemRepository;
 
 	//ご注文のお手続きボタン 押下時処理
 	@RequestMapping(path = "/client/order/address/input", method = RequestMethod.POST)
@@ -72,9 +72,9 @@ public class ClientOrderRegistController {
 	@RequestMapping(path = "/client/order/address/input", method = RequestMethod.GET)
 	public String confirmOrder(Model model) {
 		//セッションスコープから注文入力フォーム情報を取得
-		OrderForm orderform = (OrderForm) session.getAttribute("order");
+		OrderForm orderForm = (OrderForm) session.getAttribute("order");
 		//注文入力フォーム情報をリクエストスコープに設定
-		model.addAttribute("orderForm", orderform);
+		model.addAttribute("orderForm", orderForm);
 		//セッションスコープに入力エラー情報がある場合
 		BindingResult result = (BindingResult) session.getAttribute("result");
 		if (result != null) {
@@ -141,7 +141,7 @@ public class ClientOrderRegistController {
 
 	//注文確認画面表示処理
 	@RequestMapping(path = "/client/order/check", method = RequestMethod.GET)
-	public String check(OrderForm form, Model model) {
+	public String check(OrderForm order, Model model) {
 		//合計金額
 		int total = 0;
 		//金額小計
@@ -151,8 +151,8 @@ public class ClientOrderRegistController {
 		//買い物かごの更新先リスト生成
 		ArrayList<BasketBean> newBaskets = new ArrayList<>();
 		//セッションスコープから注文情報を取得
-		OrderForm orderform = new OrderForm();
-		orderform = (OrderForm) session.getAttribute("order");
+		OrderForm orderForm = new OrderForm();
+		orderForm = (OrderForm) session.getAttribute("order");
 		//Itemのオブジェクト生成
 		Item items = new Item();
 		//セッションスコープから買い物かご情報を取得
@@ -162,7 +162,7 @@ public class ClientOrderRegistController {
 		 * 注文商品の最新情報をDBから取得し、の在庫チェックをする
 		 * 買い物かご情報から、商品ごとの金額小計と全額を算出し、注文入力フォーム情報に設定
 		 */
-		List<OrderItemBean> orderitemBeanList = new ArrayList<OrderItemBean>();
+		List<OrderItemBean> orderItemBeanList = new ArrayList<OrderItemBean>();
 		for (int i = 0; i < basketBean.size(); i++) {
 			BasketBean basket = basketBean.get(i);
 			items = itemRepository.getReferenceById(basket.getId());
@@ -200,21 +200,21 @@ public class ClientOrderRegistController {
 				Allprice = price * orderNum;
 			}
 			//OrderItemBeanのオブジェクト生成
-			OrderItemBean orderitemBean = new OrderItemBean();
+			OrderItemBean orderItemBean = new OrderItemBean();
 			//金額小計、注文数を設定
-			orderitemBean.setSubtotal(Allprice);
-			orderitemBean.setOrderNum(orderNum);
+			orderItemBean.setSubtotal(Allprice);
+			orderItemBean.setOrderNum(orderNum);
 			//itemの情報をコピー
-			BeanUtils.copyProperties(items, orderitemBean);
+			BeanUtils.copyProperties(items, orderItemBean);
 			//リストに情報を追加
-			orderitemBeanList.add(orderitemBean);
+			orderItemBeanList.add(orderItemBean);
 			//合計金額
 			total += Allprice;
 			//合計金額をリクエストスコープに保存
 			model.addAttribute("total", total);
 		}
 		//注文商品情報をリストに保存
-		model.addAttribute("orderItemBeans", orderitemBeanList);
+		model.addAttribute("orderItemBeans", orderItemBeanList);
 		//買い物かご情報をセッションスコープに保存
 		session.setAttribute("orderItemBeans", newBaskets);
 		//注文入力情報をリクエストスコープに保存
@@ -261,7 +261,7 @@ public class ClientOrderRegistController {
 			int stock = items.getStock();
 			int price = items.getPrice();
 			int Allprice = price * orderNum;
-
+			//合計金額を更新
 			total += Allprice;
 			//合計金額をリクエストスコープに保存
 			model.addAttribute("total", total);
@@ -299,7 +299,7 @@ public class ClientOrderRegistController {
 			orderItemBeans.setQuantity(orderNum);
 			orderItemBeans.setPrice(price);
 			//登録
-			OrderItemRepository.save(orderItemBeans);
+			orderItemRepository.save(orderItemBeans);
 		}
 		//セッションスコープの注文入力フォーム情報と買い物かご情報を削除
 		session.removeAttribute("orderForm");
