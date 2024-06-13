@@ -1,6 +1,15 @@
 ﻿@charset "UTF-8";
 
+/* 스타일 시트 파일 (예: styles.css) */
+@font-face {
+	font-family: 'ZenKurenaido';
+	src: url('fonts/ZenKurenaido-Regular.ttf') format('ttf');
+}
+
+
+
 body {
+	font-family: 'ZenKurenaido';
 	color: #12526d;
 	font-size: 14px;
 }
@@ -14,6 +23,7 @@ body {
 p {
 	margin: 15px 0;
 }
+
 /* --- トップ画面 ---*/
 .navi_area~.container {
 	display: flex;
@@ -21,14 +31,14 @@ p {
 
 /* ---- 入力フォーム(ログイン) ---- */
 
-.user_container{
+.user_container {
 	display: flex;
 	justify-content: center;
 	position: relative;
 }
 
-.login_form_area ul{
-	margin-left:20px;
+.login_form_area ul {
+	margin-left: 20px;
 }
 
 .login_form {
@@ -39,7 +49,7 @@ p {
 	width: 35%;
 	padding: 8px 0;
 	text-align: right;
-	
+
 }
 
 .login_form .input {
@@ -50,11 +60,12 @@ p {
 
 .login_form input [type=submit] {
 	padding: 3px 10px;
-	    
+
 }
+
 .login_form .error_list {
-	display:flex; 
-	justify-content:center;
+	display: flex;
+	justify-content: center;
 }
 
 /* ---- ページタイトル ---- */
@@ -62,17 +73,21 @@ p {
 	margin: 0;
 	padding-left: 20px;
 }
+
 .login .page_title {
 	font-weight: bold;
 }
+
 .main .page_title {
 	padding-left: 10px;
 }
-.user_container>.page_title{
-	position: absolute; 
+
+.user_container>.page_title {
+	position: absolute;
 	left: 0;
 	padding-left: 30px;
 }
+
 /* ---- 会員登録入力画面へのリンク ---- */
 .regist_link {
 	margin-top: 25px;
@@ -108,9 +123,11 @@ p {
 	background: #d22222;
 	color: white;
 }
+
 [type=submit].delete:disabled {
-  background: #ccc;
+	background: #ccc;
 }
+
 /* ---- ボタン(商品個数指定) ---- */
 [type=button] {
 	width: 80px;
@@ -137,7 +154,7 @@ p {
 	overflow: hidden;
 }
 
-.main>.item_list{
+.main>.item_list {
 	display: flex;
 	flex-wrap: wrap;
 }
@@ -185,7 +202,7 @@ p {
 .sorted_by {
 	margin-top: 23px;
 	font-size: 1.1em;
-	
+
 }
 
 /* ---- 入力フォーム(検索、登録、変更、削除) ---- */
@@ -209,13 +226,15 @@ p {
 .detail_area {
 	display: block;
 	width: 70%;
-	margin-top:	30px;
-	margin-left:50px;
+	margin-top: 30px;
+	margin-left: 50px;
 }
+
 .info_form_area {
-	margin-top:	30px;
-	margin-left:50px;
+	margin-top: 30px;
+	margin-left: 50px;
 }
+
 .payment_method_select {
 	margin-bottom: 40px;
 }
@@ -230,7 +249,8 @@ p {
 .input_list dd {
 	margin-bottom: 20px;
 }
-.payment_method_select li{
+
+.payment_method_select li {
 	margin-bottom: 10px;
 }
 
@@ -257,22 +277,27 @@ p {
 	box-sizing: border-box;
 	font-size: 1rem;
 }
+
 .input_list img {
 	width: 45%;
 }
+
 .input_list .comments {
 	font-size: 0.8rem;
 	display: block;
 	margin-top: -5px;
 }
+
 .input_list .radio_label,
 .payment_method_select .radio_label {
 	font-size: 1.1rem;
 }
-.input_list .radio_label{
+
+.input_list .radio_label {
 	display: inline-block;
 	padding-left: 0.5em;
 }
+
 .input_list [type="radio"] {
 	display: inline;
 	width: auto;
@@ -287,28 +312,29 @@ p {
 
 }
 
- ul.error_list{
- 	margin-left:35px;
-	margin-bottom:5px;
- }
- 
- /* ---- エラー表示 ---- */
-li.error_msg  {
+ul.error_list {
+	margin-left: 35px;
+	margin-bottom: 5px;
+}
+
+/* ---- エラー表示 ---- */
+li.error_msg {
 	display: list-item;
 	line-height: 1.0em;
 	font-size: 0.9rem;
 	color: #FF0000;
 }
-.error_list li{
-	color:#C00;
+
+.error_list li {
+	color: #C00;
 	padding-left: 10px;
-	list-style:disc;
+	list-style: disc;
 }
 
-.error_list_no_mark li{
-	color:#C00;
+.error_list_no_mark li {
+	color: #C00;
 	padding-left: 10px;
-	list-style:none;
+	list-style: none;
 }
 
 .user_info_form_area [type="submit"],
@@ -323,36 +349,42 @@ li.error_msg  {
 .info_form_area .send_button {
 	background: #edf9fe;
 }
+
 .user_info_form_area .back_button,
 .info_form_area .back_button {
 	background: #ddd;
 }
 
-.shopping_button{
+.shopping_button {
 	width: 100%;
 }
 
 .detail_button_area {
 	display: block;
 	width: 100%;
-	margin-top:30px;
+	margin-top: 30px;
 }
+
 .detail_button_area form {
-	 /* display: inline-block; */
-	width:25%;
+	/* display: inline-block; */
+	width: 25%;
 	/* margin-left:5%; */
 	text-align: center;
 }
-.detail_button_area form:first-of-type{
+
+.detail_button_area form:first-of-type {
 	text-align: right;
 }
-.detail_button_area form:last-of-type{
+
+.detail_button_area form:last-of-type {
 	text-align: left;
 }
-.detail_button_area [type="submit"]{
+
+.detail_button_area [type="submit"] {
 	/* padding: 0.6em 1.8em; */
 	font-size: 1.2em;
 }
+
 .card_info {
 	padding-top: 10px;
 	border-top: 1px solid #e8e8e8;
@@ -362,26 +394,30 @@ li.error_msg  {
 	overflow: hidden;
 	margin: 30px auto 0;
 }
+
 .item_image_area {
 	width: 45%;
 }
-.item_image_area img{
+
+.item_image_area img {
 	width: 100%;
-	max-width: 300px;	
+	max-width: 300px;
 	height: auto;
 	max-height: 300px;
 }
-.item_input_area img{
+
+.item_input_area img {
 	width: 100%;
-	max-width: 300px;	
+	max-width: 300px;
 	height: auto;
 	max-height: 300px;
 }
+
 .item_detail_list {
 	width: 50%;
 }
 
-.item_detail_area + .user_info_form {
+.item_detail_area+.user_info_form {
 	clear: both;
 }
 
@@ -415,7 +451,8 @@ li.error_msg  {
 }
 
 /* ---- 入力欄全般 ---- */
-[type=text], [type=password] {
+[type=text],
+[type=password] {
 	padding: 3px;
 }
 
@@ -467,14 +504,16 @@ select {
 	border-collapse: collapse;
 	margin: 50px auto 20px;
 }
+
 .list_table th,
 .detail_table th {
 	white-space: nowrap;
 	padding: 5px;
-    background: #add8e6;
-    font-weight: normal;
-    position: relative;
+	background: #add8e6;
+	font-weight: normal;
+	position: relative;
 }
+
 .list_table td,
 .detail_table td {
 	padding: 10px;
@@ -486,102 +525,120 @@ select {
 	width: 100%;
 	text-align: center;
 }
+
 .list_table tr:nth-of-type(odd) {
-    background: #f0f8fb;
+	background: #f0f8fb;
 }
+
 .admin .list_table tr:nth-of-type(odd) {
-    background: #fff0ec;
+	background: #fff0ec;
 }
-.admin .list_table th{
+
+.admin .list_table th {
 	background: #ffc6b9;
 }
+
 .list_table th:after {
-    content: "";
-    display: block;
-    height: 90%;
-    width: 1px;
-    background: #fff;
-    position: absolute;
-    left: 0;
-    top: 5%;
+	content: "";
+	display: block;
+	height: 90%;
+	width: 1px;
+	background: #fff;
+	position: absolute;
+	left: 0;
+	top: 5%;
 }
 
 /* ---- 詳細テーブル ---- */
 .detail_table {
 	width: 80%;
 }
+
 .detail_table caption {
 	text-align: left;
 	font-size: 1.1rem;
 }
-.detail_table th{
+
+.detail_table th {
 	border-bottom: 1px solid #fff;
 	text-align: right;
 	padding-right: 10px;
 }
-.admin .detail_table th{
+
+.admin .detail_table th {
 	background: #ffc6b9;
 }
-.detail_table td{
+
+.detail_table td {
 	border-bottom: 1px solid #f0f8fb;
 }
 
 /* ---- 会員一覧 ---- */
 .sign_up_form {
-	display:flex;
+	display: flex;
 	flex-direction: row-reverse;
 }
-.sign_up_form ~.list_table{
+
+.sign_up_form~.list_table {
 	margin: 20px auto 20px;
 }
-.sign_up_form .menu_button{
+
+.sign_up_form .menu_button {
 	margin-right: 0px;
-	margin-bottom:8px;
+	margin-bottom: 8px;
 }
-.category_list .sign_up_form .menu_button{
-	width:auto;
+
+.category_list .sign_up_form .menu_button {
+	width: auto;
 }
+
 .list_table.user {
 	clear: both;
 }
 
 /* ---- 商品一覧 ---- */
 .list_table.item_list th:last-of-type {
-	width:20%;
+	width: 20%;
 }
-.list_table.item_list{
+
+.list_table.item_list {
 	margin: 0px auto 20px;
 }
 
-.list_table.item_list>tbody th,.list_table.item_list>tbody td{
+.list_table.item_list>tbody th,
+.list_table.item_list>tbody td {
 	flex-basis: 100%
 }
 
-.admin > .container{
+.admin>.container {
 	display: flex;
 }
 
 /* ---- 商品詳細 ---- */
-.list_table.item_detail{
+.list_table.item_detail {
 	margin: 10px auto 20px;
 }
-.item_detail_area{
+
+.item_detail_area {
 	display: flex;
 	justify-content: space-between;
 }
+
 /* ---- 注文一覧 ---- */
-.list_table.order{
+.list_table.order {
 	margin-top: 50px;
 }
-.list_table.order a{
+
+.list_table.order a {
 	text-decoration: underline;
 }
 
 /* ---- カテゴリ一覧 ---- */
 .list_table.category_list th:last-of-type {
-	width:30%;
+	width: 30%;
 }
-.list_table.category_list{
+
+.list_table.category_list {
 	margin: 10px auto 20px;
 }
 
@@ -589,48 +646,60 @@ select {
 .list_table .total {
 	font-weight: bold;
 }
-.detail_table.payment{
+
+.detail_table.payment {
 	margin: 10px auto 20px;
 }
+
 /* ---- 注文最終確認 ---- */
-.list_table.item_detail td:first-of-type{
+.list_table.item_detail td:first-of-type {
 	width: 20%;
 }
-.list_table.item_detail img{
+
+.list_table.item_detail img {
 	height: 70px;
 	width: auto;
-	max-width:150px;
-	vertical-align:middle;
+	max-width: 150px;
+	vertical-align: middle;
 }
+
 .detail_table.address,
 .detail_table.pay {
 	width: 100%;
 }
+
 .detail_table.pay {
 	margin-bottom: 50px;
 }
-.detail_table.address{
-	margin:10px auto 20px;
+
+.detail_table.address {
+	margin: 10px auto 20px;
 }
+
 /* ---- 買物カゴ ---- */
 .list_table.basket {
 	margin: 40px auto 21px;
 }
+
 .list_table.basket th:first-of-type {
 	width: 45%;
 }
+
 .list_table.basket th:last-of-type {
 	width: 42%;
 }
+
 .list_table.basket td:first-of-type {
 	padding-left: 20px;
 	text-align: left;
 }
+
 .list_table.basket [type="button"],
 .list_table.basket .delete {
 	margin: 0 3px;
 }
-.list_table.basket .delete{
+
+.list_table.basket .delete {
 	width: 80px;
 	height: 35px;
 	padding: 0px 10px;
@@ -705,15 +774,16 @@ p.link_center {
 	margin: 15px 0;
 	font-size: 1rem;
 }
-.paging li{
+
+.paging li {
 	display: inline-block;
 }
+
 .paging .current,
-.paging a{
+.paging a {
 	padding: 0 3px;
 }
-.paging a{
+
+.paging a {
 	display: block;
 }
-
-

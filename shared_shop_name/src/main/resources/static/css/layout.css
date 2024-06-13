@@ -41,7 +41,7 @@ form {
 }
 
 table {
-	width:100%;
+	width: 100%;
 	background-color: #fff;
 	border-collapse: collapse;
 	margin: 0px auto 20px;
@@ -52,9 +52,10 @@ li {
 	margin: 0;
 	padding: 0;
 }
+
 li {
 	list-style-type: none;
-	
+
 }
 
 
@@ -64,22 +65,40 @@ li {
 	margin: 0 auto;
 	justify-content: space-between;
 }
-body > .container {
+
+body>.container {
 	margin-top: 15px;
 }
+
 .content {
-	padding:30px 0 60px;
+	padding: 30px 0 60px;
 }
 
 /* ---- ヘッダー ---- */
+
+.image-left {
+	float: left;
+	/*    margin-right: 10px;  이미지 간 간격을 위해 여백 설정 */
+	width: auto;
+	/* 이미지 너비 조정 */
+	height: 100px;
+	/* 이미지 높이는 비율에 맞게 자동 조정 */
+	margin: 0;
+	/* 이미지 간의 간격을 없앰 */
+	padding: 0;
+	display: block;
+}
+
 header .container {
 	display: flex;
 	justify-content: space-between;
 }
+
 header {
-	background: #87ceeb;
+	background: rgb(255, 255, 255);
 	padding: 10px 0;
 }
+
 .admin header {
 	background: #ff8669;
 }
@@ -94,7 +113,7 @@ header {
 .site_title {
 	font-size: 1.8em;
 	font-weight: normal;
-	margin:0;
+	margin: 0;
 }
 
 /* スキルアップテクニック4
@@ -105,6 +124,7 @@ header {
 	text-align: right;
 	padding-top: 15px;
 }
+
 .user_info a {
 	text-decoration: none;
 }
@@ -119,15 +139,14 @@ header {
 }
 
 .user_info .pipeline {
-	padding:0 8px;
+	padding: 0 8px;
 }
 
 
 
 /* ---- タイトル共通 ---- */
 .search_area .title,
-.main .title
- {
+.main .title {
 	background-color: #3d98bf;
 	margin: 0;
 	padding: 5px 8px;
@@ -138,45 +157,54 @@ header {
 
 /* ---- ナビゲーションバー ---- */
 .navi_area {
-	background: #edf9fe;
+	background: rgb(0, 0, 0);
 }
+
 .navi_menu {
+	background-color: black;
 	width: 960px;
-	padding:12px 0;
+	padding: 12px 0;
 	margin: 0 auto;
 }
+
 .navi_menu li {
+
 	display: inline-block;
 	width: 24%;
 }
+
 .navi_menu a {
 	display: inline-block;
 	width: 100%;
 	font-size: 1.5em;
-	line-height: 2.5em;
-	border: 1px solid #5fb4d9;
+	line-height: 2.5em; 
+
 	text-align: center;
 	text-decoration: none;
-	background: #fff;
+	background: rgb(255, 255, 255);
 	transition: 0.18s;
 }
+
 .navi_menu a:hover {
-	background: #3d98bf;
+	background: rgb(0, 0, 0);
 	color: #fff;
-	text-shadow: 1px 1px 1px #12526d;
-	border-color : #3d98bf;
+	text-shadow: 1px 1px 1px #12526d; 
+	border-color: rgb(255, 255, 0);
 }
-.navi_menu li:first-of-type a{
+
+.navi_menu li:first-of-type a {
 	border-radius: 6px 0px 0px 6px;
 }
-.navi_menu li:last-of-type a{
+
+.navi_menu li:last-of-type a {
 	border-radius: 0px 6px 6px 0px;
 }
 
 /* ---- サイドバー ---- */
-.search .search_area{
-	flex:1;
+.search .search_area {
+	flex: 1;
 }
+
 .search,
 aside.admin_menu {
 	width: 20%;
@@ -188,7 +216,8 @@ aside.admin_menu {
 	text-align: center;
 	font-size: 1.1em;
 }
-.search_area .title{
+
+.search_area .title {
 	border-radius: 6px 6px 6px 6px;
 	text-align: center;
 	font-size: 1.1em;
@@ -198,12 +227,15 @@ aside.admin_menu {
 	background: #ff6c49;
 	padding: 5px;
 }
+
 .admin_menu_list .title {
 	background: #ff6c49;
 }
+
 .search .form {
 	padding: 15px 0 50px 5px;
 }
+
 .admin_menu .display_list {
 	display: block;
 	padding: 10px;
@@ -225,6 +257,7 @@ aside.admin_menu {
 .admin_menu .display_list:hover {
 	background: #ffc6b9;
 }
+
 .admin_menu li:last-of-type .display_list {
 	border-radius: 0 0 6px 6px;
 }
@@ -236,11 +269,11 @@ aside.admin_menu {
 
 }
 
-.container content{
+.container content {
 	display: flex;
 }
 
-.admin > .container.content{
+.admin>.container.content {
 	display: flex;
 	justify-content: center;
 }
@@ -254,7 +287,8 @@ aside.admin_menu {
 	padding: 8px 15px;
 	position: relative;
 	font-size: 1.5rem;
-	}
+}
+
 .main .title::before,
 .admin .main .title::before {
 	position: absolute;
@@ -265,23 +299,26 @@ aside.admin_menu {
 	border-bottom: solid 10px transparent;
 	border-right: solid 20px rgb(149, 158, 155);
 }
+
 .admin .main .title.no_shadow::before {
 	display: none;
 }
+
 .admin .main .title {
 	background: #ff6c49;
 }
 
-.container.content > .admin_menu{
+.container.content>.admin_menu {
 	display: flex;
 	width: 50%;
 }
-.admin_menu .admin_menu_list{
+
+.admin_menu .admin_menu_list {
 	padding: 5px 10px;
 	font-size: 1.5em;
 	margin: 80px auto 0;
 	flex: 1;
-	
+
 }
 
 .admin_menu_list .title_area {
@@ -294,6 +331,7 @@ aside.admin_menu {
 	text-shadow: 1px 1px 1px #333;
 	padding: 5px 0;
 }
+
 .admin_menu_list .title_area_no_shadow {
 	background: #ff6c49;
 	text-align: center;
@@ -306,21 +344,23 @@ aside.admin_menu {
 .admin_menu_list .link_area {
 	margin: 0;
 }
-.admin_menu_list .link_area a{
-    display: block;
-    padding: 10px;
-    border-right: 1px solid #aaa;
-    border-bottom: 1px solid #aaa;
-    border-left: 1px solid #aaa;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 0.18s;
+
+.admin_menu_list .link_area a {
+	display: block;
+	padding: 10px;
+	border-right: 1px solid #aaa;
+	border-bottom: 1px solid #aaa;
+	border-left: 1px solid #aaa;
+	text-align: center;
+	text-decoration: none;
+	transition: background-color 0.18s;
 }
 
-.admin_menu_list .link_area a:hover{
+.admin_menu_list .link_area a:hover {
 	background: #ffc6b9;
 }
-.admin_menu_list .link_area:last-of-type a{
+
+.admin_menu_list .link_area:last-of-type a {
 	border-radius: 0 0 6px 6px;
 }
 
@@ -331,17 +371,20 @@ aside.admin_menu {
 	padding-top: 20px;
 	font-size: 1.2em;
 }
+
 .check_error_message {
 	padding-top: 20px;
 	font-size: 1.2em;
-	color:#C00;
+	color: #C00;
 }
+
 .complete_message,
 .complete_link {
 	font-size: 1.2em;
 	margin-top: 30px;
 	padding-left: 30px;
 }
+
 .complete_link a:hover {
 	color: #d34320;
 }
@@ -373,7 +416,7 @@ footer {
 
 small {
 	height: 30px;
-	line-height:30px;
+	line-height: 30px;
 	text-shadow: 1px 1px 1px #fff;
 	font-size: 8pt;
 }

@@ -12,9 +12,9 @@ import jp.co.sss.shop.bean.UserBean;
 import jp.co.sss.shop.repository.UserRepository;
 
 /**
- * 会員管理 表示機能(運用管理者、システム管理者)のコントローラクラス
+ * 会員管理 表示機能(一般会員)のコントローラクラス
  *
- * @author SystemShared
+ * @author ジ・ジョンヒョン
  */
 @Controller
 public class ClientUserShowController {
@@ -30,7 +30,6 @@ public class ClientUserShowController {
 	@Autowired
 	HttpSession session;
 
-
 	/**
 	 * 詳細表示処理
 	 *
@@ -41,29 +40,21 @@ public class ClientUserShowController {
 	 * TIPS: 一般会員向けの会員詳細表示機能に類似した処理です。
 	 */
 	@RequestMapping(path = "/client/user/detail", method = { RequestMethod.GET, RequestMethod.POST })
-	public String showUser (Model model) {
-
-		
-		
-		UserBean userBean = (UserBean) session.getAttribute("user");
+	public String showUser(Model model) {
 		// 表示対象の情報を取得
+		UserBean userBean = (UserBean) session.getAttribute("user");
 		Object user = userRepository.getReferenceById(userBean.getId());
-		
+		// 対象が無い場合、エラー
 		if (user == null) {
-			// 対象が無い場合、エラー
 			return "redirect:/syserror";
 		}
-
 		// Userエンティティの各フィールドの値をUserBeanにコピー
 		BeanUtils.copyProperties(user, userBean);
-
 		// 会員情報をViewに渡す
 		model.addAttribute("userBean", userBean);
-
-//		//会員登録・変更・削除用のセッションスコープを初期化
+		//会員登録・変更・削除用のセッションスコープを初期化
 		session.removeAttribute("userForm");
-
-		// 詳細画面　表示
+		//詳細画面　表示
 		return "client/user/detail";
 	}
 }

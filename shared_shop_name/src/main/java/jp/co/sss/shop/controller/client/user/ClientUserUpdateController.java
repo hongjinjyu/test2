@@ -18,11 +18,10 @@ import jp.co.sss.shop.repository.UserRepository;
 import jp.co.sss.shop.util.Constant;
 
 /**
- * 会員管理 変更機能(運用管理者、システム管理者)のコントローラクラス
+ * 会員管理 変更機能(一般会員)のコントローラクラス
  *
- * @author SystemShared
+ * @author ジ・ジョンヒョン
  * 
- * TIPS: 一般会員向けの会員変更機能に類似した処理です。
  */
 @Controller
 public class ClientUserUpdateController {
@@ -48,6 +47,7 @@ public class ClientUserUpdateController {
 	@RequestMapping(path = "/client/user/update/input", method = RequestMethod.POST)
 	public String updateInput(Model model) {
 
+		
 		return "redirect:/client/user/update/input";
 
 	}
@@ -66,6 +66,14 @@ public class ClientUserUpdateController {
 		model.addAttribute("userForm", userBean);
 
 		BindingResult result = (BindingResult) session.getAttribute("result");
+		
+		result = (BindingResult) session.getAttribute("result");
+		if (result != null) {
+			//セッションにエラー情報がある場合、エラー情報をスコープに設定
+			model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
+			// セッションにエラー情報を削除
+			session.removeAttribute("result");
+		}
 
 		//変更入力画面　表示
 		return "client/user/update_input";
@@ -88,6 +96,8 @@ public class ClientUserUpdateController {
 		// 入力フォーム情報をセッションに保持
 		session.setAttribute("userForm", form);
 
+		
+		
 		// 入力値にエラーがあった場合、入力画面に戻る
 		if (result.hasErrors()) {
 

@@ -120,7 +120,6 @@ public class AdminUserUpdateController {
 	 */
 	@RequestMapping(path = "/admin/user/update/check", method = RequestMethod.POST)
 	public String updateInputCheck(@Valid @ModelAttribute UserForm form, BindingResult result) {
-
 		//直前のセッション情報を取得
 		UserForm lastUserForm = (UserForm) session.getAttribute("userForm");
 		if (lastUserForm == null) {
@@ -131,20 +130,14 @@ public class AdminUserUpdateController {
 			//権限情報がない場合、セッション情報から値をセット
 			form.setAuthority(lastUserForm.getAuthority());
 		}
-
 		// 入力フォーム情報をセッションに保持
 		session.setAttribute("userForm", form);
-
 		// 入力値にエラーがあった場合、入力画面に戻る
 		if (result.hasErrors()) {
-
 			session.setAttribute("result", result);
-
 			//変更入力画面　表示処理
 			return "redirect:/admin/user/update/input";
-
 		}
-
 		//変更確認画面　表示処理
 		return "redirect:/admin/user/update/check";
 	}
