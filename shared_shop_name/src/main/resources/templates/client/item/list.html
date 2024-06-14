@@ -35,7 +35,9 @@
 			<!--/* 商品一覧 */-->
 			<tr th:each="item, status: ${items}">  <!--/*items=商品テーブルの全件表示*/-->
 				<td class="image">
-					<img th:src="@{/images/{image}(image=${item.image})}" th:if="${item.image != null}" />
+					<a  th:href="@{/client/item/detail/{id}(id=${item.id})}">
+						<img th:src="@{/images/{image}(image=${item.image})}" th:if="${item.image != null}" />
+					</a>
 					<img th:src="@{/images/common/no_image.jpg}" th:if="${item.image == null}" />
 
 				</td>

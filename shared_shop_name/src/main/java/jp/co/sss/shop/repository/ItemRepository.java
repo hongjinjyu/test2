@@ -49,7 +49,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     @Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o. item.id=i.id GROUP BY i ORDER BY COUNT(i) DESC,i.id ASC")
     Page<Item> findAllByQuery(Pageable pageable);
     
-    Page<Item> findAllByOrderByInsertDateDesc(Pageable pageable);
+    Page<Item> findAllByOrderByIdDesc(Pageable pageable);
     
     /**
      * 商品全件表示(人気商品順)かつカテゴリで絞り込み
@@ -58,6 +58,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     Page<Item> findCategoryByQuery(@Param(value="categoryId")Integer categoryId, Pageable pageable);
     
     //新着順かつカテゴリで絞り込み
-	Page<Item> findByCategoryOrderByInsertDateDesc(Category category, Pageable pageable);
+	Page<Item> findByCategoryOrderByIdDesc(Category category, Pageable pageable);
 }
 
