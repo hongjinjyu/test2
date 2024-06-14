@@ -1,19 +1,5 @@
 ﻿@charset "UTF-8";
 
-/* 스타일 시트 파일 (예: styles.css) */
-@font-face {
-	font-family: 'ZenKurenaido';
-	src: url('fonts/ZenKurenaido-Regular.ttf') format('ttf');
-}
-
-
-
-body {
-	font-family: 'ZenKurenaido';
-	color: #12526d;
-	font-size: 14px;
-}
-
 /* ---- テキスト系 ---- */
 .container .text {
 	font-weight: bold;
@@ -92,7 +78,7 @@ p {
 .regist_link {
 	margin-top: 25px;
 	padding-right: 10px;
-	text-align: right;
+	text-align: left;
 }
 
 .description {
@@ -787,3 +773,14 @@ p.link_center {
 .paging a {
 	display: block;
 }
+
+.search_area{
+	background-color: rgb(255, 255, 128,0.2);
+}
+.search_area .title{
+	background-color: rgb(0,0,0,0.9);
+}
+.container{
+	background-color: rgb(0,0,0,0.1);
+}
+
