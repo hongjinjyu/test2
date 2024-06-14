@@ -8,7 +8,7 @@
 <body>
 	<div th:fragment="layout-header" class="container">
 		<a href="http://localhost:55000/shared_shop/">
-			<img th:src="@{/images/duhee.jpg}" alt="logo Image" width="360" height="100" class="image-left">
+			<img th:src="@{/images/logo.png}" alt="logo Image" width="360" height="100" class="image-left">
 		</a>
 		<div th:if="${session.user != null and session.user.authority == 2}" class="user_info">
 			<a th:href="@{/client/user/detail}" th:text="${session.user.name}"></a>さん | <a th:href="@{/logout}"
