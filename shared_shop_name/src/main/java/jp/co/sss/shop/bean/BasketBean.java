@@ -22,6 +22,11 @@ public class BasketBean {
 	 * 商品在庫数
 	 */
 	private Integer stock;
+	
+	/**
+	 * 商品単価
+	 */
+	private Integer price;
 
 	/**
 	 * 商品注文個数 初期値 1
@@ -52,12 +57,15 @@ public class BasketBean {
 	 * 
 	 * @param id  商品ID
 	 * @param name  商品名
+	 * @param price 商品単価
 	 * @param stock  商品在庫数
+	 * @param totalPrice 注文合計価格
 	 * @param orderNum  注文個数
 	 */
-	public BasketBean(Integer id, String name, Integer stock, Integer orderNum) {
+	public BasketBean(Integer id, String name, Integer price,Integer stock, Integer orderNum) {
 		this.id = id;
 		this.name = name;
+		this.price = price;
 		this.stock = stock;
 		this.orderNum = orderNum;
 	}
@@ -108,6 +116,22 @@ public class BasketBean {
 	 */
 	public void setStock(Integer stock) {
 		this.stock = stock;
+	}
+	
+	/**
+	 * 商品の単価の取得
+	 * @return　商品単価
+	 */
+	public Integer getPrice() {
+		return price;
+	}
+	
+	/**
+	 * 商品の単価のセット
+	 * @param price　商品単価
+	 */
+	public void setPrice(Integer price) {
+		this.price = price;
 	}
 
 	/**

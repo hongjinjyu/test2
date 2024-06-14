@@ -85,6 +85,7 @@ public class ClientBasketController {
 								model.addAttribute("itemNameListLessThan", item.getName());
 							}else {
 								basketAddList.setOrderNum(newOrderNum);
+								
 							}
 							existItemInBasket=true;
 						}
@@ -93,7 +94,7 @@ public class ClientBasketController {
 					
 					//basketに追加したい商品が存在しない場合
 					if (!existItemInBasket) {
-						basketAddList = new BasketBean(item.getId(), item.getName(), item.getStock(), 1);
+						basketAddList = new BasketBean(item.getId(), item.getName(),item.getPrice(), item.getStock(), 1);
 						//買い物かごリストに追加
 						basketList.add(basketAddList);
 					} 
@@ -105,6 +106,8 @@ public class ClientBasketController {
 						model.addAttribute("itemNameListZero", item.getName());
 					}
 				
+				int newTotalPrice = basketAddList.getPrice()*basketAddList.getOrderNum();
+				
 				//リストに入った順番に並べ替え
 				Collections.reverse(basketList);
 				
@@ -112,6 +115,10 @@ public class ClientBasketController {
 				session.setAttribute("basketBeans", basketList);
 				//ビューに買い物かごへ追加した商品名を登録
 				model.addAttribute("cartItemName",basketAddList.getName());
+				//ビューに買い物かご内の商品の合計金額を登録
+				session.setAttribute("totalPrice", newTotalPrice);
+//				//ビューに買い物かご内の商品の個数を登録
+//				session.setAttribute("totalNum", count);
 			
 		return "/client/basket/list";
 	}
@@ -159,6 +166,8 @@ public class ClientBasketController {
 		//basketListがnullか否か調べる
 		boolean check = basketList.isEmpty();
 		
+		int newTotalPrice = basketDelete.getPrice()*basketDelete.getOrderNum();
+		
 		//nullの場合、買い物かご情報を全て削除
 		if(check == true) {
 			session.removeAttribute("basketBeans");
@@ -168,6 +177,8 @@ public class ClientBasketController {
 			//リストに入った順番に並べ替え
 			Collections.reverse(basketList);
 			session.setAttribute("basketBeans", basketList);
+			//ビューに買い物かご内の商品の合計金額を登録
+			session.setAttribute("totalPrice", newTotalPrice);
 		}
 		
 		return "/client/basket/list";

@@ -39,6 +39,7 @@
 		<table class="list_table basket">
 			<tr>
 				<td th:text="#{data.basket.item.name}"></td>
+				<td th:text="#{date.basket.item.price}"></td>
 				<td th:text="#{data.basket.count}"></td>
 				<td th:text="#{data.basket.stock.status}"></td>
 				<td></td>
@@ -47,6 +48,8 @@
 			<tr th:each="item, status: ${session.basketBeans}">
 				<!--商品名(商品詳細画面へのリンク付)-->
 				<td><a th:href="@{/client/item/detail/{id}(id=${item.id})}" th:text="${item.name}"></a></td>
+				<!--商品単価-->
+				<td th:text="${item.price}"></td>
 				<!--買い物かごに入った商品の個数-->
 				<td>
 					<form th:action="@{/client/basket/add}" method="post">
@@ -69,6 +72,14 @@
 							class="delete" />
 					</form>
 				</td>
+			</tr>
+			
+			<tr>
+				<td></td>
+				<td></td>
+				<td>合計</td>
+				<td></td>
+				<td th:text="${session.totalPrice} + '円'"></td>
 			</tr>
 		</table>
 		
