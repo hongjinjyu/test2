@@ -1,7 +1,5 @@
 package jp.co.sss.shop.controller.client.item;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -68,44 +66,108 @@ public class ClientItemShowController {
      * @param pageable
      * @return "client/item/list"
      */
-
+//
+//	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET, RequestMethod.POST })
+//	public String showNewItemList(@PathVariable Integer sortType, @RequestParam(name="categoryId", defaultValue="0",required = false) Integer categoryId,Model model, Pageable pageable) {
+//		
+//		Category category = new Category();
+//		
+//		category.setId(categoryId);
+//		List<Item> itemNewList= new ArrayList<>();
+//		if(sortType == 1) {
+//		//新着順
+//			if(categoryId == 0) {
+//				
+//				Page<Item> itemsNewPage = itemRepository.findAllByOrderByInsertDateDesc(pageable);
+//				itemNewList = itemsNewPage.getContent();
+//				model.addAttribute("pages", itemsNewPage);
+//				System.out.println("1");		
+//		    } else {
+//		    	
+//		    	Page<Item> itemsNewPage = itemRepository.findByCategoryOrderByInsertDateDesc(category, pageable);
+//				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
+//				itemNewList =itemsNewPage.getContent();
+//				model.addAttribute("pages", itemsNewPage);
+//				System.out.println("2");		
+//		    }
+//			
+//		}else{
+//			//売れ筋順
+//			if(categoryId == 0) {
+//				Page<Item> favoriteItemsPage = itemRepository.findAllByQuery(pageable);
+//				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
+//				itemNewList = favoriteItemsPage.getContent();
+//				model.addAttribute("pages", favoriteItemsPage);
+//				System.out.println("3");				
+//			} else {
+//				Page<Item> favoriteItemsCategoryPage = itemRepository.findCategoryByQuery(categoryId,pageable);
+//				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
+//				itemNewList = favoriteItemsCategoryPage.getContent();
+//				model.addAttribute("pages", favoriteItemsCategoryPage);
+//				System.out.println("4");		
+//			}
+//		}
+//		model.addAttribute("items", itemNewList);
+//			
+//		return "client/item/list";
+//	}
+	
+	/**
+     * @param sortType=1(新着順)、sortType=2(売れ筋順)
+     * @param categoryId
+     * @param model
+     * @param pageable
+     * @return "client/item/list"
+     */
 	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET, RequestMethod.POST })
-	public String showItemList(@PathVariable Integer sortType, @RequestParam(name="categoryId", defaultValue="0",required = false) Integer categoryId,Model model, Pageable pageable) {
-		
-		Category category = new Category();
-		category.setId(categoryId);
-		if(sortType == 1) { //新着順
-			if(categoryId == 0) {
-				Page<Item> itemsNewPage = itemRepository.findAllByOrderByInsertDateDesc(pageable);
-				List<Item> itemNewList = itemsNewPage.getContent();
-				model.addAttribute("pages", itemsNewPage);
-				model.addAttribute("items", itemNewList);
-		    } else {
-		    	Page<Item> itemsCategoryPage = itemRepository.findByCategoryOrderByInsertDateDesc(category, pageable);
-				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
-				List<Item> itemCategoryList =itemsCategoryPage.getContent();
-				model.addAttribute("pages", itemsCategoryPage);
-				model.addAttribute("items", itemCategoryList);
-		    }
-		
-		} else { //売れ筋順
-			if(categoryId == 0) {
-				Page<Item> favoriteItemsPage = itemRepository.findAllByQuery(pageable);
-				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
-				List<Item> favoriteItemList = favoriteItemsPage.getContent();
-				model.addAttribute("pages", favoriteItemsPage);
-				model.addAttribute("items",  favoriteItemList);
-				
-			} else {
-				Page<Item> favoriteItemsCategoryPage = itemRepository.findCategoryByQuery(categoryId,pageable);
-				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
-				List<Item> favoriteitemCategoryList = favoriteItemsCategoryPage.getContent();
-				model.addAttribute("pages", favoriteItemsCategoryPage);
-				model.addAttribute("items",favoriteitemCategoryList);
-			}
-		}
-		return "client/item/list";
+	public String showNewItemList(@PathVariable Integer sortType,
+	                               @RequestParam(name="categoryId",required = false) Integer categoryId,
+	                               @RequestParam(name="all",defaultValue="0") Integer all,
+	                               Model model, Pageable pageable, HttpSession session) {
+
+	    if (all == 0) {
+	        // セッションからカテゴリIDを取得
+	        Integer storedCategoryId = (Integer) session.getAttribute("categoryId");
+
+	        // セッションにカテゴリIDを保存
+	        if (categoryId != null) {
+	            session.setAttribute("categoryId", categoryId);
+	        } else if (storedCategoryId != null) {
+	            categoryId = storedCategoryId;
+	        }
+	    } else {
+	        // セッションからカテゴリIDを削除
+	        session.removeAttribute("categoryId");
+	        categoryId = null; // カテゴリIDをnullに設定
+	    }
+
+	    // カテゴリIDを使用してアイテムのリストを取得
+	    Page<Item> itemsPage;
+	    if (sortType == 1) {
+	        // 新着順
+	        if (categoryId == null) {
+	            itemsPage = itemRepository.findAllByOrderByIdDesc(pageable);
+	        } else {
+	            Category category = new Category();
+	            category.setId(categoryId);
+	            itemsPage = itemRepository.findByCategoryOrderByIdDesc(category, pageable);
+	        }
+	    } else {
+	        // 売れ筋順
+	        if (categoryId == null) {
+	            itemsPage = itemRepository.findAllByQuery(pageable);
+	        } else {
+	            itemsPage = itemRepository.findCategoryByQuery(categoryId, pageable);
+	        }
+	    }
+
+	    // ページ情報とアイテムリストをモデルに追加
+	    model.addAttribute("pages", itemsPage);
+	    model.addAttribute("items", itemsPage.getContent());
+
+	    return "client/item/list";
 	}
+	
 	
 	/**
 	 * 商品詳細表示
