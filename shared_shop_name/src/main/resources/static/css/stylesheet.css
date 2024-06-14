@@ -148,7 +148,7 @@ p {
 .item:nth-of-type(odd) {
 	margin-right: 3%;
 }
-
+/*売れ筋商品*/
 .item .item_name {
 	padding: 5px 10px;
 	color: #3d98bf;
@@ -778,9 +778,30 @@ p.link_center {
 	background-color: rgb(255, 255, 128,0.2);
 }
 .search_area .title{
-	background-color: rgb(0,0,0,0.9);
+	background-color: rgb(64, 0, 0);
 }
 .container{
-	background-color: rgb(0,0,0,0.1);
+/*	background-color: rgb(64,64,64,0.1);*/
 }
 
+header{
+	background-color: rgb(255,255,255);
+}
+.navi_area~.container{
+	background-color: rgb(255, 128, 0);
+}
+.search, aside.admin_menu {
+	background-color: #4169e1;
+    width: 20%;
+}
+.user .main .title {
+background: linear-gradient(45deg, rgba(64, 64, 64, 0.1), rgba(0, 0, 0, 0.3))
+}
+
+@font-face {
+    font-family: 'font';
+    src: url('../../fonts/ZenKurenaido-Regular.ttf') format('truetype');
+}
+header {
+	font-family: 'font';
+}

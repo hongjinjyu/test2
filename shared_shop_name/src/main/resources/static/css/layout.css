@@ -157,18 +157,18 @@ header {
 
 /* ---- ナビゲーションバー ---- */
 .navi_area {
-	background: rgb(0, 0, 0);
+	background: rgb(64, 0, 0);
 }
 
 .navi_menu {
-	background-color: black;
+/*	background-color: rgb(255, 0, 0);*/
 	width: 960px;
 	padding: 12px 0;
 	margin: 0 auto;
 }
 
 .navi_menu li {
-
+	color:red;
 	display: inline-block;
 	width: 24%;
 }
@@ -177,16 +177,18 @@ header {
 	display: inline-block;
 	width: 100%;
 	font-size: 1.5em;
-	line-height: 2.5em; 
-
+	line-height: 2.5em;
 	text-align: center;
 	text-decoration: none;
 	background: rgb(255, 255, 255);
 	transition: 0.7s;
 }
+.navi_menu a:visited{
+	color:rgb(64,0,0);
+}
 
 .navi_menu a:hover {
-	background: rgb(0, 0, 0);
+	background: rgb(64,0,0);
 	color: #fff;
 	text-shadow: 1px 1px 1px #12526d; 
 	border-color: rgb(255, 255, 0);
