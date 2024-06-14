@@ -27,6 +27,12 @@ import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.repository.OrderItemRepository;
 import jp.co.sss.shop.repository.OrderRepository;
 import jp.co.sss.shop.repository.UserRepository;
+/*
+ * 注文機能のコントローラクラス
+ * 
+ * @author 畑田鉄平
+ * 
+ */
 
 @Controller
 public class ClientOrderRegistController {
@@ -46,7 +52,10 @@ public class ClientOrderRegistController {
 	@Autowired
 	OrderItemRepository orderItemRepository;
 
-	//ご注文のお手続きボタン 押下時処理
+	/**
+	 * ご注文のお手続きボタン 押下時処理
+	 * @return 届け先入力画面表示処理へリダイレクト
+	 */
 	@RequestMapping(path = "/client/order/address/input", method = RequestMethod.POST)
 	public String inputOrder() {
 		OrderForm orderForm = new OrderForm();
@@ -68,7 +77,11 @@ public class ClientOrderRegistController {
 		return "redirect:/client/order/address/input";
 	}
 
-	//届け先入力画面表示処理
+	/**
+	 * 	届け先入力画面表示処理
+	 * @param model ビューとの値受け渡し
+	 * @return 登録画面表示
+	 */
 	@RequestMapping(path = "/client/order/address/input", method = RequestMethod.GET)
 	public String confirmOrder(Model model) {
 		//セッションスコープから注文入力フォーム情報を取得
@@ -88,7 +101,13 @@ public class ClientOrderRegistController {
 
 	}
 
-	//届け先入力画面 次へボタン 押下時処理
+	/**
+	 * 届け先入力画面 次へボタン 押下時処理
+	 * @param order 入力された注文情報のフォーム
+	 * @param result 入力チェック
+	 * @param model ビューとの値受け渡し
+	 * @return 支払方法選択画面表示処理にリダイレクト
+	 */
 	@RequestMapping(path = "/client/order/payment/input", method = RequestMethod.POST)
 	public String exeOrder(@Valid @ModelAttribute OrderForm order, BindingResult result, Model model) {
 		//画面から入力されたフォーム情報を注文入力フォーム情報として保存
@@ -111,7 +130,13 @@ public class ClientOrderRegistController {
 		}
 	}
 
-	//支払方法選択画面表示処理
+	/**
+	 * 支払方法選択画面表示処理
+	 * @param order 入力された注文情報のフォーム
+	 * @param result 入力チェック
+	 * @param model ビューとの値受け渡し
+	 * @return 支払方法選択画面表示
+	 */
 	@RequestMapping(path = "/client/order/payment/input", method = RequestMethod.GET)
 	public String payment(@ModelAttribute OrderForm order, BindingResult result, Model model) {
 		//セッションスコープから注文入力フォーム情報を取得
@@ -126,7 +151,15 @@ public class ClientOrderRegistController {
 		return "client/order/payment_input";
 	}
 
-	//支払方法選択画面 次へボタン 押下時処理
+	/**
+	 * 
+	 * 支払方法選択画面 次へボタン 押下時処理
+	 * 
+	 * @param order 入力された注文情報のフォーム
+	 * @param result 入力チェック
+	 * @param payMethod 支払い方法の情報
+	 * @return 注文確認画面表示処理へリダイレクト
+	 */
 	@RequestMapping(path = "/client/order/check", method = RequestMethod.POST)
 	public String check(@ModelAttribute OrderForm order, BindingResult result, Integer payMethod) {
 		//セッションスコープから注文入力フォーム情報を取得
@@ -139,7 +172,14 @@ public class ClientOrderRegistController {
 		return "redirect:/client/order/check";
 	}
 
-	//注文確認画面表示処理
+	/**
+	 * 
+	 * 注文確認画面表示処理
+	 * 
+	 * @param order 入力された注文情報のフォーム
+	 * @param model ビューとの値受け渡し
+	 * @return 注文確認画面表示
+	 */
 	@RequestMapping(path = "/client/order/check", method = RequestMethod.GET)
 	public String check(OrderForm order, Model model) {
 		//合計金額
@@ -223,30 +263,59 @@ public class ClientOrderRegistController {
 		return "client/order/check";
 	}
 
-	//届け先入力画面で、戻るボタン押下処理
+	/**
+	 * 届け先入力画面で、戻るボタン押下処理
+	 * @return 買い物かご画面表示処理へリダイレクト
+	 */
 	@RequestMapping(path = "/client/basket/list", method = RequestMethod.POST)
 	public String back() {
 		//買い物かご画面表示処理へリダイレクト
 		return "redirect:/client/basket/list";
 	}
 
-	//支払い方法選択画面で、戻るボタン押下処理
+	/**
+	 * 支払い方法選択画面で、戻るボタン押下処理
+	 * @return 届け先入力画面 表示処理へリダイレクト
+	 */
 	@RequestMapping(path = "/client/order/payment/back", method = RequestMethod.POST)
-	public String pageback() {
+	public String pageBack() {
 		//届け先入力画面 表示処理へリダイレクト
 		return "redirect:/client/order/address/input";
 	}
 
-	//ご注文の確定ボタン 押下時処理
+	/**
+	 * ご注文の確定ボタン 押下時処理
+	 * @param model ビューとの値受け渡し
+	 * @return 注文完了画面表示処理にリダイレクト
+	 */
 	@RequestMapping(path = "/client/order/complete", method = RequestMethod.POST)
 	public String complete(Model model) {
 		//セッションスコープから注文情報を取得
 		OrderForm orderForm = new OrderForm();
 		orderForm = (OrderForm) session.getAttribute("order");
 
-		Item items = new Item();
-
+		Item item = new Item();
+		//合計金額
 		int total = 0;
+
+		/*
+		 * 注文情報をDBに登録
+		 */
+
+		Order order = new Order();
+		//注文日を設定
+		Date date = new Date(0);
+		order.setInsertDate(date);
+		//ユーザ情報を設定
+		UserBean userBean = new UserBean();
+		User loginUser = new User();
+		userBean = (UserBean) session.getAttribute("user");
+		BeanUtils.copyProperties(userBean, loginUser);
+		order.setUser(loginUser);
+		//注文情報をコピー
+		BeanUtils.copyProperties(orderForm, order, "id");
+		//登録
+		orderRepository.save(order);
 
 		//セッションスコープから買い物かご情報を取得
 		ArrayList<BasketBean> basketBean = new ArrayList<>();
@@ -254,12 +323,12 @@ public class ClientOrderRegistController {
 		//注文商品の在庫チェックをする
 		for (int i = 0; i < basketBean.size(); i++) {
 			BasketBean basket = basketBean.get(i);
-			items = itemRepository.getReferenceById(basket.getId());
+			item = itemRepository.getReferenceById(basket.getId());
 			//注文数
 			int orderNum = basket.getOrderNum();
 			//在庫数
-			int stock = items.getStock();
-			int price = items.getPrice();
+			int stock = item.getStock();
+			int price = item.getPrice();
 			int Allprice = price * orderNum;
 			//合計金額を更新
 			total += Allprice;
@@ -270,37 +339,26 @@ public class ClientOrderRegistController {
 				//注文確認画面表示処理へリダイレクト
 				return "redirect:/client/order/check";
 			}
-			/*
-			 * 注文情報をDBに登録
-			 */
-			Order order = new Order();
-			//注文日を設定
-			Date date = new Date(0);
-			order.setInsertDate(date);
-			//ユーザ情報を設定
-			UserBean userBean = new UserBean();
-			User loginUser = new User();
-			userBean = (UserBean) session.getAttribute("user");
-			BeanUtils.copyProperties(userBean, loginUser);
-			order.setUser(loginUser);
-			//注文情報をコピー
-			BeanUtils.copyProperties(orderForm, order, "id");
-			//登録
-			orderRepository.save(order);
 
 			/*
 			 * 注文商品情報をDBに登録
 			 */
-			OrderItem orderItemBeans = new OrderItem();
+			OrderItem orderItem = new OrderItem();
 			//注文商品情報を設定
-			orderItemBeans.setId(basket.getId());
-			orderItemBeans.setItem(items);
-			orderItemBeans.setOrder(order);
-			orderItemBeans.setQuantity(orderNum);
-			orderItemBeans.setPrice(price);
+			orderItem.setId(basket.getId());
+			orderItem.setItem(item);
+			orderItem.setOrder(order);
+			orderItem.setQuantity(orderNum);
+			orderItem.setPrice(price);
 			//登録
-			orderItemRepository.save(orderItemBeans);
+			orderItemRepository.save(orderItem);
+
+			//在庫数を減らしてDBに登録
+			stock = stock - orderNum;
+			item.setStock(stock);
+			itemRepository.save(item);
 		}
+
 		//セッションスコープの注文入力フォーム情報と買い物かご情報を削除
 		session.removeAttribute("orderForm");
 		session.removeAttribute("basketBeans");
@@ -308,9 +366,12 @@ public class ClientOrderRegistController {
 		return "redirect:/client/order/complete";
 	}
 
-	//注文完了画面表示処理
+	/**
+	 * 注文完了画面表示処理
+	 * @return 注文完了画面表示
+	 */
 	@RequestMapping(path = "/client/order/complete", method = RequestMethod.GET)
-	public String ordercomplete() {
+	public String orderComplete(Model model) {
 		//注文完了画面表示
 		return "/client/order/complete";
 	}
