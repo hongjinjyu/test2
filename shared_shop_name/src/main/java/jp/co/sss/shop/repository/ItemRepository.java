@@ -57,7 +57,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     /**
      * 商品全件表示(売れ筋順)
      */
-//    @Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o. item.id=i.id GROUP BY i ORDER BY COUNT(i) DESC,i.id ASC")
     @Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o. item.id=i.id WHERE i.deleteFlag =:deleteFlag GROUP BY i ORDER BY COUNT(i) DESC,i.id ASC")
     Page<Item> findAllByQuery(@Param(value = "deleteFlag") int deleteFlag, Pageable pageable);
     
@@ -65,7 +64,6 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
      * 商品全件表示(売れ筋順かつカテゴリで絞り込み)
      */
     @Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o.item.id=i.id WHERE i.deleteFlag =:deleteFlag AND i.category.id=:categoryId GROUP BY i ORDER BY COUNT(i) DESC, i.id ASC")
-//    Page<Item> findCategoryByQuery(@Param(value="categoryId")Integer categoryId, Pageable pageable);
     Page<Item> findCategoryByQuery(@Param(value = "deleteFlag") int deleteFlag, @Param(value="categoryId")Integer categoryId, Pageable pageable);
     
 	 /**

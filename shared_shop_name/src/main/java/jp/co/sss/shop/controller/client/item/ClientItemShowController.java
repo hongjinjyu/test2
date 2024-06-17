@@ -106,7 +106,6 @@ public class ClientItemShowController {
 	        if (categoryId == null) {
 	            itemsPage = itemRepository.findAllByQuery(Constant.NOT_DELETED, pageable);
 	        } else {
-//	            itemsPage = itemRepository.findCategoryByQuery(categoryId, pageable);
 	            itemsPage = itemRepository.findCategoryByQuery(Constant.NOT_DELETED, categoryId, pageable);
 	        }
 	    } else if(sortType == 3) {
