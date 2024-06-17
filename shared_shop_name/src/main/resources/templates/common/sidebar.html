@@ -27,6 +27,17 @@
 			</form>
 		</div>
 	</div>
+	
+			<!--商品名検索-->
+			<div  class="search_area" th:if="${session.user == null or session.user.authority == 2}">
+				<h2 th:class="title" th:text="商品名検索"></h2>
+				<div class="form">
+					<form th:action="@{/searchName}" method="get">
+						<input type="text" name="Name"/>
+				        <input type="submit" value="検索">
+                    </form>
+			    </div>
+			</div>
 
 	<!--/* メニュー(運用管理者、及びシステム管理者用) */-->
 	<div th:if="${session.user != null and session.user.authority != 2}">

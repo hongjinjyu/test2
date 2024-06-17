@@ -17,7 +17,7 @@ import jp.co.sss.shop.entity.Item;
  */
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-    List<Item> findAllByOrderById();
+//    List<Item> findAllByOrderById();
     /**
      * 商品情報を登録日付順に取得 管理者機能で利用
      * @param deleteFlag 削除フラグ
@@ -44,20 +44,48 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     Integer findStockById(Integer id);
     
     /**
-     * 商品全件表示(人気商品順)
+     * 商品全件表示(新着順)
      */
-    @Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o. item.id=i.id GROUP BY i ORDER BY COUNT(i) DESC,i.id ASC")
-    Page<Item> findAllByQuery(Pageable pageable);
-    
-    Page<Item> findAllByOrderByIdDesc(Pageable pageable);
+    @Query("SELECT i FROM Item i INNER JOIN i.category c WHERE i.deleteFlag =:deleteFlag ORDER BY i.id DESC")
+    Page<Item> findAllByOrderByIdDesc(@Param(value = "deleteFlag") int deleteFlag, Pageable pageable);
     
     /**
-     * 商品全件表示(人気商品順)かつカテゴリで絞り込み
+     * 新着順かつカテゴリで絞り込み
      */
-    @Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o.item.id=i.id WHERE i.category.id=:categoryId GROUP BY i ORDER BY COUNT(i) DESC, i.id ASC")
-    Page<Item> findCategoryByQuery(@Param(value="categoryId")Integer categoryId, Pageable pageable);
+	Page<Item> findByCategoryOrderByIdDesc(@Param(value = "deleteFlag") int deleteFlag, Category category, Pageable pageable);
+	
+    /**
+     * 商品全件表示(売れ筋順)
+     */
+    @Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o. item.id=i.id WHERE i.deleteFlag =:deleteFlag GROUP BY i ORDER BY COUNT(i) DESC,i.id ASC")
+    Page<Item> findAllByQuery(@Param(value = "deleteFlag") int deleteFlag, Pageable pageable);
     
-    //新着順かつカテゴリで絞り込み
-	Page<Item> findByCategoryOrderByIdDesc(Category category, Pageable pageable);
+    /**
+     * 商品全件表示(売れ筋順かつカテゴリで絞り込み)
+     */
+    @Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o.item.id=i.id WHERE i.deleteFlag =:deleteFlag AND i.category.id=:categoryId GROUP BY i ORDER BY COUNT(i) DESC, i.id ASC")
+    Page<Item> findCategoryByQuery(@Param(value = "deleteFlag") int deleteFlag, @Param(value="categoryId")Integer categoryId, Pageable pageable);
+    
+	 /**
+     * 商品全件表示(価格の高い順)
+     */
+	Page<Item> findAllByOrderByPriceDesc(Pageable pageable);
+	
+	 /**
+     * 商品全件表示(価格の高い順)かつカテゴリで絞り込み
+     */
+	Page<Item> findByCategoryOrderByPriceDesc(Category category,Pageable pageable);
+	
+	 /**
+     * 商品全件表示(価格の安い順)
+     */
+	Page<Item> findAllByOrderByPriceAsc(Pageable pageable);
+	
+	 /**
+     * 商品全件表示(価格の安い順)かつカテゴリで絞り込み
+     */
+	Page<Item> findByCategoryOrderByPriceAsc(Category category,Pageable pageable);
+	
+	//商品名検索
+	List<Item> findByNameContaining(String name/*, Pageable pageable*/);
 }
-
