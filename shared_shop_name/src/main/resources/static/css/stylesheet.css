@@ -182,7 +182,7 @@ p {
 /*売れ筋商品*/
 .item .item_name {
 	padding: 5px 10px;
-	color: #3d98bf;
+	color: rgb(57,57,57);
 	font-weight: bold;
 	position: absolute;
 	top: 5px;
@@ -540,7 +540,8 @@ select {
 .detail_table th {
 	white-space: nowrap;
 	padding: 5px;
-	background: #add8e6;
+	background: rgb(57,57,57,0.9);
+	color:floralwhite;
 	font-weight: normal;
 	position: relative;
 }
@@ -558,7 +559,7 @@ select {
 }
 
 .list_table tr:nth-of-type(odd) {
-	background: #f0f8fb;
+	background: rgb(57,57,57,0.06);
 }
 
 .admin .list_table tr:nth-of-type(odd) {
@@ -835,9 +836,7 @@ p.link_center {
 	/*	background-color: rgb(64,64,64,0.1);*/
 }
 
-header {
-	background-color: rgb(255, 255, 255);
-}
+
 
 /*内容*/
 .navi_area~.container {
@@ -852,9 +851,15 @@ aside.admin_menu {
 }
 
 .user .main .title {
-	background: linear-gradient(45deg, rgb(255, 217, 236), rgb(255, 255, 255))
+	background: linear-gradient(45deg, rgb(57, 57, 57), rgb(255, 255, 255))
 }
 
+body{
+	background-color: rgb(255, 255, 255);
+}
+header {
+	background-color: rgb(255, 255, 255);
+}
 .uresuji {
 	color: red;
 }

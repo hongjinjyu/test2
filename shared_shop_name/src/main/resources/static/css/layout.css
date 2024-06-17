@@ -13,6 +13,7 @@
  * positionプロパティは絶対位置表示を可能にし、
  * 値relativeを設定することで子要素(今回はfooter要素)の配置基準になります。
  */
+
 html {
 	min-height: 100%;
 	position: relative;
