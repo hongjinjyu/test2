@@ -422,3 +422,14 @@ small {
 	text-shadow: 1px 1px 1px #fff;
 	font-size: 8pt;
 }
+
+@font-face {
+    font-family: 'font';
+    src: url('../../fonts/ZenKurenaido-Regular.ttf') format('truetype');
+}
+header {
+	font-family: 'font';
+}
+body{
+	font-family: 'font';
+}
