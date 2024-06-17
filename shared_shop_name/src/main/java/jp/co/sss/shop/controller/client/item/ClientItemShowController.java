@@ -54,69 +54,18 @@ public class ClientItemShowController {
 	 */
 	@RequestMapping(path = "/" , method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model, Pageable pageable) {
-		model.addAttribute("items", itemRepository.findAllByQuery(pageable));
-	
+		//Item全件をリクエストスコープに保存
+		model.addAttribute("items", itemRepository.findAllByQuery(Constant.NOT_DELETED, pageable));
 		return "index";
 	}
 	
-    /**
-     * @param sortType=1(新着順)、sortType=2(売れ筋順)
-     * @param categoryId
-     * @param model
-     * @param pageable
-     * @return "client/item/list"
-     */
-//
-//	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET, RequestMethod.POST })
-//	public String showNewItemList(@PathVariable Integer sortType, @RequestParam(name="categoryId", defaultValue="0",required = false) Integer categoryId,Model model, Pageable pageable) {
-//		
-//		Category category = new Category();
-//		
-//		category.setId(categoryId);
-//		List<Item> itemNewList= new ArrayList<>();
-//		if(sortType == 1) {
-//		//新着順
-//			if(categoryId == 0) {
-//				
-//				Page<Item> itemsNewPage = itemRepository.findAllByOrderByInsertDateDesc(pageable);
-//				itemNewList = itemsNewPage.getContent();
-//				model.addAttribute("pages", itemsNewPage);
-//				System.out.println("1");		
-//		    } else {
-//		    	
-//		    	Page<Item> itemsNewPage = itemRepository.findByCategoryOrderByInsertDateDesc(category, pageable);
-//				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
-//				itemNewList =itemsNewPage.getContent();
-//				model.addAttribute("pages", itemsNewPage);
-//				System.out.println("2");		
-//		    }
-//			
-//		}else{
-//			//売れ筋順
-//			if(categoryId == 0) {
-//				Page<Item> favoriteItemsPage = itemRepository.findAllByQuery(pageable);
-//				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
-//				itemNewList = favoriteItemsPage.getContent();
-//				model.addAttribute("pages", favoriteItemsPage);
-//				System.out.println("3");				
-//			} else {
-//				Page<Item> favoriteItemsCategoryPage = itemRepository.findCategoryByQuery(categoryId,pageable);
-//				//エンティティ内のページ情報付きの検索結果からレコードの情報だけをJavaBeansに保存
-//				itemNewList = favoriteItemsCategoryPage.getContent();
-//				model.addAttribute("pages", favoriteItemsCategoryPage);
-//				System.out.println("4");		
-//			}
-//		}
-//		model.addAttribute("items", itemNewList);
-//			
-//		return "client/item/list";
-//	}
-	
 	/**
-     * @param sortType=1(新着順)、sortType=2(売れ筋順)
-     * @param categoryId
-     * @param model
-     * @param pageable
+	 * 商品一覧の表示処理
+	 * 
+     * @param sortType=1(新着順)、sortType=2(売れ筋順)、sortType=3(価格の高い順)、sortTyp=4(価格の安い順)
+     * @param categoryId  サイドバーで選択されているカテゴリ
+     * @param model  Viewとの値受渡し
+     * @param pageable  ページ情報
      * @return "client/item/list"
      */
 	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET, RequestMethod.POST })
@@ -146,21 +95,39 @@ public class ClientItemShowController {
 	    if (sortType == 1) {
 	        // 新着順
 	        if (categoryId == null) {
-	            itemsPage = itemRepository.findAllByOrderByIdDesc(pageable);
+	            itemsPage = itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable);
 	        } else {
-	            Category category = new Category();
+	            Category category = new Category();  //カテゴリオブジェクト生成
 	            category.setId(categoryId);
-	            itemsPage = itemRepository.findByCategoryOrderByIdDesc(category, pageable);
+	            itemsPage = itemRepository.findByCategoryOrderByIdDesc(Constant.NOT_DELETED, category, pageable);
 	        }
-	    } else {
+	    } else if(sortType == 2){
 	        // 売れ筋順
 	        if (categoryId == null) {
-	            itemsPage = itemRepository.findAllByQuery(pageable);
+	            itemsPage = itemRepository.findAllByQuery(Constant.NOT_DELETED, pageable);
 	        } else {
-	            itemsPage = itemRepository.findCategoryByQuery(categoryId, pageable);
+//	            itemsPage = itemRepository.findCategoryByQuery(categoryId, pageable);
+	            itemsPage = itemRepository.findCategoryByQuery(Constant.NOT_DELETED, categoryId, pageable);
+	        }
+	    } else if(sortType == 3) {
+	    	// 価格の高い順
+	        if (categoryId == null) {
+	            itemsPage = itemRepository.findAllByOrderByPriceDesc(pageable);
+	        } else {
+	        	Category category = new Category();
+	        	category.setId(categoryId);
+	            itemsPage = itemRepository.findByCategoryOrderByPriceDesc(category, pageable);
+	        }
+	    } else {
+	    	// 価格の安い順
+	    	if (categoryId == null) {
+	            itemsPage = itemRepository.findAllByOrderByPriceAsc(pageable);
+	        } else {
+	        	Category category = new Category();
+	        	category.setId(categoryId);
+	            itemsPage = itemRepository.findByCategoryOrderByPriceAsc(category, pageable);
 	        }
 	    }
-
 	    // ページ情報とアイテムリストをモデルに追加
 	    model.addAttribute("pages", itemsPage);
 	    model.addAttribute("items", itemsPage.getContent());
@@ -168,31 +135,38 @@ public class ClientItemShowController {
 	    return "client/item/list";
 	}
 	
-	
 	/**
 	 * 商品詳細表示
-	 * @param id
-	 * @param model
+	 * @param id  Viewからクリックされた商品のID
+	 * @param model  Viewとの値受渡し
 	 * @return
 	 */
 	@RequestMapping(path = "/client/item/detail/{id}", method = RequestMethod.GET)
 	public String showItem(@PathVariable int id, Model model) {
+		//選択されたItemの情報をリクエストスコープに保存
 		model.addAttribute("items", itemRepository.getReferenceById(id));
 		// 対象の商品情報を取得
-				Item item = itemRepository.findByIdAndDeleteFlag(id, Constant.NOT_DELETED);
+		Item item = itemRepository.findByIdAndDeleteFlag(id, Constant.NOT_DELETED);
 
-				if (item == null) {
-					// 対象が無い場合、エラー
-					return "redirect:/syserror";
-				}
+		if (item == null) {
+			// 対象が無い場合、エラー
+			return "redirect:/syserror";
+		}
 
-				//Itemエンティティの各フィールドの値をItemBeanにコピー
-				ItemBean itemBean = beanTools.copyEntityToItemBean(item);
+		//Itemエンティティの各フィールドの値をItemBeanにコピー
+		ItemBean itemBean = beanTools.copyEntityToItemBean(item);
 
-				// 商品情報をViewへ渡す
-				model.addAttribute("item", itemBean);
-
+		// 商品情報をViewへ渡す
+		model.addAttribute("item", itemBean);
+        //詳細画面に遷移
 		return "client/item/detail";
+	}
+	
+	//商品名検索
+	@RequestMapping(path = "/searchName", method = RequestMethod.GET)
+	public String showItemListName(String name, Model model/*, Pageable pageable*/) {
+		model.addAttribute("items", itemRepository.findByNameContaining(name/*, pageable*/));
+		return "client/item/list";
 	}
 	
 }
