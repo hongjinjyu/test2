@@ -19,7 +19,7 @@ import jp.co.sss.shop.repository.UserRepository;
 @Controller
 public class ClientUserShowController {
 	/**
-	 * 会員情報　リポジトリ
+	 * 会員情報　リポジトリ　　
 	 */
 	@Autowired
 	UserRepository userRepository;
