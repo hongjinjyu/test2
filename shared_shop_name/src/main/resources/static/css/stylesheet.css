@@ -1,15 +1,27 @@
 ﻿@charset "UTF-8";
 
-
+#sortlatest{
+	color: rgb(57, 57, 57);
+	text-decoration: underline;
+}
+#sorthotsell{
+	color: rgb(57, 57, 57);
+	text-decoration: underline;
+}
 a:link,
-a:visited,
 a:hover,
 a:active {
-	color: inherit;
+	color: red;
 	/* 부모 요소의 색상을 상속받음 */
 	text-decoration: none;
 	/* 밑줄 제거 */
 }
+
+a:visited {
+/*    color: rgb(255, 0, 0);*/
+    text-decoration: underline;
+}
+
 
 body {
 	font-family: 'UD デジタル 教科書体 NP-R';
@@ -201,14 +213,28 @@ p {
 .item .description {
 	padding: 5px;
 	color: #4169e1;
+/*	なにこれ*/
 	font-weight: bold;
 }
 
+a:active{
+	text-decoration: none;
+}
 .sorted_by {
+	color:red;
+/*	text-decoration: underline;*/
 	margin-top: 23px;
 	font-size: 1.1em;
-
 }
+
+/*#sortlatest:visited{*/
+/*	color:red;*/
+/*	text-decoration: underline;*/
+/*}*/
+/*#sorthotsell:visited{*/
+/*	color: red;*/
+/*	text-decoration: underline;*/
+/*}*/
 
 /* ---- 入力フォーム(検索、登録、変更、削除) ---- */
 .emp_form {
