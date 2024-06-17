@@ -78,7 +78,7 @@
 				<td></td>
 				<td></td>
 				<td>合計</td>
-				<td></td>
+				<td th:text="${session.totalNum} + '点'"></td>
 				<td th:text="${session.totalPrice} + '円'"></td>
 			</tr>
 		</table>
@@ -95,7 +95,7 @@
 			</form>
 			<!-- 買い物に戻るためのフォーム-->
 			<form th:action="@{/client/item/list/1?all=1}" method="post">
-				<input type="submit" value="買い物を続ける" class="return" />
+				<input type="submit" value="買い物に戻る" class="delete" />
 			</form>
 		</div>
 		
