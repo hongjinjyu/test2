@@ -1,9 +1,5 @@
 ﻿@charset "UTF-8";
 
-/*@import url('fontのURL')  171行*/
-
-
-
 /* ---- 共通 ---- */
 /* スキルアップテクニック1-1
  * html要素に対しmin-heightプロパティを付けることで、
@@ -244,7 +240,7 @@ aside.admin_menu {
 }
 
 .search .form {
-	padding: 15px 0 50px 5px;
+	padding: 15px 5px 20px 5px;
 }
 
 .admin_menu .display_list {
