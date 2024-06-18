@@ -47,7 +47,6 @@ public class ClientUserUpdateController {
 	@RequestMapping(path = "/client/user/update/input", method = RequestMethod.POST)
 	public String updateInput(Model model) {
 
-		
 		return "redirect:/client/user/update/input";
 
 	}
@@ -66,7 +65,7 @@ public class ClientUserUpdateController {
 		model.addAttribute("userForm", userBean);
 
 		BindingResult result = (BindingResult) session.getAttribute("result");
-		
+
 		result = (BindingResult) session.getAttribute("result");
 		if (result != null) {
 			//セッションにエラー情報がある場合、エラー情報をスコープに設定
@@ -96,8 +95,6 @@ public class ClientUserUpdateController {
 		// 入力フォーム情報をセッションに保持
 		session.setAttribute("userForm", form);
 
-		
-		
 		// 入力値にエラーがあった場合、入力画面に戻る
 		if (result.hasErrors()) {
 

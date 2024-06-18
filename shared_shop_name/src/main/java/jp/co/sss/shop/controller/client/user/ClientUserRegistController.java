@@ -56,10 +56,12 @@ public class ClientUserRegistController {
 	public String registInput(Model model) {
 		//セッションスコープから入力情報フォームを取得
 		UserForm userForm = (UserForm) session.getAttribute("userForm");
-		// セッション情報がない場合、エラー
-		if (userForm == null) {
-			return "redirect:/syserror";
-		}
+
+		//		// セッション情報がない場合、エラー
+		//		if (userForm == null) {
+		//			return "redirect:/syserror";
+		//		}
+
 		BindingResult result = (BindingResult) session.getAttribute("result");
 		if (result != null) {
 			//セッションにスコープにエラーがある場合、
