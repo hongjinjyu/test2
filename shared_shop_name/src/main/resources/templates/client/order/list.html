@@ -39,7 +39,7 @@
 			<!-- 先頭のページリンク表示処理 --> 
 			<!--1ページ目の場合はクラスの名前をdisabledに設定--> 
 			<li th:class="${pages.first} ? 'disabled':''">
-				<!--1ページ目の場合は<<を表示-->
+				<!-- 1ページ目の場合は<<を表示-->
 				<span th:if="${pages.first}">&lt;&lt;</span>
 				<!-- 1ページ目ではない場合、１ページ目のリンクを表示-->
 				<a th:if="${not pages.first}" th:href="@{${url}(page=0)}">&lt;&lt;</a>
