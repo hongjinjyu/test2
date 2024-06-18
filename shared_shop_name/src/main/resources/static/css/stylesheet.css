@@ -223,7 +223,7 @@ a:active{
 	text-decoration: none;
 }
 .sorted_by {
-	color:red;
+	color:rgb(249, 0, 0);
 /*	text-decoration: underline;*/
 	margin-top: 23px;
 	font-size: 1.1em;
@@ -695,6 +695,12 @@ select {
 	width: auto;
 	max-width: 150px;
 	vertical-align: middle;
+	  transition: all 0.4s linear;
+}
+
+.list_table.item_detail img:hover {
+transform: scale(2.2);
+	border-radius: 20%;
 }
 
 .detail_table.address,
