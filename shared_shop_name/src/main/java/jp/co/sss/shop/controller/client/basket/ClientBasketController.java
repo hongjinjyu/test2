@@ -86,8 +86,8 @@ public class ClientBasketController {
 								re.addFlashAttribute("itemNameListLessThan", item.getName());
 							}else {
 								basketAddList.setOrderNum(newOrderNum);
-								
 							}
+							
 							existItemInBasket=true;
 						}
 						
@@ -137,7 +137,7 @@ public class ClientBasketController {
 	
 	
 	/**
-	 * 削除ボタン 押下
+	 * 削除ボタン（－） 押下
 	 * @param model
 	 * @param id
 	 * @return 該当商品削除後の買い物かご一覧表示

@@ -150,7 +150,6 @@ public class ClientItemShowController {
 	            itemsPage = itemRepository.findByCategoryOrderByPriceAsc(category, pageable);
 	        }
 	    }
-	    
 	    // ページ情報とアイテムリストをモデルに追加
 	    model.addAttribute("pages", itemsPage);
 	    model.addAttribute("items", itemsPage.getContent());

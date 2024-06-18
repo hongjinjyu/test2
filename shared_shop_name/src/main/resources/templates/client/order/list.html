@@ -1,7 +1,7 @@
 <!--一般会員（注文一覧）-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{common/layout_5block :: layout(~{::title},~{::body/content()})}">
+	th:replace="~{common/layout_5_1block :: layout(~{::title},~{::body/content()})}">
 
 <head>
 	<title th:text="#{order}+#{title.list}+' | '+ #{shop.title}"> </title>
@@ -37,7 +37,7 @@
 			<!--/* ページリンク */-->
 		<ul class="paging" th:if="!${#lists.isEmpty(orders)}">
 			<!-- 先頭のページリンク表示処理 --> 
-			<!--1ページ目の場合はクラスの名前をdisabledに設定--> 
+			<!-- 1ページ目の場合はクラスの名前をdisabledに設定--> 
 			<li th:class="${pages.first} ? 'disabled':''">
 				<!-- 1ページ目の場合は<<を表示-->
 				<span th:if="${pages.first}">&lt;&lt;</span>
