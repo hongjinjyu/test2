@@ -108,6 +108,7 @@ body>.container {
 header .container {
 	display: flex;
 	justify-content: space-between;
+	
 }
 
 header {
@@ -255,6 +256,7 @@ aside.admin_menu {
 
 .search .form {
 	padding: 15px 5px 20px 5px;
+	
 }
 
 .admin_menu .display_list {
