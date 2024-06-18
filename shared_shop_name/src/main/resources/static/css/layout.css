@@ -68,6 +68,19 @@ li {
 	margin: 0 auto;
 	justify-content: space-between;
 }
+.container1 {
+}
+.main1 {
+	width: 76%;
+	padding-top:5%;
+	padding-left:13%;
+	padding-bottom: 80px;
+
+}
+.user .main1 .title {
+	background: linear-gradient(45deg, rgb(57, 57, 57), rgb(255, 255, 255));
+/*	height:40px;*/
+}
 
 body>.container {
 	margin-top: 15px;
@@ -149,6 +162,7 @@ header {
 
 /* ---- タイトル共通 ---- */
 .search_area .title,
+.main1 .title,
 .main .title {
 	background-color: #3d98bf;
 	margin: 0;
@@ -270,6 +284,7 @@ aside.admin_menu {
 }
 
 /* ---- メイン ---- */
+.main1,
 .main {
 	width: 76%;
 	padding-bottom: 80px;
@@ -290,6 +305,7 @@ aside.admin_menu {
 }
 
 .user .main .title,
+.user .main1 .title,
 .admin .main .title {
 	padding: 8px 15px;
 	position: relative;
@@ -297,6 +313,7 @@ aside.admin_menu {
 }
 
 .main .title::before,
+.main1 .title::before,
 .admin .main .title::before {
 	position: absolute;
 	content: '';

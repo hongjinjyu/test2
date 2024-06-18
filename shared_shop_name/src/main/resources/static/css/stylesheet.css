@@ -175,6 +175,7 @@ p {
 .main>.item_list {
 	display: flex;
 	flex-wrap: wrap;
+/*	background-color-: rgb(192, 192, 192,0.2);商品一覧*/
 }
 
 .item:nth-of-type(odd) {
@@ -202,6 +203,9 @@ p {
 	transition: 0.4s;
 	position: relative;
 	z-index: 1;
+}
+.item:hover{
+	background-color: rgb(230, 208, 204,0.4);
 }
 
 .item:hover img {
