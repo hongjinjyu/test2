@@ -111,12 +111,7 @@ public class ClientOrderRegistController {
 	@RequestMapping(path = "/client/order/payment/input", method = RequestMethod.POST)
 	public String exeOrder(@Valid @ModelAttribute OrderForm order, BindingResult result, Model model) {
 		//画面から入力されたフォーム情報を注文入力フォーム情報として保存
-		OrderForm orderForm = new OrderForm();
-		orderForm.setPostalCode(orderForm.getPostalCode());
-		orderForm.setAddress(orderForm.getAddress());
-		orderForm.setName(orderForm.getName());
-		orderForm.setPhoneNumber(orderForm.getPhoneNumber());
-		orderForm.setPayMethod(1);
+		session.setAttribute("order", order);
 		//BindingResultオブジェクトに入力エラー情報がある場合
 		if (result.hasErrors()) {
 			//入力エラー情報をセッションスコープに設定
