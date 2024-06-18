@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import jp.co.sss.shop.bean.BasketBean;
@@ -50,7 +51,7 @@ public class ClientBasketController {
 	
 	//買い物かごへ追加ボタン　押下
 	@RequestMapping(path = "/client/basket/add", method=RequestMethod.POST)
-	public String basketAdd(Model model, Integer id) {
+	public String basketAdd(Model model, Integer id, RedirectAttributes re) {
 		
 		//basketがセッションにない場合、basketList生成
 				@SuppressWarnings("unchecked")
@@ -82,7 +83,7 @@ public class ClientBasketController {
 							
 							//追加したい商品の個数より在庫が少ない場合
 							if(newOrderNum > stock ) {
-								model.addAttribute("itemNameListLessThan", item.getName());
+								re.addFlashAttribute("itemNameListLessThan", item.getName());
 							}else {
 								basketAddList.setOrderNum(newOrderNum);
 								
@@ -130,7 +131,7 @@ public class ClientBasketController {
 				//ビューに買い物かご内の商品の個数を登録
 				session.setAttribute("totalNum", num);
 			
-		return "/client/basket/list";
+		return "redirect:/client/basket/list";
 	}
 	
 	
@@ -206,7 +207,7 @@ public class ClientBasketController {
 			session.setAttribute("totalNum", num);
 		}
 		
-		return "/client/basket/list";
+		return "redirect:/client/basket/list";
 	}
 	
 	/**
@@ -269,7 +270,7 @@ public class ClientBasketController {
 			session.setAttribute("totalNum", num);
 		}
 		
-		return "/client/basket/list";
+		return "redirect:/client/basket/list";
 	}
 	
 
@@ -283,7 +284,7 @@ public class ClientBasketController {
 	public String basketDeleteAll(Model model) {
 		//セッションスコープから買い物かご情報をすべて削除
 		session.removeAttribute("basketBeans");
-		return "/client/basket/list";
+		return "redirect:/client/basket/list";
 	}
 	
 
