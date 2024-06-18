@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -57,7 +58,65 @@ public class ClientOrderRegistController {
 	 * @return 届け先入力画面表示処理へリダイレクト
 	 */
 	@RequestMapping(path = "/client/order/address/input", method = RequestMethod.POST)
-	public String inputOrder() {
+	public String inputOrder(Model model, RedirectAttributes re) {
+		/*
+		 * 買い物かごに入った商品の在庫確認
+		 */
+
+		//買い物かごの合計個数、合計金額をセッションコープから取り出す
+		int totalPrice = (int) session.getAttribute("totalPrice");
+		int totalNum = (int) session.getAttribute("totalNum");
+
+		//買い物かごのリスト生成
+		ArrayList<BasketBean> basketBean = new ArrayList<>();
+		Item item = new Item();
+		basketBean = (ArrayList<BasketBean>) session.getAttribute("basketBeans");
+		for (int i = 0; i < basketBean.size(); i++) {
+			BasketBean basket = basketBean.get(i);
+			item = itemRepository.getReferenceById(basket.getId());
+			//値段
+			int price = item.getPrice();
+			//注文数
+			int orderNum = basket.getOrderNum();
+			//在庫
+			int stock = item.getStock();
+
+			//在庫切れの場合
+			if (stock == 0) {
+				//超過個数を合計個数から引く
+				totalNum = totalNum - orderNum;
+				session.setAttribute("totalNum", totalNum);
+				//超過個数分の金額を合計金額から引く
+				totalPrice = totalPrice - price * orderNum;
+				session.setAttribute("totalPrice", totalPrice);
+				//注文警告メッセージをリクエストスコープに保存
+				re.addFlashAttribute("itemNameListZero", item.getName());
+				//在庫切れの商品は、買い物かごから情報削除
+				basketBean.remove(i);
+				//リダイレクト
+				return "redirect:/client/basket/list";
+
+			} //在庫不足の場合
+			else if (stock != 0 && stock < orderNum) {
+				//超過した個数
+				int minus = orderNum - stock;
+				//注文数を在庫数まで減らす
+				orderNum = stock;
+				//超過個数を合計個数から引く
+				totalNum = totalNum - minus;
+				basket.setStock(stock);
+				basket.setOrderNum(orderNum);
+				session.setAttribute("totalNum", totalNum);
+				//超過個数分の金額を合計金額から引く
+				totalPrice = totalPrice - (price * minus);
+				session.setAttribute("totalPrice", totalPrice);
+				//注文警告メッセージをリクエストスコープに保存
+				re.addFlashAttribute("itemNameListLessThan", item.getName());
+				//リダイレクト
+				return "redirect:/client/basket/list";
+			}
+		}
+
 		OrderForm orderForm = new OrderForm();
 		//セッションスコープからログイン会員情報を取得
 		UserBean userBean = (UserBean) session.getAttribute("user");
@@ -84,6 +143,7 @@ public class ClientOrderRegistController {
 	 */
 	@RequestMapping(path = "/client/order/address/input", method = RequestMethod.GET)
 	public String confirmOrder(Model model) {
+
 		//セッションスコープから注文入力フォーム情報を取得
 		OrderForm orderForm = (OrderForm) session.getAttribute("order");
 		//注文入力フォーム情報をリクエストスコープに設定
