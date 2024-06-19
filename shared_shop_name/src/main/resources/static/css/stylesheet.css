@@ -901,4 +901,14 @@ a:hover {
 	font-weight: normal;
 	color:red;
 	font-size:100%;
+	
+}
+.favoriteListNoneFlag{
+	font-size: 20px;
+	color:red;
+}
+.favoriteListNoneFlag :hover{
+	font-weight: normal;
+	color:red;
+	font-size:100%;
 }

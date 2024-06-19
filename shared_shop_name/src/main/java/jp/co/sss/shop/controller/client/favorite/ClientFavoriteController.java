@@ -94,13 +94,19 @@ public class ClientFavoriteController {
 		int userId = user.getId();
 
 		//favoriteListそこのIdを参照して持ってくる作業
-		List<Favorite> favoriteList = new ArrayList<>();
-		favoriteList = favoriteRepository.findByUserId(userId);
-
+//		List<Favorite> favoriteList = new ArrayList<>();
+//		favoriteList = favoriteRepository.findByUserId(userId);
+//要るか？
+		
 		Page<Favorite> favoritesPage;
 		favoritesPage = favoriteRepository.findByUserId(userId, pageable);
-
+		int favoriteListNoneFlag = 0;
+		if(favoritesPage.getTotalElements()==0) {
+			favoriteListNoneFlag=1;
+		}
+		System.out.println(favoriteListNoneFlag);
 		//リクエストスコープ
+		model.addAttribute("favoriteListNoneFlag",favoriteListNoneFlag);
 		model.addAttribute("pages", favoritesPage);
 		model.addAttribute("items", favoritesPage.getContent());
 
