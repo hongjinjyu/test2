@@ -183,11 +183,18 @@ public class ClientItemShowController {
         //詳細画面に遷移
 		return "client/item/detail";
 	}
-}
 	
-//	//商品名検索
-//	@RequestMapping(path = "/searchName", method = RequestMethod.GET)
-//	public String showItemListName(String name, Model model/*, Pageable pageable*/) {
-//		model.addAttribute("items", itemRepository.findByNameContaining(name/*, pageable*/));
-//		return "client/item/list";
-//	}
+
+
+	
+	//商品名検索
+		@RequestMapping(path = "/searchName", method = RequestMethod.GET)
+		public String showItemListName(String name, Model model, Pageable pageable) {
+			Page<Item> itemsPage;
+			itemsPage = itemRepository.findByNameContaining(name, pageable);
+			model.addAttribute("pages", itemsPage);
+			model.addAttribute("items", itemsPage.getContent());
+			return "client/item/list";
+		}
+	
+}

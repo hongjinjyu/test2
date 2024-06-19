@@ -4,7 +4,8 @@
 <meta charset="UTF-8" />
 </head>
 <body>
-<aside th:fragment="layout-sidebar" th:class="${session.user == null or session.user.authority == 2} ? ${'search'} : ${'admin_menu'}" >
+<aside th:fragment="layout-sidebar" th:class="${session.user == null or session.user.authority == 2} ? ${'search'}
+ : ${'admin_menu'}" >
 	<!--/* 検索メニュー(非会員、一般会員用) */-->
 	<div  class="search_area" th:if="${session.user == null or session.user.authority == 2}">
 		<h2 th:class="title" th:text="#{category.select.title}"></h2>
@@ -29,15 +30,15 @@
 	</div>
 	
 			<!--商品名検索-->
-			<div  class="search_area" th:if="${session.user == null or session.user.authority == 2}">
-				<h2 th:class="title" th:text="商品名検索"></h2>
-				<div class="form">
-					<form th:action="@{/searchName}" method="get">
-						<input type="text" name="Name"/>
-				        <input type="submit" value="検索">
-                    </form>
+	<div  class="search_area" th:if="${session.user != null && session.user.authority == 2}">
+		<h2 th:class="title" th:text="#{name.search.title}"></h2>
+		<div class="form">
+				<form th:action="@{/searchName}" method="get">
+					<input type="text" name="name"/>
+				    <input type="submit" th:value="#{select}">
+				</form>
 			    </div>
-			</div>
+	</div>
 
 	<!--/* メニュー(運用管理者、及びシステム管理者用) */-->
 	<div th:if="${session.user != null and session.user.authority != 2}">

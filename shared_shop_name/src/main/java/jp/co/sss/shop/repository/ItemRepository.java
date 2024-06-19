@@ -1,6 +1,4 @@
 package jp.co.sss.shop.repository;
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -88,5 +86,5 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	Page<Item> findByCategoryOrderByPriceAsc(Category category,Pageable pageable);
 	
 	//商品名検索
-	List<Item> findByNameContaining(String name/*, Pageable pageable*/);
+	Page<Item> findByNameContaining(String name, Pageable pageable);
 }
