@@ -18,7 +18,7 @@
 						th:value="${category.id}" th:text="${category.name}"></option>
 				</select> <input type="submit" th:value="#{select}" />
 			</form>
-			<!-- 商品一覧画面上で表示 -->
+			<!--  商品一覧画面上で表示 -->
 			<form th:unless="${sortType == null}" th:action="@{/client/item/list/} + ${sortType}">
 				<select name="categoryId">
 					<option th:value="#{constants.category.select.none.no}" th:text="#{constants.category.select.none}"></option>
@@ -26,6 +26,7 @@
 						th:value="${category.id}" th:text="${category.name}" th:selected="${category.id} == ${categoryId}"></option>
 				</select> <input type="submit" th:value="#{select}" />
 			</form>
+			
 		</div>
 	</div>
 	
