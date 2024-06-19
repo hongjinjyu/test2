@@ -104,7 +104,6 @@ public class ClientFavoriteController {
 		if(favoritesPage.getTotalElements()==0) {
 			favoriteListNoneFlag=1;
 		}
-		System.out.println(favoriteListNoneFlag);
 		//リクエストスコープ
 		model.addAttribute("favoriteListNoneFlag",favoriteListNoneFlag);
 		model.addAttribute("pages", favoritesPage);
