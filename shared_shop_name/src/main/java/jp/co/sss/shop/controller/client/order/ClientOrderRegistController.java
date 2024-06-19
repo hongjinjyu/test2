@@ -93,6 +93,9 @@ public class ClientOrderRegistController {
 				re.addFlashAttribute("itemNameListZero", item.getName());
 				//在庫切れの商品は、買い物かごから情報削除
 				basketBean.remove(i);
+				if(basketBean.isEmpty()) {
+					session.removeAttribute("basketBeans");
+				}
 				//リダイレクト
 				return "redirect:/client/basket/list";
 
