@@ -106,23 +106,6 @@ public class ClientBasketController {
 						basketList.add(basketAddList);
 					} 
 					
-					//買い物かご内の商品の合計金額
-					int totalPrice = 0;
-					for(BasketBean itemInList : basketList) {
-						totalPrice +=itemInList.getPrice()*itemInList.getOrderNum();
-					}
-					
-					//買い物かご内の商品個数
-					int num = 0;
-					for(BasketBean itemInList : basketList) {
-						num +=itemInList.getOrderNum();
-					}
-					
-					//ビューに買い物かご内の商品の合計金額を登録
-					session.setAttribute("totalPrice", totalPrice);
-					//ビューに買い物かご内の商品の個数を登録
-					session.setAttribute("totalNum", num);
-					
 				}else
 					//追加したい商品の在庫がない場合
 					if(stock == 0) {
@@ -136,6 +119,18 @@ public class ClientBasketController {
 						i = i+1;
 						}
 					}
+				
+				//買い物かご内の商品の合計金額
+				int totalPrice = 0;
+				for(BasketBean itemInList : basketList) {
+					totalPrice +=itemInList.getPrice()*itemInList.getOrderNum();
+				}
+				
+				//買い物かご内の商品個数
+				int num = 0;
+				for(BasketBean itemInList : basketList) {
+					num +=itemInList.getOrderNum();
+				}
 				
 				//basketListがnullか否か調べる
 				boolean check = basketList.isEmpty();
@@ -151,6 +146,11 @@ public class ClientBasketController {
 					
 					//セッションに買い物かごを追加
 					session.setAttribute("basketBeans", basketList);
+					//ビューに買い物かご内の商品の合計金額を登録
+					session.setAttribute("totalPrice", totalPrice);
+					//ビューに買い物かご内の商品の個数を登録
+					session.setAttribute("totalNum", num);
+					
 				}
 			
 		return "redirect:/client/basket/list";
