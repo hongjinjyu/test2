@@ -113,6 +113,7 @@ public class ClientBasketController {
 						for (BasketBean addList : basketList) {
 							//選択された商品をリストから削除する
 							if(id.equals(addList.getId())) {
+								re.addFlashAttribute("itemNameListZero", item.getName());
 								basketList.remove(i);
 								break;
 							}
