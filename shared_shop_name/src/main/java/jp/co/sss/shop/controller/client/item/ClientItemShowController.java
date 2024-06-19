@@ -1,5 +1,8 @@
 package jp.co.sss.shop.controller.client.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,19 +53,31 @@ public class ClientItemShowController {
 	 * トップ画面 表示処理
 	 *
 	 * @param model    Viewとの値受渡し
-	 * @return "index"  トップ画面
+	 * @return "index" トップ画面
 	 */
+	
 	@RequestMapping(path = "/" , method = { RequestMethod.GET, RequestMethod.POST })
-	public String index(Model model, Pageable pageable) {
-		//Item全件をリクエストスコープに保存
-		model.addAttribute("items", itemRepository.findAllByQuery(Constant.NOT_DELETED, pageable));
+	public String index(Integer sortType,Model model, Pageable pageable) {
+		
+		List<Item> hotList = new ArrayList<>();
+		hotList =  itemRepository.findAllByQuery(Constant.NOT_DELETED);
+		
+		if (hotList.isEmpty()) {
+			sortType = 1;
+			model.addAttribute("sortType",sortType);
+			model.addAttribute("items",itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable));
+		} else {
+			sortType = 2;
+			model.addAttribute("sortType",sortType);
+			model.addAttribute("items", itemRepository.findAllByQuery(Constant.NOT_DELETED, pageable));
+		}
 		return "index";
 	}
 	
 	/**
 	 * 商品一覧の表示処理
 	 * 
-     * @param sortType=1(新着順)、sortType=2(売れ筋順)、 sortType=3(価格の高い順)、sortTyp=4(価格の安い順)
+     * @param sortType=1(新着順)、sortType=2(売れ筋順)、sortType=3(価格の高い順)、sortTyp=4(価格の安い順)
      * @param categoryId  サイドバーで選択されているカテゴリ
      * @param model  Viewとの値受渡し
      * @param pageable  ページ情報
@@ -111,13 +126,13 @@ public class ClientItemShowController {
 	    if (sortType == 1) {
 	        // 新着順
 	        if (categoryId == null || categoryId == 0) {
-	            itemsPage = itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable);
+	        	itemsPage = itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable);
 	        //新着順かつ、カテゴリで絞り込み
 	        } else {
 	        	Category category = new Category();
 	            category.setId(categoryId); // カテゴリIDをセット
 	            itemsPage = itemRepository.findByCategoryOrderByIdDesc(Constant.NOT_DELETED, category, pageable);
-	            }
+	        } 
 	        
 	    }else if(sortType == 2){
 	        // 売れ筋順
