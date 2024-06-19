@@ -184,9 +184,6 @@ public class ClientItemShowController {
 		return "client/item/detail";
 	}
 	
-
-
-	
 	//商品名検索
 		@RequestMapping(path = "/searchName", method = RequestMethod.GET)
 		public String showItemListName(String name, Model model, Pageable pageable) {

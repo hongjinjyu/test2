@@ -85,6 +85,8 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
      */
 	Page<Item> findByCategoryOrderByPriceAsc(Category category,Pageable pageable);
 	
-	//商品名検索
+	 /**
+     * 商品名検索
+     */
 	Page<Item> findByNameContaining(String name, Pageable pageable);
 }
