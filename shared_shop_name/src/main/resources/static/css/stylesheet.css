@@ -892,3 +892,13 @@ a:hover {
 	font-weight: bold;
 	font-size: 102%;
 }
+
+.errorMessageFavoriteAdded{
+	font-size: 20px;
+	color:red;
+}
+.errorMessageFavoriteAdded :hover{
+	font-weight: normal;
+	color:red;
+	font-size:100%;
+}

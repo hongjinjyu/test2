@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{common/layout_5_1block :: layout(~{::title},~{::body/content()})}">
+
+<head>
+	<title th:text="#{item}+#{title.list}+' | '+ #{shop.title}"> </title>
+	<meta charset="UTF-8" />
+</head>
+
+<body th:object="${loginForm}" class="user item_list">
+
+	<h2 th:class="title" th:text="#{favoriteList}+#{title.list}"></h2>
+
+
+	<th:block th:if="!${#lists.isEmpty(items)}">
+		<table class="list_table item_detail">
+			<tr>
+				<th th:text="#{data.item.image}"></th>
+				<th th:text="#{data.item.name}"></th>
+				<th th:text="#{data.item.price}"></th>
+				<th th:text="#{favorite.inbasket}"></th>
+				<th th:text="#{favorite.delete}"></th>
+			</tr>
+			<!--/* 商品一覧 */-->
+			<tr th:each="favorite, status: ${items}"> <!--/*items=商品テーブルの全件表示*/-->
+				<td class="image">
+					<a th:href="@{/client/item/detail/{id}(id=${favorite.item.id})}">
+						<img th:src="@{/images/{image}(image=${favorite.item.image})}"
+							th:if="${favorite.item.image != null}" />
+					</a>
+					<img th:src="@{/images/common/no_image.jpg}" th:if="${favorite.item.image == null}" />
+				</td>
+				<td><a th:href="@{/client/item/detail/{id}(id=${favorite.item.id})}"
+						th:text="${favorite.item.name}"></a></td>
+				<td th:text="${favorite.item.price}"></td>
+				<td>
+					<form th:action="@{/client/basket/addAndDel}" method="POST">
+						<input type="hidden" name="id" th:value="${favorite.item.id}" />
+						<input type="submit" th:value="#{favorite.inbasket}" class="delete" />
+					</form>
+<!--					<form th:action="@{/client/basket/add}" method="post" class="user_info_form" th:if="*{stock > 0}">-->
+<!--						<input type="hidden" th:field="*{favorite.item.id}" />-->
+<!--						<input type="submit" value="買い物かごに入れる" class="send_button" />-->
+<!--					</form>-->
+
+				</td>
+				<td>
+					<form th:action="@{/deleteFavorite}" method="get">
+						<input type="hidden" name="id" th:value="${favorite.item.id}" />
+						<input type="submit" value="削除" class="delete" />
+					</form>
+				</td>
+			</tr>
+		</table>
+	</th:block>
+
+
+
+	<!--/* ページング */-->
+	<ul class="paging" th:if="!${#lists.isEmpty(items)}">
+		<!-- 先頭のページリンク表示処理 -->
+		<!--1ページ目の場合はクラスの名前をdisabledに設定-->
+		<li th:class="${pages.first} ? 'disabled':''">
+			<!--1ページ目の場合は<<を表示-->
+			<span th:if="${pages.first}">&lt;&lt;</span>
+			<!-- 1ページ目ではない場合、１ページ目のリンクを表示-->
+			<a th:if="${not pages.first}" th:href="@{${url}(page=0)}">&lt;&lt;</a>
+		</li>
+		<!--ページ番号指定のリンク表示処理-->
+		<!-- #numbersのsequence()メソッドを使用して配列を作成し、被繰り返し変数として利用 -->
+		<li th:each='i : ${#numbers.sequence(0, pages.totalPages-1)}' th:class="(${i}==${pages.number})? 'active' : ''">
+			<span th:if='${i}==${pages.number}' th:text='${i+1}'>1</span>
+			<a th:if='${i}!=${pages.number}' th:href="@{${url}(page=${i})}">
+				<span th:text='${i+1}'>1</span>
+			</a>
+		</li>
+		<!-- 末尾ページのリンク -->
+		<!--1ページ目の場合はクラスの名前をdisabledに設定-->
+		<li th:class="${pages.last} ? 'disabled':''">
+			<!--末尾のページの場合は>>を表示-->
+			<span th:if="${pages.last}">&gt;&gt;</span>
+			<!-- 末尾ページではない場合、末尾ページへのリンクを表示-->
+			<a th:if="${not pages.last}" th:href="@{${url}(page=(${pages.totalPages}-1))}">&gt;&gt;</a>
+		</li>
+	</ul>
+</body>
+
+</html>

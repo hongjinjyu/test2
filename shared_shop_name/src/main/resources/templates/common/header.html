@@ -11,6 +11,7 @@
 			<img th:src="@{/images/logo.png}" alt="logo Image" width="360" height="100" class="image-left">
 		</a>
 		<div th:if="${session.user != null and session.user.authority == 2}" class="user_info">
+			<a th:href="@{/showFavoriteList}" th:text="#{favoriteList}"></a> |
 			<a th:href="@{/client/user/detail}" th:text="${session.user.name}" text-decoration-line></a>さん | <a
 				th:href="@{/logout}" th:text="#{logout}"></a>
 		</div>

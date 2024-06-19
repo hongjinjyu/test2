@@ -11,6 +11,10 @@
 
 	<h2 th:class="title" th:text="#{item}+#{title.detail}"></h2>
 
+	<div th:if="${errorMessageFavoriteAdded==1}" class="errorMessageFavoriteAdded">
+		<br>
+		<a th:text="#{errorMessageFavoriteAdded}" id="errorMessageFavoriteAdded"></a>
+	</div>
 	<div class="info_form_area" th:object="${item}">
 		<div class="item_detail_area">
 			<div class="item_image_area">
@@ -40,7 +44,12 @@
 			<form th:action="@{/client/item/list/1}" method="post">
 				<input type="submit" value="戻る" class="back_button" />
 			</form>
+			<form th:action="@{/addFavorite}" method="post" class="user_info_form" th:if="*{stock > 0}">
+				<input type="hidden" th:field="*{id}" />
+				<input type="submit" th:value="#{favorite.regist}" class="send_button" />
+			</form>
 		</div>
+
 	</div>
 
 </body>
