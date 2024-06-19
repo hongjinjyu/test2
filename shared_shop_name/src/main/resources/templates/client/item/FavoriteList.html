@@ -10,10 +10,8 @@
 <body th:object="${loginForm}" class="user item_list">
 
 	<h2 th:class="title" th:text="#{favoriteList}+#{title.list}"></h2>
-	
-	<br><br>
-		<div th:if="${favoriteListNoneFlag==1}" class="favoriteListNoneFlag">
-		<a th:text="#{favorite.none}" id="favoriteListNoneFlag"></a>
+		<div th:if="${favoriteListNoneFlag==1}">
+		<p th:text="#{favorite.none}" ></p>
 	</div>
 	
 	<th:block th:if="!${#lists.isEmpty(items)}">
