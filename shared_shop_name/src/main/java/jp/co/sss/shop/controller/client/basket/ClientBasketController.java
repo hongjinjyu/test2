@@ -81,10 +81,16 @@ public class ClientBasketController {
 							basketAddList = basketAdd;
 							int newOrderNum=basketAddList.getOrderNum()+1;
 							
+							
 							//追加したい商品の個数より在庫が少ない場合
 							if(newOrderNum > stock ) {
 								re.addFlashAttribute("itemNameListLessThan", item.getName());
+								//注文数と在庫状況を最新の在庫状況に合わせる
+								basketAddList.setOrderNum(stock);
+								basketAddList.setStock(stock);
+								
 							}else {
+								//商品追加後の注文数をセットする
 								basketAddList.setOrderNum(newOrderNum);
 							}
 							
@@ -100,40 +106,55 @@ public class ClientBasketController {
 						basketList.add(basketAddList);
 					} 
 					
+					//買い物かご内の商品の合計金額
+					int totalPrice = 0;
+					for(BasketBean itemInList : basketList) {
+						totalPrice +=itemInList.getPrice()*itemInList.getOrderNum();
+					}
+					
+					//買い物かご内の商品個数
+					int num = 0;
+					for(BasketBean itemInList : basketList) {
+						num +=itemInList.getOrderNum();
+					}
+					
+					//ビューに買い物かご内の商品の合計金額を登録
+					session.setAttribute("totalPrice", totalPrice);
+					//ビューに買い物かご内の商品の個数を登録
+					session.setAttribute("totalNum", num);
 					
 				}else
 					//追加したい商品の在庫がない場合
 					if(stock == 0) {
-						model.addAttribute("itemNameListZero", item.getName());
+						int i = 0;
+						for (BasketBean addList : basketList) {
+							//選択された商品をリストから削除する
+							if(id.equals(addList.getId())) {
+								basketList.remove(i);
+								break;
+							}
+						i = i+1;
+						}
 					}
 				
-				//買い物かご内の商品の合計金額
-				int totalPrice = 0;
-				for(BasketBean itemInList : basketList) {
-					totalPrice +=itemInList.getPrice()*itemInList.getOrderNum();
+				//basketListがnullか否か調べる
+				boolean check = basketList.isEmpty();
+				
+				//nullの場合、買い物かご情報を全て削除
+				if(check == true) {
+					session.removeAttribute("basketBeans");
+				
+				//null出ない場合、削除後の買い物かご情報をセッションに保存
+				}else {
+					//リストに入った順番に並べ替え
+					Collections.reverse(basketList);
+					
+					//セッションに買い物かごを追加
+					session.setAttribute("basketBeans", basketList);
 				}
-				
-				//買い物かご内の商品個数
-				int num = 0;
-				for(BasketBean itemInList : basketList) {
-					num +=itemInList.getOrderNum();
-				}
-				
-				//リストに入った順番に並べ替え
-				Collections.reverse(basketList);
-				
-				//セッションに買い物かごを追加
-				session.setAttribute("basketBeans", basketList);
-				//ビューに買い物かごへ追加した商品名を登録
-				model.addAttribute("cartItemName",basketAddList.getName());
-				//ビューに買い物かご内の商品の合計金額を登録
-				session.setAttribute("totalPrice", totalPrice);
-				//ビューに買い物かご内の商品の個数を登録
-				session.setAttribute("totalNum", num);
 			
 		return "redirect:/client/basket/list";
 	}
-	
 	
 	
 	/**
