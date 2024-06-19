@@ -51,10 +51,10 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
      * 新着順かつカテゴリで絞り込み
      */
     @Query("SELECT i FROM Item i INNER JOIN i.category c WHERE i.deleteFlag =:deleteFlag AND i.category=:category ORDER BY i.id DESC")
-	Page<Item> findByCategoryOrderByIdDesc(@Param(value = "deleteFlag") int deleteFlag, @Param(value="category") Category category, Pageable pageable);
+	Page<Item> findByCategoryOrderByIdDesc(@Param(value = "deleteFlag") int deleteFlag, @Param(value="category")Category category, Pageable pageable);
 	
     /**
-     * 商品全件表示(売れ筋順)
+     * 商品全件表示 (売れ筋順)
      */
     @Query("SELECT i FROM OrderItem o INNER JOIN Item i ON o. item.id=i.id WHERE i.deleteFlag =:deleteFlag GROUP BY i ORDER BY COUNT(i) DESC,i.id ASC")
     Page<Item> findAllByQuery(@Param(value = "deleteFlag") int deleteFlag, Pageable pageable);

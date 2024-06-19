@@ -50,7 +50,7 @@ public class ClientItemShowController {
 	 * トップ画面 表示処理
 	 *
 	 * @param model    Viewとの値受渡し
-	 * @return "index" トップ画面
+	 * @return "index"  トップ画面
 	 */
 	@RequestMapping(path = "/" , method = { RequestMethod.GET, RequestMethod.POST })
 	public String index(Model model, Pageable pageable) {
@@ -62,7 +62,7 @@ public class ClientItemShowController {
 	/**
 	 * 商品一覧の表示処理
 	 * 
-     * @param sortType=1(新着順)、sortType=2(売れ筋順)、sortType=3(価格の高い順)、sortTyp=4(価格の安い順)
+     * @param sortType=1(新着順)、sortType=2(売れ筋順)、 sortType=3(価格の高い順)、sortTyp=4(価格の安い順)
      * @param categoryId  サイドバーで選択されているカテゴリ
      * @param model  Viewとの値受渡し
      * @param pageable  ページ情報
