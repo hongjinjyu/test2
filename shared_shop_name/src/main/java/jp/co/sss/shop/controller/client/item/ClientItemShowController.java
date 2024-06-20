@@ -201,14 +201,26 @@ public class ClientItemShowController {
 	
 	//商品名検索
 		@RequestMapping(path = "/searchName", method = RequestMethod.GET)
-		public String showItemListName(String name, Model model, Pageable pageable, HttpSession session) {
+		public String showItemListName(String name, Model model, Pageable pageable) {
+			
+		        // セッションから検索文字列を取得
+		        String newName = (String) session.getAttribute("names");
+		        
+		        if (name != null) {
+		            //検索された文字列をセッションに保存
+		            session.setAttribute("names", name);
+		        
+		        	//セッションに前回検索された文字列が保存されている場合
+		        	} else if (newName != null) {
+		            //新しく検索された文字列を代入する
+		            name = newName;
+		        }
+			
 			Page<Item> itemsPage;
-			itemsPage = itemRepository.findByNameContaining(name, pageable);
-			Integer sortType = 2;
-		    session.removeAttribute("categoryId");
-			model.addAttribute("sortType",sortType);
+			itemsPage = itemRepository.findByNameContainingOrderByIdDesc(name, pageable);
 			model.addAttribute("pages", itemsPage);
 			model.addAttribute("items", itemsPage.getContent());
+			
 			return "client/item/list";
 		}
 	
