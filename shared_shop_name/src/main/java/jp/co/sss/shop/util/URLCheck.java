@@ -119,7 +119,8 @@ public class URLCheck {
 				&& !requestURL.endsWith("/client/user/regist/input/check")
 				&& !requestURL.endsWith("/client/user/regist/check")
 				&& !requestURL.endsWith("/client/user/regist/check/back")
-				&& !requestURL.endsWith("/client/user/regist/complete")) {
+				&& !requestURL.endsWith("/client/user/regist/complete")
+				&& !requestURL.startsWith(contextPath + "/searchName")) {
 			// URLのリクエスト先がフィルタ実行対象である場合
 			isCheckURLOK = true;
 		} else {
