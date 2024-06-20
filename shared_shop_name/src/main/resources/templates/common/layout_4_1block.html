@@ -15,7 +15,13 @@
 		<div th:replace="~{common/header :: layout-header}"></div>
 	</header>
 	<!--/* ナビゲーションバー */-->
-	<nav th:if="${session.user == null or session.user.authority == 2}" class="navi_area">
+	<!--	<nav th:if="${session.user == null or session.user.authority == 2}" class="navi_area">-->
+	<!--		<div th:replace="~{common/menu :: layout-menu}"></div>-->
+	<!--	</nav>-->
+	<nav th:if="${session.user != null and session.user.authority == 2}" class="navi_area">
+		<div th:replace="~{common/menuForLoginUser :: layout-menu}"></div>
+	</nav>
+	<nav th:if="${session.user == null}" class="navi_area">
 		<div th:replace="~{common/menu :: layout-menu}"></div>
 	</nav>
 	<!--	メインコンテンツ-->

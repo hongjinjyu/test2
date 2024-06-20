@@ -920,3 +920,14 @@ a:hover {
 .user_info_form_area shopping_button {
 	background-color: aliceblue;
 }
+
+#catfornavi{
+	height:50px;
+width:auto;
+}
+
+/*.navi_menu {*/
+/*    height: 50px;  catfornavi와 동일한 높이로 설정 */
+/*    display: flex;*/
+/*    align-items: center;  아이템들을 수직 중앙에 맞추기 */
+/*}*/

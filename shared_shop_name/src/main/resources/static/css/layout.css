@@ -176,22 +176,45 @@ header {
 /* ---- ナビゲーションバー ---- */
 .navi_area {
 	background: rgb(57, 57, 57);
+
 }
 
 .navi_menu {
 	/*	background-color: rgb(255, 0, 0);*/
-	width: 960px;
+/*	width: 600px;*/
 	padding: 12px 0;
-	margin: 0 auto;
+	margin-left: 145px;
+	margin-right:auto;
+
+	
+    height: 60px; 
+    display: flex;
+    align-items: center;  
+
+}
+.navi_menu1 {
+	/*	background-color: rgb(255, 0, 0);*/
+/*	width: 600px;*/
+	padding: 12px 0;
+	margin-left: 145px;
+	margin-right:auto;
+/*	margin: 0 auto;*/
 	/*	font-family:'font名',cursive;*/
 }
 
 .navi_menu li {
+	width:180px;
 	color: red;
 	display: inline-block;
-	width: 24%;
+	margin-left:10px;
+	margin-right:5px;
 }
-
+.navi_menu1 li {
+	width:180px;
+	color: red;
+	display: inline-block;
+	margin-left:10px;
+}
 .navi_menu a {
 	display: inline-block;
 	width: 100%;
@@ -202,23 +225,44 @@ header {
 	background: rgb(255, 255, 255);
 	transition: 0.7s;
 }
-
+.navi_menu1 a {
+	display: inline-block;
+	width: 100%;
+	font-size: 1.5em;
+	line-height: 2.5em;
+	text-align: center;
+	text-decoration: none;
+	background: rgb(255, 255, 255);
+	transition: 0.7s;
+}
 .navi_menu a:visited {
 	color: rgb(57, 57, 57);
 }
-
+.navi_menu1 a:visited {
+	color: rgb(57, 57, 57);
+}
 .navi_menu a:hover {
 	background: rgb(57, 57, 57);
 	color: #fff;
 	text-shadow: 1px 1px 1px #12526d;
 	border-color: rgb(57, 57, 57);
 }
-
+.navi_menu1 a:hover {
+	background: rgb(57, 57, 57);
+	color: #fff;
+	text-shadow: 1px 1px 1px #12526d;
+	border-color: rgb(57, 57, 57);
+}
 .navi_menu li:first-of-type a {
 	border-radius: 6px 0px 0px 6px;
 }
-
+.navi_menu1 li:first-of-type a {
+	border-radius: 6px 0px 0px 6px;
+}
 .navi_menu li:last-of-type a {
+	border-radius: 0px 6px 6px 0px;
+}
+.navi_menu1 li:last-of-type a {
 	border-radius: 0px 6px 6px 0px;
 }
 
