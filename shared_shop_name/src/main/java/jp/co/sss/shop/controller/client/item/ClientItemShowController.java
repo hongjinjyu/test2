@@ -201,9 +201,12 @@ public class ClientItemShowController {
 	
 	//商品名検索
 		@RequestMapping(path = "/searchName", method = RequestMethod.GET)
-		public String showItemListName(String name, Model model, Pageable pageable) {
+		public String showItemListName(String name, Model model, Pageable pageable, HttpSession session) {
 			Page<Item> itemsPage;
 			itemsPage = itemRepository.findByNameContaining(name, pageable);
+			Integer sortType = 2;
+		    session.removeAttribute("categoryId");
+			model.addAttribute("sortType",sortType);
 			model.addAttribute("pages", itemsPage);
 			model.addAttribute("items", itemsPage.getContent());
 			return "client/item/list";

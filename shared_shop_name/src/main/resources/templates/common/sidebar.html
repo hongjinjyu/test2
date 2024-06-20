@@ -14,7 +14,7 @@
 			<form th:if="${sortType == null}" th:action="@{/client/item/list/1}">
 				<select name="categoryId">
 					<option th:value="#{constants.category.select.none.no}" th:text="#{constants.category.select.none}"></option>
-					<option th:each="category: ${categories}"
+					<option th:each="category: ${session.categories}"
 						th:value="${category.id}" th:text="${category.name}"></option>
 				</select> <input type="submit" th:value="#{select}" />
 			</form>
@@ -22,7 +22,7 @@
 			<form th:unless="${sortType == null}" th:action="@{/client/item/list/} + ${sortType}">
 				<select name="categoryId">
 					<option th:value="#{constants.category.select.none.no}" th:text="#{constants.category.select.none}"></option>
-					<option th:each="category: ${categories}"
+					<option th:each="category: ${session.categories}"
 						th:value="${category.id}" th:text="${category.name}" th:selected="${category.id} == ${categoryId}"></option>
 				</select> <input type="submit" th:value="#{select}" />
 			</form>
@@ -31,14 +31,14 @@
 	</div>
 	
 	<!--商品名検索-->
-	<div  class="search_area" th:if="${session.user == null || session.user.authority == 2}">
+	<div class="search_area" th:if="${session.user == null || session.user.authority == 2}">
 		<h2 th:class="title" th:text="#{name.search.title}"></h2>
 		<div class="form">
-				<form th:action="@{/searchName}" method="get">
-					<input type="text" name="name"/>
-				    <input type="submit" th:value="#{select}">
-				</form>
-			    </div>
+			<form th:action="@{/searchName}" method="get">
+				<input type="text" name="name" />
+				<input type="submit" th:value="#{select}">
+			</form>
+		</div>
 	</div>
 
 	<!--/* メニュー(運用管理者、及びシステム管理者用) */-->
