@@ -132,8 +132,8 @@ p {
 	margin: 15px 10px 15px 10px;
 	border-radius: 6px;
 	font-weight: bold;
-	
-	
+
+
 }
 
 /* ---- ボタン(一覧からの編集、削除) ---- */
@@ -383,11 +383,18 @@ li.error_msg {
 
 .user_info_form_area [type="submit"],
 .info_form_area [type="submit"] {
+	background: linear-gradient(to bottom, #71717a, #27272a);
+	/* from-zinc-500 to-zinc-800 */
+	color: white;
+	/* text-white */
+
 	line-height: 2.8rem;
 	min-width: 7rem;
 	margin-right: 20px;
 	font-size: 1rem;
 }
+
+
 
 .user_info_form_area .send_button,
 .info_form_area .send_button {
@@ -515,10 +522,12 @@ select {
 	border: 1px solid #808080;
 	border-radius: 6px;
 	padding: 2px 10px;
-	color: #12526d;
+/*	color: #12526d;*/
 	background: #fff;
 	box-shadow: 1px 2px 2px #eee;
-	text-shadow: 1px 1px 1px #d8d8d8;
+	text-shadow: 0.5px 0.5px 0.5px rgb(0, 0, 0);
+/*	font-weight: bold;*/
+	font-family: 'UD デジタル 教科書体 NP-R';
 }
 
 /* スキルアップテクニック10
@@ -529,14 +538,17 @@ select {
  * このような、誰にでも同様のデザインを届ける考え方を『プログレッシブエンハンスメント』と言います。
  */
 [type=submit].delete {
-	background: #d44444;
-	background-image: -webkit-linear-gradient(top, #d44444, #9e1818);
-	background-image: -moz-linear-gradient(top, #d44444, #9e1818);
-	background-image: -ms-linear-gradient(top, #d44444, #9e1818);
-	background-image: -o-linear-gradient(top, #d44444, #9e1818);
-	background-image: linear-gradient(to bottom, #d44444, #9e1818);
+/*	background: linear-gradient(to bottom, rgb(255, 0, 0), rgb(255, 0, 128));*/
+/*	background-image: -webkit-linear-gradient(top, #d44444, #9e1818);*/
+/*	background-image: -moz-linear-gradient(top, #d44444, #9e1818);*/
+/*	background-image: -ms-linear-gradient(top, #d44444, #9e1818);*/
+/*	background-image: -o-linear-gradient(top, #d44444, #9e1818);*/
+/*	background-image: linear-gradient(to bottom, #d44444, #9e1818);*/
 	color: #fff;
-	text-shadow: 1px 1px 1px #616161;
+	text-shadow: 0.5px 0.5px 0.5px rgb(0, 0, 0);
+}
+#deleteButton {
+	color:white;
 }
 
 /* ---- テーブル ---- */
@@ -893,13 +905,18 @@ a:hover {
 	font-size: 102%;
 }
 
-.errorMessageFavoriteAdded{
+.errorMessageFavoriteAdded {
 	font-size: 20px;
-	color:red;
+	color: red;
 }
-.errorMessageFavoriteAdded :hover{
+
+.errorMessageFavoriteAdded :hover {
 	font-weight: normal;
-	color:red;
-	font-size:100%;
-	
+	color: red;
+	font-size: 100%;
+
+}
+
+.user_info_form_area shopping_button {
+	background-color: aliceblue;
 }

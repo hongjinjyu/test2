@@ -10,10 +10,10 @@
 <body th:object="${loginForm}" class="user item_list">
 
 	<h2 th:class="title" th:text="#{favoriteList}+#{title.list}"></h2>
-		<div th:if="${favoriteListNoneFlag==1}">
-		<p th:text="#{favorite.none}" ></p>
+	<div th:if="${favoriteListNoneFlag==1}">
+		<p th:text="#{favorite.none}"></p>
 	</div>
-	
+
 	<th:block th:if="!${#lists.isEmpty(items)}">
 		<table class="list_table item_detail">
 			<tr>
@@ -40,16 +40,13 @@
 						<input type="hidden" name="id" th:value="${favorite.item.id}" />
 						<input type="submit" th:value="#{favorite.inbasket}" class="delete" />
 					</form>
-<!--					<form th:action="@{/client/basket/add}" method="post" class="user_info_form" th:if="*{stock > 0}">-->
-<!--						<input type="hidden" th:field="*{favorite.item.id}" />-->
-<!--						<input type="submit" value="買い物かごに入れる" class="send_button" />-->
-<!--					</form>-->
+
 
 				</td>
 				<td>
 					<form th:action="@{/deleteFavorite}" method="get">
 						<input type="hidden" name="id" th:value="${favorite.item.id}" />
-						<input type="submit" value="削除" class="delete" />
+						<input type="submit" value="削除" class="delete" id="deleteButton"/>
 					</form>
 				</td>
 			</tr>
