@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-	th:replace="~{common/layout_3block :: layout(~{::title},~{::body/content()})}">
+	th:replace="~{common/layout_4_1block :: layout(~{::title},~{::body/content()})}">
 
 <head>
 	<meta charset="UTF-8" />
@@ -9,6 +9,7 @@
 </head>
 
 <body class="user_login">
+	
 	<div class="user_container">
 		<h2 th:class="page_title" th:text="#{login}"></h2>
 		<div class="login_content">
