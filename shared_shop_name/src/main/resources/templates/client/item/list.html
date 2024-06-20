@@ -41,9 +41,9 @@
 				<th th:text="#{category}"></th>
 			</tr>
 			<!--/* 商品一覧 */-->
-			<tr th:each="item, status: ${items}">  <!--/*items=商品テーブルの全件表示*/-->
+			<tr th:each="item, status: ${items}"> <!--/*items=商品テーブルの全件表示*/-->
 				<td class="image">
-					<a  th:href="@{/client/item/detail/{id}(id=${item.id})}">
+					<a th:href="@{/client/item/detail/{id}(id=${item.id})}">
 						<img th:src="@{/images/{image}(image=${item.image})}" th:if="${item.image != null}" />
 					</a>
 					<img th:src="@{/images/common/no_image.jpg}" th:if="${item.image == null}" />
@@ -54,9 +54,9 @@
 			</tr>
 		</table>
 	</th:block>
-		<!--/* ページング */-->
+	<!--/* ページング */-->
 	<ul class="paging" th:if="!${#lists.isEmpty(items)}">
-		<!-- 先頭のページリンク表示処理 --> 
+		<!-- 先頭のページリンク表示処理 -->
 		<!--1ページ目の場合はクラスの名前をdisabledに設定-->
 		<li th:class="${pages.first} ? 'disabled':''">
 			<!--1ページ目の場合は<<を表示-->
@@ -64,7 +64,7 @@
 			<!-- 1ページ目ではない場合、１ページ目のリンクを表示-->
 			<a th:if="${not pages.first}" th:href="@{${url}(page=0)}">&lt;&lt;</a>
 		</li>
-		<!--ページ番号指定のリンク表示処理--> 
+		<!--ページ番号指定のリンク表示処理-->
 		<!-- #numbersのsequence()メソッドを使用して配列を作成し、被繰り返し変数として利用 -->
 		<li th:each='i : ${#numbers.sequence(0, pages.totalPages-1)}' th:class="(${i}==${pages.number})? 'active' : ''">
 			<span th:if='${i}==${pages.number}' th:text='${i+1}'>1</span>
@@ -72,8 +72,8 @@
 				<span th:text='${i+1}'>1</span>
 			</a>
 		</li>
-		<!-- 末尾ページのリンク --> 
-		<!--1ページ目の場合はクラスの名前をdisabledに設定--> 
+		<!-- 末尾ページのリンク -->
+		<!--1ページ目の場合はクラスの名前をdisabledに設定-->
 		<li th:class="${pages.last} ? 'disabled':''">
 			<!--末尾のページの場合は>>を表示-->
 			<span th:if="${pages.last}">&gt;&gt;</span>
@@ -82,4 +82,5 @@
 		</li>
 	</ul>
 </body>
+
 </html>
