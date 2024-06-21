@@ -10,7 +10,7 @@
 <body th:object="${loginForm}" class="user item_list">
 
 	<h2 th:class="title" th:text="#{item}+#{title.list}"></h2>
-
+	
 	<div class="sorted_by">
 		<!--新着順-->
 		<span th:if="${sortType==1}" th:text="#{sort.latest.str}"></span>

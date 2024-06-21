@@ -64,11 +64,11 @@ public class ClientItemShowController {
 		
 		if (hotList.isEmpty()) {
 			sortType = 1;
-			model.addAttribute("sortType",sortType);
+			model.addAttribute("sortTypeTop",sortType);
 			model.addAttribute("items",itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable));
 		} else {
 			sortType = 2;
-			model.addAttribute("sortType",sortType);
+			model.addAttribute("sortTypeTop",sortType);
 			model.addAttribute("items", itemRepository.findAllByQuery(Constant.NOT_DELETED, pageable));
 		}
 		return "index";
@@ -221,7 +221,8 @@ public class ClientItemShowController {
 			itemsPage = itemRepository.findAllByQuery(Constant.NOT_DELETED,name, pageable);
 			model.addAttribute("pages", itemsPage);
 			model.addAttribute("items", itemsPage.getContent());
-			
+//			int a = 0;
+//			model.addAttribute("nameSearchingNow",a);
 			return "client/item/list";
 		}
 	
