@@ -24,13 +24,15 @@ import jp.co.sss.shop.entity.User;
 import jp.co.sss.shop.repository.FavoriteRepository;
 import jp.co.sss.shop.repository.ItemRepository;
 import jp.co.sss.shop.service.FavoriteService;
-
+/**
+ * 会員管理 削除機能(一般会員)のコントローラクラス
+ * @author ジ・ジョンヒョン
+ */
 @Controller
 public class ClientFavoriteController {
 
 	@Autowired
 	private FavoriteRepository favoriteRepository;
-
 	@Autowired
 	private ItemRepository itemRepository;
 	@Autowired
@@ -92,12 +94,7 @@ public class ClientFavoriteController {
 		User user = new User();
 		BeanUtils.copyProperties(userBean, user);
 		int userId = user.getId();
-
-		//favoriteListそこのIdを参照して持ってくる作業
-//		List<Favorite> favoriteList = new ArrayList<>();
-//		favoriteList = favoriteRepository.findByUserId(userId);
-//要るか？
-		
+		//ページング
 		Page<Favorite> favoritesPage;
 		favoritesPage = favoriteRepository.findByUserId(userId, pageable);
 		int favoriteListNoneFlag = 0;
@@ -123,9 +120,8 @@ public class ClientFavoriteController {
 		//favoriteListそこのIdを参照して持ってくる作業
 		List<Favorite> favoriteList = new ArrayList<>();
 		favoriteList = favoriteRepository.findByUserId(userId);
-		//↑は今ログインしている人の気に入りリストだけ入っています。
-		//ので、その中から今押してる商品（Integer id）が同じ場合、そのレコードを消す作業をします。
 
+		//その中から今押してる商品（Integer id）が同じ場合、そのレコードを消す作業
 		int kesu = favoriteRepository.findFavoriteIdByItemIdAndUserId(id, userId);
 
 		favoriteRepository.deleteById(kesu);
