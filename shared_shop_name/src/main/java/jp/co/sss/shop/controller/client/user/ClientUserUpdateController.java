@@ -162,7 +162,11 @@ public class ClientUserUpdateController {
 
 		// セッションの削除対象情報を削除
 		session.removeAttribute("userForm");
-
+		
+		
+		UserBean userBean = new UserBean();
+		BeanUtils.copyProperties(user, userBean);
+		session.setAttribute("user", userBean);
 		// 削除完了画面　表示処理
 		return "redirect:/client/user/update/complete";
 	}
