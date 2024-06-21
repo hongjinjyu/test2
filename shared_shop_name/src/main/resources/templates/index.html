@@ -13,7 +13,7 @@
 		</h2>
 	</div>
 	<div th:if="${#lists.isEmpty(items)}">
-		<p th:text="#{msg.client.item.list.none}"></p>
+		<p th:text="#{msg.client.item.list.none}" id="noneMessage"></p>
 	</div>
 	<div class="item_list">
 	<th:block th:each="item, status: ${items}" th:if="${status.count le 10}">

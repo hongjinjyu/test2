@@ -925,6 +925,11 @@ a:hover {
 	height:50px;
 width:auto;
 }
+#noneMessage{
+	color:rgb(255, 34, 34);
+	font-size: 18px;
+	margin-top: 22px;
+}
 
 /*.navi_menu {*/
 /*    height: 50px;  catfornavi와 동일한 높이로 설정 */
