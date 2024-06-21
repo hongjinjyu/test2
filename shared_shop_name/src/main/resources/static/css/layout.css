@@ -74,6 +74,7 @@ li {
 	width: 76%;
 	padding-top:1.7%;
 	padding-left:13%;
+	padding-right:13%;
 	padding-bottom: 80px;
 
 }
@@ -333,7 +334,7 @@ aside.admin_menu {
 .main1,
 .main {
 	width: 76%;
-	padding-bottom: 80px;
+	padding-bottom: 80px
 
 }
 
