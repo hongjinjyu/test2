@@ -244,6 +244,11 @@ public class ClientOrderRegistController {
 		int total = 0;
 		//金額小計
 		int Allprice = 0;
+
+		//買い物かごの合計個数、合計金額をセッションコープから取り出す
+		int totalPrice = (int) session.getAttribute("totalPrice");
+		int totalNum = (int) session.getAttribute("totalNum");
+
 		//買い物かごのリスト生成
 		ArrayList<BasketBean> basketBean = new ArrayList<>();
 		//買い物かごの更新先リスト生成
@@ -287,11 +292,17 @@ public class ClientOrderRegistController {
 				//リストに情報を追加
 				orderItemBeanList.add(orderItemBean);
 				orderItemBeanList.remove(i);
+				//買い物かごの商品の合計金額、合計個数を更新
+				totalNum = totalNum - orderNum;
+				totalPrice = totalPrice - price * orderNum;
 
 				//在庫不足の場合
 			} else if (orderNum > stock && stock != 0) {
 				//注文警告メッセージをリクエストスコープに保存
 				model.addAttribute("itemNameListLessThan", items.getName());
+				//買い物かごの商品の合計金額、合計個数を更新
+				totalPrice = totalPrice - price * (orderNum - stock);
+				totalNum = totalNum - (orderNum - stock);
 				//注文数を在庫数まで減らす
 				orderNum = stock;
 				//注文数設定
@@ -341,11 +352,19 @@ public class ClientOrderRegistController {
 			}
 
 		}
+		//買い物かごの商品の合計個数、合計金額をセッションスコープに保存
+		session.setAttribute("totalPrice", totalPrice);
+		session.setAttribute("totalNum", totalNum);
 
 		//買い物かご情報をセッションスコープに保存
 		session.setAttribute("orderItemBeans", newBaskets);
 		//注文入力情報をリクエストスコープに保存
 		model.addAttribute("orderForm", session.getAttribute("order"));
+
+		//買い物かごに商品がない場合セッションを破棄
+		if (totalNum == 0) {
+			session.removeAttribute("basketBeans");
+		}
 		//注文確認画面表示
 		return "client/order/check";
 	}
@@ -385,6 +404,23 @@ public class ClientOrderRegistController {
 		//合計金額
 		int total = 0;
 
+		//在庫切れの場合注文確認表示処理へリダイレクトさせる
+		ArrayList<BasketBean> basketBeans = new ArrayList<>();
+		basketBeans = (ArrayList<BasketBean>) session.getAttribute("orderItemBeans");
+		//注文数
+		for (int j = 0; j < basketBeans.size(); j++) {
+			BasketBean baskets = basketBeans.get(j);
+			item = itemRepository.getReferenceById(baskets.getId());
+			int OrderNum = baskets.getOrderNum();
+			//在庫数
+			int Stock = item.getStock();
+			//在庫切れの場合
+			if (Stock < OrderNum) {
+				//注文確認画面表示処理へリダイレクト
+				return "redirect:/client/order/check";
+			}
+		}
+
 		/*
 		 * 注文情報をDBに登録
 		 */
@@ -407,7 +443,7 @@ public class ClientOrderRegistController {
 		//セッションスコープから買い物かご情報を取得
 		ArrayList<BasketBean> basketBean = new ArrayList<>();
 		basketBean = (ArrayList<BasketBean>) session.getAttribute("orderItemBeans");
-		//注文商品の在庫チェックをする
+		//注文商品の在庫調整
 		for (int i = 0; i < basketBean.size(); i++) {
 			BasketBean basket = basketBean.get(i);
 			item = itemRepository.getReferenceById(basket.getId());
@@ -421,11 +457,6 @@ public class ClientOrderRegistController {
 			total += Allprice;
 			//合計金額をリクエストスコープに保存
 			model.addAttribute("total", total);
-			//在庫切れの場合
-			if (stock < orderNum) {
-				//注文確認画面表示処理へリダイレクト
-				return "redirect:/client/order/check";
-			}
 
 			/*
 			 * 注文商品情報をDBに登録
