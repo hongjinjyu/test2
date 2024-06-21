@@ -20,10 +20,6 @@ import jp.co.sss.shop.entity.Item;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
 
-	@Query("SELECT i FROM Item i WHERE i.deleteFlag =:deleteFlag")
-	List<Item> findByDeleteFlag(@Param(value = "deleteFlag") int deleteFlag);
-
-	//    List<Item> findAllByOrderById();
 	/**
 	 * 商品情報を登録日付順に取得 管理者機能で利用
 	 * @param deleteFlag 削除フラグ
@@ -102,27 +98,42 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	/**
 	* 商品全件表示(価格の高い順)
 	*/
-	Page<Item> findAllByOrderByPriceDesc(Pageable pageable);
+	@Query("SELECT i FROM Item i WHERE i.deleteFlag = :deleteFlag ORDER BY i.price DESC")
+	Page<Item> findAllByOrderByPriceDesc(@Param(value = "deleteFlag") int deleteFlag, Pageable pageable);
 
 	/**
 	* 商品全件表示(価格の高い順)かつカテゴリで絞り込み
 	*/
-	Page<Item> findByCategoryOrderByPriceDesc(Category category, Pageable pageable);
+	@Query("SELECT i FROM Item i INNER JOIN i.category c WHERE i.deleteFlag = :deleteFlag AND i.category=:category ORDER BY i.price DESC")
+	Page<Item> findByCategoryOrderByPriceDesc(@Param(value = "deleteFlag") int deleteFlag,
+			@Param(value = "category")Category category, Pageable pageable);
 
 	/**
 	* 商品全件表示(価格の安い順)
 	*/
-	Page<Item> findAllByOrderByPriceAsc(Pageable pageable);
+	@Query("SELECT i FROM Item i WHERE i.deleteFlag = :deleteFlag ORDER BY i.price ASC")
+	Page<Item> findAllByOrderByPriceAsc(@Param(value = "deleteFlag") int deleteFlag,Pageable pageable);
 
 	/**
 	* 商品全件表示(価格の安い順)かつカテゴリで絞り込み
 	*/
-	Page<Item> findByCategoryOrderByPriceAsc(Category category, Pageable pageable);
+	@Query("SELECT i FROM Item i INNER JOIN i.category c WHERE i.deleteFlag = :deleteFlag AND i.category=:category ORDER BY i.price ASC")
+	Page<Item> findByCategoryOrderByPriceAsc(@Param(value = "deleteFlag") int deleteFlag,
+			@Param(value = "category")Category category, Pageable pageable);
 
 	/**
 	* 商品名検索
 	*/
 	@Query("SELECT i FROM Item i WHERE i.name LIKE %:name% AND i.deleteFlag = :deleteFlag ORDER BY i.id DESC")
 	Page<Item> findAllByQuery(@Param(value = "deleteFlag") int deleteFlag, String name, Pageable pageable);
+	
+	 /**
+	  *  削除フラグが１の商品を取得
+	  * @param deleteFlag
+	  * @return トップ画面表示
+	  */
+	
+	@Query("SELECT i FROM Item i WHERE i.deleteFlag =:deleteFlag")
+	List<Item> findByDeleteFlag(@Param(value = "deleteFlag") int deleteFlag);
 
 }
