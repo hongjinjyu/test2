@@ -112,6 +112,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 	 /**
      * 商品名検索
      */
-	Page<Item> findByNameContainingOrderByIdDesc(String name, Pageable pageable);
+	@Query("SELECT i FROM Item i WHERE i.name LIKE %:name% AND i.deleteFlag = :deleteFlag ORDER BY i.id DESC")
+	Page<Item> findAllByQuery(@Param(value = "deleteFlag")int deleteFlag, String name, Pageable pageable);
 	
 }

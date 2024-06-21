@@ -34,10 +34,10 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	ItemRepository itemRepository;
-
+	
 	@Autowired
 	CategoryRepository categoryRepository;
-
+	
 	/**
 	 * セッション
 	 */
@@ -48,128 +48,131 @@ public class ClientItemShowController {
 	 */
 	@Autowired
 	BeanTools beanTools;
-
+	
 	/**
 	 * トップ画面 表示処理
 	 *
 	 * @param model    Viewとの値受渡し
 	 * @return "index" トップ画面
 	 */
-
-	@RequestMapping(path = "/", method = { RequestMethod.GET, RequestMethod.POST })
-	public String index(Integer sortType, Model model, Pageable pageable) {
-
+	
+	@RequestMapping(path = "/" , method = { RequestMethod.GET, RequestMethod.POST })
+	public String index(Integer sortType,Model model, Pageable pageable) {
+		
 		List<Item> hotList = new ArrayList<>();
-		hotList = itemRepository.findAllByQuery(Constant.NOT_DELETED);
-
+		hotList =  itemRepository.findAllByQuery(Constant.NOT_DELETED);
+		
 		if (hotList.isEmpty()) {
 			sortType = 1;
-			model.addAttribute("sortType", sortType);
-			//			model.addAttribute("items",itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable));
-			model.addAttribute("items", itemRepository.findAllByQuery(Constant.NOT_DELETED));
+			model.addAttribute("sortType",sortType);
+			model.addAttribute("items",itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable));
 		} else {
 			sortType = 2;
-			model.addAttribute("sortType", sortType);
-			model.addAttribute("items", itemRepository.findAllByQuery(Constant.NOT_DELETED));
+			model.addAttribute("sortType",sortType);
+			model.addAttribute("items", itemRepository.findAllByQuery(Constant.NOT_DELETED, pageable));
 		}
 		return "index";
 	}
-
+	
 	/**
 	 * 商品一覧の表示処理
 	 * 
-	 * @param sortType=1(新着順)、sortType=2(売れ筋順)、sortType=3(価格の高い順)、sortTyp=4(価格の安い順)
-	 * @param categoryId  サイドバーで選択されているカテゴリ
-	 * @param model  Viewとの値受渡し
-	 * @param pageable  ページ情報
-	 * @return "client/item/list"
-	 */
+     * @param sortType=1(新着順)、sortType=2(売れ筋順)、sortType=3(価格の高い順)、sortTyp=4(価格の安い順)
+     * @param categoryId  サイドバーで選択されているカテゴリ
+     * @param model  Viewとの値受渡し
+     * @param pageable  ページ情報
+     * @return "client/item/list"
+     */
 	@RequestMapping(path = "/client/item/list/{sortType}", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showNewItemList(@PathVariable Integer sortType,
-			@RequestParam(name = "categoryId", required = false) Integer categoryId,
-			@RequestParam(name = "all", defaultValue = "0") Integer all,
-			Model model, Pageable pageable, HttpSession session) {
-
+	                               @RequestParam(name="categoryId",required = false) Integer categoryId,
+	                               @RequestParam(name="all",defaultValue="0") Integer all,
+	                               Model model, Pageable pageable, HttpSession session) {
+		
 		//ナビゲーションバーの商品一覧以外の検索が行われた場合
-		if (all == 0) {
-			// セッションからカテゴリIDを取得
-			Integer storedCategoryId = (Integer) session.getAttribute("categoryId");
+	    if (all == 0) {
+	        // セッションからカテゴリIDを取得
+	        Integer storedCategoryId = (Integer) session.getAttribute("categoryId");
+	        
+	        //カテゴリ検索で「--指定なし--」が選択された場合
+	        if (categoryId != null && categoryId == 0) {
+	        	// セッションからカテゴリIDを削除
+	            session.removeAttribute("categoryId");
+	            categoryId = null; // カテゴリIDをnullに設定
+	        
+	        //カテゴリーIDに値が入っている場合
+	        } else
+	        	if (categoryId != null) {
+	            //検索されたカテゴリーIDをセッションに保存
+	            session.setAttribute("categoryId", categoryId);
+	        
+	        	//セッションにカテゴリIDがすでに保存されている場合
+	        	} else if (storedCategoryId != null) {
+	            //新しく選択されたカテゴリIDを代入する
+	            categoryId = storedCategoryId;
+	        }
+	    
+	    //ナビゲーションバーで商品一覧がクリックされた場合
+	    } else 
+	     if(all != 0){
+	        // セッションからカテゴリIDを削除
+	        session.removeAttribute("categoryId");
+	        categoryId = null; // カテゴリIDをnullに設定
+	    }
+	    
 
-			//カテゴリ検索で「--指定なし--」が選択された場合
-			if (categoryId != null && categoryId == 0) {
-				// セッションからカテゴリIDを削除
-				session.removeAttribute("categoryId");
-				categoryId = null; // カテゴリIDをnullに設定
-
-				//カテゴリーIDに値が入っている場合
-			} else if (categoryId != null) {
-				//検索されたカテゴリーIDをセッションに保存
-				session.setAttribute("categoryId", categoryId);
-
-				//セッションにカテゴリIDがすでに保存されている場合
-			} else if (storedCategoryId != null) {
-				//新しく選択されたカテゴリIDを代入する
-				categoryId = storedCategoryId;
-			}
-
-			//ナビゲーションバーで商品一覧がクリックされた場合
-		} else if (all != 0) {
-			// セッションからカテゴリIDを削除
-			session.removeAttribute("categoryId");
-			categoryId = null; // カテゴリIDをnullに設定
-		}
-
-		// カテゴリIDを使用してアイテムのリストを取得
-		Page<Item> itemsPage;
-		if (sortType == 1) {
-			// 新着順
-			if (categoryId == null || categoryId == 0) {
-				itemsPage = itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable);
-				//新着順かつ、カテゴリで絞り込み
-			} else {
-				Category category = new Category();
-				category.setId(categoryId); // カテゴリIDをセット
-				itemsPage = itemRepository.findByCategoryOrderByIdDesc(Constant.NOT_DELETED, category, pageable);
-			}
-
-		} else if (sortType == 2) {
-			// 売れ筋順
-			if (categoryId == null || categoryId == 0) {
-				itemsPage = itemRepository.findAllByQuery(Constant.NOT_DELETED, pageable);
-				//売れ筋順かつ、カテゴリで絞り込み
-			} else {
-				itemsPage = itemRepository.findCategoryByQuery(Constant.NOT_DELETED, categoryId, pageable);
-			}
-
-		} else if (sortType == 3) {
-			// 価格の高い順
-			if (categoryId == null || categoryId == 0) {
-				itemsPage = itemRepository.findAllByOrderByPriceDesc(pageable);
-				//価格の高い順かつ、カテゴリで絞り込み
-			} else {
-				Category category = new Category();
-				category.setId(categoryId);
-				itemsPage = itemRepository.findByCategoryOrderByPriceDesc(category, pageable);
-			}
-
-		} else {
-			// 価格の安い順
-			if (categoryId == null || categoryId == 0) {
-				itemsPage = itemRepository.findAllByOrderByPriceAsc(pageable);
-				//価格の安い順かつ、カテゴリで絞り込み
-			} else {
-				Category category = new Category();
-				category.setId(categoryId);
-				itemsPage = itemRepository.findByCategoryOrderByPriceAsc(category, pageable);
-			}
-		}
-		// ページ情報とアイテムリストをモデルに追加
-		model.addAttribute("pages", itemsPage);
-		model.addAttribute("items", itemsPage.getContent());
-
-		return "client/item/list";
+	    // カテゴリIDを使用してアイテムのリストを取得
+	    Page<Item> itemsPage;
+	    if (sortType == 1) {
+	        // 新着順
+	        if (categoryId == null || categoryId == 0) {
+	        	itemsPage = itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable);
+	        //新着順かつ、カテゴリで絞り込み
+	        } else {
+	        	Category category = new Category();
+	            category.setId(categoryId); // カテゴリIDをセット
+	            itemsPage = itemRepository.findByCategoryOrderByIdDesc(Constant.NOT_DELETED, category, pageable);
+	        } 
+	        
+	    }else if(sortType == 2){
+	        // 売れ筋順
+	        if (categoryId == null || categoryId == 0) {
+	            itemsPage = itemRepository.findAllByQuery(Constant.NOT_DELETED, pageable);
+	        //売れ筋順かつ、カテゴリで絞り込み
+	        } else {
+	            itemsPage = itemRepository.findCategoryByQuery(Constant.NOT_DELETED, categoryId, pageable);
+	        }
+	        
+	    } else if(sortType == 3) {
+	    	// 価格の高い順
+	        if (categoryId == null || categoryId == 0) {
+	            itemsPage = itemRepository.findAllByOrderByPriceDesc(pageable);
+	        //価格の高い順かつ、カテゴリで絞り込み
+	        } else {
+	        	Category category = new Category();
+	        	category.setId(categoryId);
+	            itemsPage = itemRepository.findByCategoryOrderByPriceDesc(category, pageable);
+	        }
+	    
+	    } else {
+	    	// 価格の安い順
+	    	if (categoryId == null || categoryId == 0) {
+	            itemsPage = itemRepository.findAllByOrderByPriceAsc(pageable);
+	        //価格の安い順かつ、カテゴリで絞り込み
+	    	} else {
+	        	Category category = new Category();
+	        	category.setId(categoryId);
+	            itemsPage = itemRepository.findByCategoryOrderByPriceAsc(category, pageable);
+	        }
+	    }
+	    // ページ情報とアイテムリストをモデルに追加
+	    model.addAttribute("pages", itemsPage);
+	    model.addAttribute("items", itemsPage.getContent());
+	    model.addAttribute("count", itemsPage.getContent().size());
+	    
+	    return "client/item/list";
 	}
-
+	
 	/**
 	 * 商品詳細表示
 	 * @param id  Viewからクリックされた商品のID
@@ -193,33 +196,33 @@ public class ClientItemShowController {
 
 		// 商品情報をViewへ渡す
 		model.addAttribute("item", itemBean);
-		//詳細画面に遷移
+        //詳細画面に遷移
 		return "client/item/detail";
 	}
-
+	
 	//商品名検索
-	@RequestMapping(path = "/searchName", method = RequestMethod.GET)
-	public String showItemListName(String name, Model model, Pageable pageable) {
-
-		// セッションから検索文字列を取得
-		String newName = (String) session.getAttribute("names");
-
-		if (name != null) {
-			//検索された文字列をセッションに保存
-			session.setAttribute("names", name);
-
-			//セッションに前回検索された文字列が保存されている場合
-		} else if (newName != null) {
-			//新しく検索された文字列を代入する
-			name = newName;
+		@RequestMapping(path = "/searchName", method = RequestMethod.GET)
+		public String showItemListName(String name, Model model, Pageable pageable) {
+			
+		        // セッションから検索文字列を取得
+		        String newName = (String) session.getAttribute("names");
+		        
+		        if (name != null) {
+		            //検索された文字列をセッションに保存
+		            session.setAttribute("names", name);
+		        
+		        	//セッションに前回検索された文字列が保存されている場合
+		        	} else if (newName != null) {
+		            //新しく検索された文字列を代入する
+		            name = newName;
+		        }
+			
+			Page<Item> itemsPage;
+			itemsPage = itemRepository.findAllByQuery(Constant.NOT_DELETED,name, pageable);
+			model.addAttribute("pages", itemsPage);
+			model.addAttribute("items", itemsPage.getContent());
+			
+			return "client/item/list";
 		}
-
-		Page<Item> itemsPage;
-		itemsPage = itemRepository.findByNameContainingOrderByIdDesc(name, pageable);
-		model.addAttribute("pages", itemsPage);
-		model.addAttribute("items", itemsPage.getContent());
-
-		return "client/item/list";
-	}
-
+	
 }
