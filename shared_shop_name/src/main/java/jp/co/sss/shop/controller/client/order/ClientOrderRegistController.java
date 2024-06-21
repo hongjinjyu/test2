@@ -93,7 +93,7 @@ public class ClientOrderRegistController {
 				re.addFlashAttribute("itemNameListZero", item.getName());
 				//在庫切れの商品は、買い物かごから情報削除
 				basketBean.remove(i);
-				if(basketBean.isEmpty()) {
+				if (basketBean.isEmpty()) {
 					session.removeAttribute("basketBeans");
 				}
 				//リダイレクト
@@ -273,15 +273,25 @@ public class ClientOrderRegistController {
 			//在庫切れの場合
 			if (stock == 0) {
 				//注文警告メッセージをリクエストスコープに保存
-				model.addAttribute("itemNameListZero");
+				model.addAttribute("itemNameListZero", items.getName());
 				//在庫切れの商品は、買い物かごから情報削除
 				basketBean.remove(i);
-				//金額小計
-				Allprice = price * orderNum;
+
+				//OrderItemBeanのオブジェクト生成
+				OrderItemBean orderItemBean = new OrderItemBean();
+				//金額小計、注文数を設定
+				orderItemBean.setSubtotal(Allprice);
+				orderItemBean.setOrderNum(orderNum);
+				//itemの情報をコピー
+				BeanUtils.copyProperties(items, orderItemBean);
+				//リストに情報を追加
+				orderItemBeanList.add(orderItemBean);
+				orderItemBeanList.remove(i);
+
 				//在庫不足の場合
 			} else if (orderNum > stock && stock != 0) {
 				//注文警告メッセージをリクエストスコープに保存
-				model.addAttribute("itemNameListLessThan");
+				model.addAttribute("itemNameListLessThan", items.getName());
 				//注文数を在庫数まで減らす
 				orderNum = stock;
 				//注文数設定
@@ -290,29 +300,48 @@ public class ClientOrderRegistController {
 				Allprice = price * orderNum;
 				//買い物かごの情報を更新する
 				newBaskets.add(basket);
+
+				//OrderItemBeanのオブジェクト生成
+				OrderItemBean orderItemBean = new OrderItemBean();
+				//金額小計、注文数を設定
+				orderItemBean.setSubtotal(Allprice);
+				orderItemBean.setOrderNum(orderNum);
+				//itemの情報をコピー
+				BeanUtils.copyProperties(items, orderItemBean);
+				//リストに情報を追加
+				orderItemBeanList.add(orderItemBean);
+				//合計金額
+				total += Allprice;
+				//合計金額をリクエストスコープに保存
+				model.addAttribute("total", total);
+				//注文商品情報をリストに保存
+				model.addAttribute("orderItemBeans", orderItemBeanList);
+
 				//在庫十分の場合
 			} else {
 				//買い物かご情報を更新する
 				newBaskets.add(basket);
 				//金額小計
 				Allprice = price * orderNum;
+				//OrderItemBeanのオブジェクト生成
+				OrderItemBean orderItemBean = new OrderItemBean();
+				//金額小計、注文数を設定
+				orderItemBean.setSubtotal(Allprice);
+				orderItemBean.setOrderNum(orderNum);
+				//itemの情報をコピー
+				BeanUtils.copyProperties(items, orderItemBean);
+				//リストに情報を追加
+				orderItemBeanList.add(orderItemBean);
+				//合計金額
+				total += Allprice;
+				//合計金額をリクエストスコープに保存
+				model.addAttribute("total", total);
+				//注文商品情報をリストに保存
+				model.addAttribute("orderItemBeans", orderItemBeanList);
 			}
-			//OrderItemBeanのオブジェクト生成
-			OrderItemBean orderItemBean = new OrderItemBean();
-			//金額小計、注文数を設定
-			orderItemBean.setSubtotal(Allprice);
-			orderItemBean.setOrderNum(orderNum);
-			//itemの情報をコピー
-			BeanUtils.copyProperties(items, orderItemBean);
-			//リストに情報を追加
-			orderItemBeanList.add(orderItemBean);
-			//合計金額
-			total += Allprice;
-			//合計金額をリクエストスコープに保存
-			model.addAttribute("total", total);
+
 		}
-		//注文商品情報をリストに保存
-		model.addAttribute("orderItemBeans", orderItemBeanList);
+
 		//買い物かご情報をセッションスコープに保存
 		session.setAttribute("orderItemBeans", newBaskets);
 		//注文入力情報をリクエストスコープに保存
