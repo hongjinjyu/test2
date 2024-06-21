@@ -9,7 +9,7 @@
 	<div>
 		<h2 class="title">
 				<span th:if="${sortTypeTop==1}" th:text="#{sort.latest.title}"></span>
-				<span th:if="${sortTypeTop==2 || sortType==null}" th:text="#{sort.hotsell.title}"></span>
+				<span th:if="${sortTypeTop==2 || sortTypeTop==null}" th:text="#{sort.hotsell.title}"></span>
 		</h2>
 	</div>
 	<div th:if="${#lists.isEmpty(items)}">

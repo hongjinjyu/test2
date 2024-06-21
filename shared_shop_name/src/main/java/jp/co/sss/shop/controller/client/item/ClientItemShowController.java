@@ -61,11 +61,21 @@ public class ClientItemShowController {
 		
 		List<Item> hotList = new ArrayList<>();
 		hotList =  itemRepository.findAllByQuery(Constant.NOT_DELETED);
-		
+		List<Item> itemList = new ArrayList<>();
+		itemList=itemRepository.findByDeleteFlag(Constant.NOT_DELETED);
 		if (hotList.isEmpty()) {
+			
+			
+			
+			
+			
+			if(itemList.isEmpty()) {
+				model.addAttribute("items",null);
+			}else {			
 			sortType = 1;
 			model.addAttribute("sortTypeTop",sortType);
 			model.addAttribute("items",itemRepository.findAllByOrderByIdDesc(Constant.NOT_DELETED, pageable));
+			}
 		} else {
 			sortType = 2;
 			model.addAttribute("sortTypeTop",sortType);
