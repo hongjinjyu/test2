@@ -105,7 +105,6 @@ public class ClientFavoriteController {
 		model.addAttribute("favoriteListNoneFlag",favoriteListNoneFlag);
 		model.addAttribute("pages", favoritesPage);
 		model.addAttribute("items", favoritesPage.getContent());
-
 		return "client/item/FavoriteList";
 	}
 
@@ -160,8 +159,13 @@ public class ClientFavoriteController {
 		BasketBean basketAddList = null;
 		//買い物かごに追加された商品の情報を取得
 		Item item = itemRepository.getReferenceById(id);
+
 		//商品の在庫状況を取得
 		Integer stock = item.getStock();
+		if(item.getStock()==0) {
+			re.addFlashAttribute("stockZeroName",item.getName());
+			return "redirect:/showFavoriteList";
+		}
 
 		//リストに入った順番に並べ替え
 		Collections.reverse(basketList);
@@ -244,7 +248,6 @@ public class ClientFavoriteController {
 
 		model.addAttribute("pages", favoritesPage);
 		model.addAttribute("items", favoritesPage.getContent());
-
 		return "redirect:/client/basket/list";
 
 	}

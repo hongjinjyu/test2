@@ -317,7 +317,7 @@ a:active {
 
 .input_list input,
 .input_list textarea {
-	width: 100%;
+	width: 130%;
 	padding: 5px;
 	box-sizing: border-box;
 	font-size: 1rem;

@@ -10,11 +10,19 @@
 <body th:object="${loginForm}" class="user item_list">
 
 	<h2 th:class="title" th:text="#{favoriteList}+#{title.list}"></h2>
+
+
 	<div th:if="${favoriteListNoneFlag==1}">
-		<p th:text="#{favorite.none}"></p>
+		<p th:text="#{favorite.none}" id="noneMessage"></p>
 	</div>
-<br><br>
+	
+	<div th:if="${stockZeroName!=null}">
+		<br>
+		<a th:text="${stockZeroName}" id="noneMessage"></a>
+		<a th:text="#{favorite.nownone}" id="noneMessage"></a>
+	</div>
 	<th:block th:if="!${#lists.isEmpty(items)}">
+		<br>
 		<table class="list_table item_detail">
 			<tr>
 				<th th:text="#{data.item.image}"></th>
@@ -46,7 +54,7 @@
 				<td>
 					<form th:action="@{/deleteFavorite}" method="get">
 						<input type="hidden" name="id" th:value="${favorite.item.id}" />
-						<input type="submit" value="削除" class="delete" id="deleteButton"/>
+						<input type="submit" value="削除" class="delete" id="deleteButton" />
 					</form>
 				</td>
 			</tr>
