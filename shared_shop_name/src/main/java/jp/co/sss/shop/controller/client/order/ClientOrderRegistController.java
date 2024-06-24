@@ -265,6 +265,8 @@ public class ClientOrderRegistController {
 		 * 注文商品の最新情報をDBから取得し、の在庫チェックをする
 		 * 買い物かご情報から、商品ごとの金額小計と全額を算出し、注文入力フォーム情報に設定
 		 */
+		List<String> itemZero=new ArrayList<>();
+		List<String> itemLessThan=new ArrayList<>();
 		List<OrderItemBean> orderItemBeanList = new ArrayList<OrderItemBean>();
 		for (int i = 0; i < basketBean.size(); i++) {
 			BasketBean basket = basketBean.get(i);
@@ -278,10 +280,10 @@ public class ClientOrderRegistController {
 			//在庫切れの場合
 			if (stock == 0) {
 				//注文警告メッセージをリクエストスコープに保存
-				model.addAttribute("itemNameListZero", items.getName());
+				itemZero.add(items.getName());
+				model.addAttribute("itemNameListZero", itemZero);
 				//在庫切れの商品は、買い物かごから情報削除
-				basketBean.remove(i);
-
+				basketBean.remove(i--);
 				//OrderItemBeanのオブジェクト生成
 				OrderItemBean orderItemBean = new OrderItemBean();
 				//金額小計、注文数を設定
@@ -289,9 +291,6 @@ public class ClientOrderRegistController {
 				orderItemBean.setOrderNum(orderNum);
 				//itemの情報をコピー
 				BeanUtils.copyProperties(items, orderItemBean);
-				//リストに情報を追加
-				orderItemBeanList.add(orderItemBean);
-				orderItemBeanList.remove(i);
 				//買い物かごの商品の合計金額、合計個数を更新
 				totalNum = totalNum - orderNum;
 				totalPrice = totalPrice - price * orderNum;
@@ -299,7 +298,8 @@ public class ClientOrderRegistController {
 				//在庫不足の場合
 			} else if (orderNum > stock && stock != 0) {
 				//注文警告メッセージをリクエストスコープに保存
-				model.addAttribute("itemNameListLessThan", items.getName());
+				itemLessThan.add(items.getName());
+				model.addAttribute("itemNameListLessThan", itemLessThan);
 				//買い物かごの商品の合計金額、合計個数を更新
 				totalPrice = totalPrice - price * (orderNum - stock);
 				totalNum = totalNum - (orderNum - stock);
