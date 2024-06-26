@@ -32,7 +32,7 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
 
 	/**
 	 * 商品IDと削除フラグを条件に検索（管理者機能で利用）
-	 * @param id 商品ID
+	 * @param id  商品ID
 	 * @param deleteFlag 削除フラグ
 	 * @return 商品エンティティ
 	 */

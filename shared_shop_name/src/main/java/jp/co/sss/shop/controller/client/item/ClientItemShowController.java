@@ -30,7 +30,7 @@ import jp.co.sss.shop.util.Constant;
 @Controller
 public class ClientItemShowController {
 	/**
-	 * 商品情報
+	 *  商品情報
 	 */
 	@Autowired
 	ItemRepository itemRepository;
